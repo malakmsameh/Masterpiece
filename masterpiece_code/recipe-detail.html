@@ -1,0 +1,501 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sahtein - Chicken Shawarma Bowl</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,700&family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="shared.css">
+    <style>
+        /* =========================================================
+           Recipe-detail-page-only styles
+           ========================================================= */
+
+        /* ---------- Hero ---------- */
+        .recipe-hero {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+			padding: 32px 0 24px; gap: 32px; 
+            /* gap: 40px;
+            padding: 40px 0 32px; */
+            align-items: center;
+        }
+        .recipe-hero-img {
+            border-radius: var(--radius-lg);
+            overflow: hidden;
+            height: 420px;
+            background: #2a2a2a;
+        }
+        .recipe-hero-img img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+        }
+        .recipe-hero-text {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+        .recipe-hero-text h1 {
+            font-size: 2.1rem;
+            margin-bottom: 12px;
+        }
+        .recipe-hero-text p {
+            /* font-size: 1re=m; */
+			font-size: 0.95rem; margin-bottom: 16px;
+            color: var(--text-muted);
+            /* margin-bottom: 20px; */
+            max-width: 520px;
+        }
+
+        .recipe-tags {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+            margin-bottom: 20px;
+			
+        }
+        .recipe-tag {
+            background: var(--accent-green-light);
+            color: var(--accent-green);
+            /* padding: 4px 12px; */
+			font-size: 0.72rem; padding: 3px 10px;
+            border-radius: 50px;
+            /* font-size: 0.78rem; */
+            font-weight: 500;
+        }
+
+        .recipe-meta-bar {
+            display: flex;
+            /* gap: 28px;
+            padding: 16px 0; */
+            border-top: 1px solid var(--border-color);
+            border-bottom: 1px solid var(--border-color);
+            /* margin-bottom: 20px; */
+			gap: 24px; padding: 14px 0; margin-bottom: 18px;
+        }
+        .recipe-meta-bar div { text-align: center; }
+        .recipe-meta-bar strong {
+            display: block;
+font-size: 1.05rem;
+            /* font-size: 1.15rem; */
+            font-family: var(--font-serif);
+        }
+        .recipe-meta-bar span {
+            font-size: 0.72rem;
+            color: var(--text-muted);
+        }
+
+        .recipe-actions {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 4px;
+            flex-wrap: wrap;
+        }
+
+        /* ---------- Nutrition grid ---------- */
+        .nutrition-grid {
+            display: grid;
+            grid-template-columns: repeat(5, 1fr);
+            gap: 12px;
+            margin-bottom: 32px;
+        }
+        .nutrition-card {
+            background: var(--bg-white);
+            padding: 12px;
+            border-radius: var(--radius-sm);
+            border: 1px solid var(--border-color);
+            text-align: center;
+        }
+        .nutrition-card strong {
+            display: block;
+            /* font-size: 1.05rem; */
+			font-size: 0.98rem;
+            color: var(--accent-green);
+            font-family: var(--font-serif);
+        }
+        .nutrition-card span {
+            /* font-size:= 0.72rem; */
+			font-size: 0.68rem;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        /* ---------- Content: ingredients + method ---------- */
+        .recipe-content {
+            display: grid;
+            grid-template-columns: 1fr 2fr;
+            /* gap: 40px;
+            padding: 32px 0; */
+			gap: 32px; padding: 28px 0;
+            align-items: start;
+        }
+
+        .ingredients-list {
+            background: var(--bg-white);
+            /* padding: 24px; */
+			padding: 22px;
+            border-radius: var(--radius-md);
+            border: 1px solid var(--border-color);
+            position: sticky;
+            top: 90px;
+        }
+        .ingredients-list h3 { margin-bottom: 14px; }
+        .ingredient-item {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            /* padding: 9px 0; */
+            border-bottom: 1px solid var(--border-color);
+            /* font-size: 0.92rem; */
+			padding: 8px 0; font-size: 0.88rem;
+        }
+        .ingredient-item:last-child { border-bottom: none; }
+        .ingredient-item input[type="checkbox"] {
+            accent-color: var(--accent-green);
+            width: 17px;
+            height: 17px;
+        }
+
+        .method-steps {
+            display: flex;
+            flex-direction: column;
+            gap: 14px;
+        }
+        .step-card {
+            background: var(--bg-white);
+            /* padding: 22px; */
+            border-radius: var(--radius-md);
+            border: 1px solid var(--border-color);
+            display: flex;
+            /* gap: 18px; */
+			padding: 20px; gap: 16px;
+        }
+        .step-number {
+            background: var(--accent-orange);
+            color: #fff;
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            flex-shrink: 0;
+            font-size: 0.82rem;
+        }
+        .step-content h4 {
+            font-size: 0.98rem;
+            margin-bottom: 6px;
+        }
+
+        .kitchen-wisdom {
+            background: var(--accent-green-light);
+            padding: 20px;
+            border-radius: var(--radius-md);
+            margin-top: 16px;
+        }
+        .kitchen-wisdom h4 {
+            color: var(--accent-green);
+            margin-bottom: 6px;
+            font-size: 1rem;
+        }
+
+        /* ---------- Reviews ---------- */
+        .reviews-section {
+            padding: 28px 0 36px;
+            border-top: 1px solid var(--border-color);
+        }
+        .review-card {
+            background: var(--bg-white);
+            padding: 18px;
+            border-radius: var(--radius-md);
+            border: 1px solid var(--border-color);
+            margin-bottom: 12px;
+        }
+        .review-header {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 6px;
+            flex-wrap: wrap;
+            gap: 6px;
+        }
+        .stars { color: #F5A623; font-size: 0.85rem; }
+
+        .review-textarea {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-sm);
+            font-family: inherit;
+            font-size: 0.9rem;
+            margin-bottom: 12px;
+            resize: vertical;
+            min-height: 70px;
+            background: var(--bg-white);
+            transition: var(--transition);
+        }
+        .review-textarea:focus {
+            outline: none;
+            border-color: var(--accent-green);
+            box-shadow: 0 0 0 3px var(--accent-green-light);
+        }
+
+        /* ---------- Responsive ---------- */
+        @media (max-width: 1024px) {
+            .recipe-hero {
+                grid-template-columns: 1fr;
+                gap: 28px;
+                padding: 32px 0 24px;
+            }
+            .recipe-hero-img { height: 320px; }
+            .recipe-hero-text h1 { font-size: 2rem; }
+            .recipe-content { grid-template-columns: 1fr; gap: 28px; }
+            .ingredients-list { position: static; }
+            .nutrition-grid { grid-template-columns: repeat(3, 1fr); }
+        }
+        @media (max-width: 768px) {
+            .nutrition-grid { grid-template-columns: repeat(2, 1fr); }
+            .recipe-meta-bar {
+                flex-wrap: wrap;
+                gap: 14px;
+                justify-content: center;
+            }
+            .recipe-hero-text h1 { font-size: 1.8rem; }
+            .step-card { flex-direction: column; gap: 12px; }
+        }
+    </style>
+</head>
+<body>
+    <!-- Announcement bar -->
+    <div class="announcement">
+        <strong>GOOD FOOD, GOOD FEELING.</strong>
+        A little joy in every bite.
+        <a href="ai-recipe.html">Cook with what you have →</a>
+    </div>
+
+    <header class="site-header">
+        <div class="container header-inner">
+            <a href="index.html" class="logo">sahtein<span>.</span></a>
+            <nav class="nav-links">
+                <a href="index.html">Home</a>
+                <a href="recipes.html">Recipes</a>
+                <a href="healthy-day.html">Healthy Day</a>
+                <a href="meal-planner.html">Meal Planner</a>
+                <a href="community.html">Community</a>
+                <a href="nutrition.html">Nutrition</a>
+                <a href="ai-recipe.html">AI Recipe</a>
+            </nav>
+            <div class="header-actions">
+                <button type="button" class="icon-btn" title="Sign in to save favorites"
+                        data-requires-login="true" data-action="favorites">
+                    <i class="fa-regular fa-heart"></i>
+                </button>
+                <button type="button" class="icon-btn" title="Sign in to view profile"
+                        data-requires-login="true" data-action="profile">
+                    <i class="fa-regular fa-user"></i>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <!-- HERO -->
+    <section class="container recipe-hero">
+        <div class="recipe-hero-img">
+            <img src="https://images.unsplash.com/photo-1544025162-d76694265947?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80" alt="Chicken Shawarma Bowl">
+        </div>
+        <div class="recipe-hero-text">
+            <span class="section-label">A little taste of home</span>
+            <h1>Chicken Shawarma Bowl</h1>
+            <p>Tender, spiced chicken, fluffy rice and a generous helping of fresh vegetables. All the joy of shawarma, in a beautifully balanced bowl.</p>
+            <div class="recipe-tags">
+                <span class="recipe-tag">High protein</span>
+                <span class="recipe-tag">Middle Eastern</span>
+                <span class="recipe-tag">Contains dairy &amp; sesame</span>
+            </div>
+            <div class="recipe-meta-bar">
+                <div><strong>15 min</strong><span>Prep time</span></div>
+                <div><strong>25 min</strong><span>Cook time</span></div>
+                <div><strong>40 min</strong><span>Total time</span></div>
+                <div><strong>2</strong><span>Servings</span></div>
+            </div>
+            <div class="recipe-actions">
+                <button type="button" class="btn btn-primary"
+                        data-requires-login="true" data-action="save-favorite">
+                    <i class="fa-regular fa-heart"></i> Save to favorites
+                </button>
+                <button type="button" class="btn btn-outline"
+                        data-requires-login="true" data-action="add-to-plan">
+                    <i class="fa-regular fa-calendar"></i> Add to plan
+                </button>
+                <button type="button" class="btn btn-outline" id="printRecipeBtn">
+                    <i class="fa-solid fa-print"></i> Print recipe
+                </button>
+            </div>
+        </div>
+    </section>
+
+    <!-- NUTRITION GRID -->
+    <section class="container">
+        <div class="nutrition-grid">
+            <div class="nutrition-card"><strong>450</strong><span>kcal / serving</span></div>
+            <div class="nutrition-card"><strong>35g</strong><span>Protein / serving</span></div>
+            <div class="nutrition-card"><strong>48g</strong><span>Carbs / serving</span></div>
+            <div class="nutrition-card"><strong>13g</strong><span>Fat / serving</span></div>
+            <div class="nutrition-card"><strong>6g</strong><span>Fiber / serving</span></div>
+        </div>
+    </section>
+
+    <!-- INGREDIENTS + METHOD -->
+    <section class="container recipe-content">
+        <aside class="ingredients-list">
+            <span class="section-label">Everything you need</span>
+            <h3>Ingredients</h3>
+            <p class="text-muted text-sm mb-4">Servings: 2</p>
+            <div class="ingredient-item"><input type="checkbox" id="ing1"><label for="ing1">300 g boneless chicken breast</label></div>
+            <div class="ingredient-item"><input type="checkbox" id="ing2"><label for="ing2">100 g dry basmati rice</label></div>
+            <div class="ingredient-item"><input type="checkbox" id="ing3"><label for="ing3">2 tbsp plain yogurt</label></div>
+            <div class="ingredient-item"><input type="checkbox" id="ing4"><label for="ing4">1 tbsp olive oil</label></div>
+            <div class="ingredient-item"><input type="checkbox" id="ing5"><label for="ing5">1 tsp ground cumin</label></div>
+            <div class="ingredient-item"><input type="checkbox" id="ing6"><label for="ing6">1 tsp paprika</label></div>
+            <div class="ingredient-item"><input type="checkbox" id="ing7"><label for="ing7">1 cucumber, diced</label></div>
+            <div class="ingredient-item"><input type="checkbox" id="ing8"><label for="ing8">2 tomatoes, diced</label></div>
+            <div class="ingredient-item"><input type="checkbox" id="ing9"><label for="ing9">2 tbsp hummus</label></div>
+            <div class="ingredient-item"><input type="checkbox" id="ing10"><label for="ing10">1 lemon &amp; fresh parsley</label></div>
+
+            <!-- <button type="button" class="btn btn-primary mt-4" style="width: 100%;"
+                    data-requires-login="true" data-action="shopping-list">
+                Add to shopping list <i class="fa-solid fa-arrow-right"></i>
+            </button> -->
+
+            <p class="text-muted text-sm mt-2">Allergies: dairy (yogurt), sesame (hummus), check labels when using store-bought ingredients.</p>
+        </aside>
+
+        <div class="method-steps">
+            <span class="section-label">Make something wonderful</span>
+            <h2 class="mb-6" style="font-size: 1.8rem;">How to make it</h2>
+
+            <div class="step-card">
+                <div class="step-number">1</div>
+                <div class="step-content">
+                    <h4>Marinate the chicken</h4>
+                    <p class="text-muted">Mix yogurt, half the olive oil, cumin, paprika, coriander and minced garlic. Coat the chicken well and leave to marinate while you prepare the rice.</p>
+                </div>
+            </div>
+            <div class="step-card">
+                <div class="step-number">2</div>
+                <div class="step-content">
+                    <h4>Cook the rice</h4>
+                    <p class="text-muted">Rinse rice until the water runs clear. Add to a pan with 200 ml water and a pinch of salt. Bring to a boil, cover and simmer gently for 12–15 minutes. Rest for 5 minutes.</p>
+                </div>
+            </div>
+            <div class="step-card">
+                <div class="step-number">3</div>
+                <div class="step-content">
+                    <h4>Prepare the fresh vegetables</h4>
+                    <p class="text-muted">Dice cucumber and tomatoes. Toss with lemon juice, chopped parsley and the remaining olive oil. Set aside until ready to serve.</p>
+                </div>
+            </div>
+            <div class="step-card">
+                <div class="step-number">4</div>
+                <div class="step-content">
+                    <h4>Sear the chicken</h4>
+                    <p class="text-muted">Heat a skillet over medium-high heat. Cook chicken for 6–8 minutes per side, depending on thickness. Check the thickest part reaches 74°C / 165°F. Rest, then slice.</p>
+                </div>
+            </div>
+            <div class="step-card">
+                <div class="step-number">5</div>
+                <div class="step-content">
+                    <h4>Build your bowl</h4>
+                    <p class="text-muted">Divide rice between two bowls. Add the vegetables, sliced chicken and a spoonful of hummus. Finish with lemon and parsley, and serve warm.</p>
+                </div>
+            </div>
+
+            <div class="kitchen-wisdom">
+                <h4>A little kitchen wisdom</h4>
+                <p class="text-muted text-sm">For a lighter portion, use a little less rice and extra vegetables. A smaller serving can be logged separately in Healthy Day—your meal plan remains unchanged.</p>
+                <p class="text-muted text-sm mt-2">Keep cooked chicken and rice refrigerated promptly in separate airtight containers. Use within 3 days and reheat thoroughly. Nutrition values are estimates per standard serving.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- REVIEWS -->
+    <section class="container reviews-section">
+        <div class="flex-between mb-6">
+            <h2 style="font-size: 1.6rem;">From the Sahtein table</h2>
+            <button type="button" class="btn btn-outline btn-sm"
+                    data-requires-login="true" data-action="write-review">
+                Write a review <i class="fa-solid fa-arrow-right"></i>
+            </button>
+        </div>
+        <div class="review-card">
+            <div class="review-header">
+                <div><strong>Maya Haddad</strong> <span class="stars"><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i></span></div>
+                <span class="text-muted text-sm">October 8 · Cooked this recipe</span>
+            </div>
+            <p class="text-muted">The spices are so warm and comforting. We doubled the vegetables and it made a lovely family dinner.</p>
+        </div>
+        <div class="review-card">
+            <div class="review-header">
+                <div><strong>Omar Nasser</strong> <span class="stars"><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i></span></div>
+                <span class="text-muted text-sm">October 6 · Cooked this recipe</span>
+            </div>
+            <p class="text-muted">Great for meal prep. Keeping the salad separate until serving made all the difference.</p>
+        </div>
+        <div style="margin-top: 16px;">
+            <textarea class="review-textarea" rows="3" placeholder="Share how it turned out in your kitchen..."></textarea>
+            <button type="button" class="btn btn-primary btn-sm"
+                    data-requires-login="true" data-action="submit-review">
+                Submit review
+            </button>
+        </div>
+    </section>
+
+    <footer class="site-footer">
+        <div class="container">
+            <div class="footer-grid">
+                <div>
+                    <a href="index.html" class="logo" style="margin-bottom: 16px;">sahtein<span>.</span></a>
+                    <p class="text-muted text-sm">Good food brings us together. Discover, cook, and share with the world.</p>
+                </div>
+                <div>
+                    <h4>Explore</h4>
+                    <div class="footer-links">
+                        <a href="recipes.html">All recipes</a>
+                        <a href="healthy-day.html">Healthy Day</a>
+                        <a href="nutrition.html">Nutrition advice</a>
+                        <a href="ai-recipe.html">AI recipe assistant</a>
+                    </div>
+                </div>
+                <div>
+                    <h4>Your Space</h4>
+                    <div class="footer-links">
+                        <button type="button" data-requires-login="true" data-action="profile">Profile</button>
+                        <button type="button" data-requires-login="true" data-action="favorites">Saved recipes</button>
+                        <button type="button" data-requires-login="true" data-action="meal-planner">Meal planner</button>
+                        <a href="community.html">Community</a>
+                    </div>
+                </div>
+                <div>
+                    <h4 style="font-family: var(--font-serif); font-size: 1.2rem; text-transform: none; letter-spacing: 0;">Made with care, served with joy. <i class="fa-solid fa-star" style="color: var(--accent-orange);"></i></h4>
+                    <div class="footer-links" style="flex-direction: row; gap: 16px;">
+                        <span><i class="fa-brands fa-instagram"></i> Instagram</span> · <span><i class="fa-brands fa-facebook"></i> Facebook</span> · <span><i class="fa-brands fa-pinterest"></i> Pinterest</span>
+                    </div>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <span>© 2026 Sahtein. A recipe platform made for curious cooks.</span>
+                <a href="#">View our privacy policy <i class="fa-solid fa-arrow-right"></i></a>
+            </div>
+        </div>
+    </footer>
+
+    <script src="shared.js"></script>
+    <script src="auth-guard.js"></script>
+</body>
+</html>

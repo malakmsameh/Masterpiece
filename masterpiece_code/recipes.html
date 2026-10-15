@@ -1,0 +1,562 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sahtein - Recipes</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,700&family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="shared.css">
+    <style>
+        /* =========================================================
+           Recipes-page-only styles
+           ========================================================= */
+
+        /* ---------- Page header ---------- */
+        .page-header { padding: 40px 0 20px; }
+        .page-header h1 { font-size: 2.2rem; margin-bottom: 8px; }
+        .page-header p { font-size: 1rem; max-width: 560px; }
+
+        /* ---------- Layout: sidebar + grid ---------- */
+        .recipes-layout {
+            display: grid;
+            grid-template-columns: 240px 1fr;
+            gap: 32px;
+            align-items: start;
+        }
+
+        /* ---------- Search bar ---------- */
+        .search-bar { display: flex; gap: 12px; margin-bottom: 20px; }
+        .search-bar .input-field { flex: 1; padding: 10px 14px; font-size: 0.9rem; }
+        .input-field {
+            width: 100%;
+            padding: 10px 14px;
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-sm);
+            font-family: inherit;
+            font-size: 0.9rem;
+            background: var(--bg-white);
+            transition: var(--transition);
+        }
+        .input-field:focus {
+            outline: none;
+            border-color: var(--accent-green);
+            box-shadow: 0 0 0 3px var(--accent-green-light);
+        }
+
+        /* ---------- Meta row ---------- */
+        .recipes-meta {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 16px;
+            font-size: 0.85rem;
+            color: var(--text-muted);
+        }
+
+        /* ---------- Filter sidebar ---------- */
+        .filter-sidebar {
+            background: var(--bg-white);
+            padding: 20px;
+            border-radius: var(--radius-md);
+            border: 1px solid var(--border-color);
+            position: sticky;
+            top: 90px;
+        }
+        .filter-group { margin-bottom: 20px; }
+        .filter-group h4 {
+            font-family: var(--font-sans);
+            font-size: 0.8rem;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 10px;
+            color: var(--text-main);
+        }
+        .filter-checkbox {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-bottom: 6px;
+            font-size: 0.85rem;
+            color: var(--text-muted);
+            cursor: pointer;
+        }
+        .filter-checkbox input {
+            accent-color: var(--accent-green);
+            width: 15px;
+            height: 15px;
+        }
+
+        /* ---------- Grid ---------- */
+        .recipe-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 20px;
+        }
+
+        /* ---------- Pagination ---------- */
+        .pagination {
+            display: flex;
+            justify-content: center;
+            gap: 8px;
+            margin-top: 32px;
+        }
+        .page-num {
+            width: 34px;
+            height: 34px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+            border: 1px solid var(--border-color);
+            background: var(--bg-white);
+            font-size: 0.85rem;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+        .page-num.active {
+            background: var(--accent-green);
+            color: #fff;
+            border-color: var(--accent-green);
+        }
+        .page-num:hover:not(.active) {
+            border-color: var(--accent-green);
+            color: var(--accent-green);
+        }
+
+        /* ---------- "Add a recipe" banner ---------- */
+        .add-recipe-banner {
+            background: var(--accent-green-light);
+            padding: 32px;
+            border-radius: var(--radius-lg);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 24px;
+        }
+        .add-recipe-banner h3 {
+            font-size: 1.3rem;
+            color: var(--accent-green);
+            margin-bottom: 6px;
+        }
+        .add-recipe-banner p { font-size: 0.92rem; }
+
+        /* ---------- Responsive ---------- */
+        @media (max-width: 1024px) {
+            .recipes-layout { grid-template-columns: 1fr; }
+            .filter-sidebar {
+                position: static;
+                display: grid;
+                grid-template-columns: repeat(3, 1fr);
+                gap: 16px;
+            }
+            .recipe-grid { grid-template-columns: repeat(2, 1fr); }
+        }
+        @media (max-width: 768px) {
+            .recipe-grid { grid-template-columns: 1fr; }
+            .filter-sidebar { grid-template-columns: 1fr; }
+            .search-bar { flex-direction: column; }
+            .search-bar select { width: 100% !important; }
+            .add-recipe-banner { flex-direction: column; text-align: center; }
+            .page-header { padding: 32px 0 20px; }
+            .page-header h1 { font-size: 1.9rem; }
+        }
+    </style>
+</head>
+<body>
+    <!-- Announcement bar -->
+    <div class="announcement">
+        <strong>GOOD FOOD, GOOD FEELING.</strong>
+        A little joy in every bite.
+        <a href="ai-recipe.html">Cook with what you have →</a>
+    </div>
+
+    <header class="site-header">
+        <div class="container header-inner">
+            <a href="index.html" class="logo">sahtein<span>.</span></a>
+            <nav class="nav-links">
+                <a href="index.html">Home</a>
+                <a href="recipes.html">Recipes</a>
+                <a href="healthy-day.html">Healthy Day</a>
+                <a href="meal-planner.html">Meal Planner</a>
+                <a href="community.html">Community</a>
+                <a href="nutrition.html">Nutrition</a>
+                <a href="ai-recipe.html">AI Recipe</a>
+            </nav>
+            <div class="header-actions">
+                <button type="button" class="icon-btn" title="Sign in to save favorites"
+                        data-requires-login="true" data-action="favorites">
+                    <i class="fa-regular fa-heart"></i>
+                </button>
+                <button type="button" class="icon-btn" title="Sign in to view profile"
+                        data-requires-login="true" data-action="profile">
+                    <i class="fa-regular fa-user"></i>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <section class="container page-header">
+        <span class="section-label">Find your next favorite</span>
+        <h1>Something delicious awaits.</h1>
+    </section>
+
+    <section class="container" style="padding-bottom: 40px;">
+        <div class="recipes-layout">
+            <aside class="filter-sidebar">
+                <div class="filter-group">
+                    <h4>Cuisine</h4>
+                    <label class="filter-checkbox"><input type="checkbox" checked> All cuisines</label>
+                    <label class="filter-checkbox"><input type="checkbox"> Jordanian</label>
+                    <label class="filter-checkbox"><input type="checkbox"> Palestinian</label>
+                    <label class="filter-checkbox"><input type="checkbox"> Lebanese</label>
+                    <label class="filter-checkbox"><input type="checkbox"> Syrian</label>
+                    <label class="filter-checkbox"><input type="checkbox"> Egyptian</label>
+                </div>
+                <div class="filter-group">
+                    <h4>Dietary preferences</h4>
+                    <label class="filter-checkbox"><input type="checkbox"> Vegetarian</label>
+                    <label class="filter-checkbox"><input type="checkbox"> Vegan</label>
+                    <label class="filter-checkbox"><input type="checkbox"> Gluten-free</label>
+                    <label class="filter-checkbox"><input type="checkbox"> High protein</label>
+                </div>
+                <div class="filter-group">
+                    <h4>Cooking time</h4>
+                    <select class="input-field" style="margin-bottom: 8px;"><option>Any cooking time</option></select>
+                </div>
+                <div class="filter-group">
+                    <h4>Calories per serving</h4>
+                    <select class="input-field" style="margin-bottom: 8px;"><option>Any range</option></select>
+                </div>
+                <button class="btn btn-primary" style="width: 100%; margin-bottom: 8px;">Apply filters</button>
+                <button class="btn btn-outline" style="width: 100%;">Clear all filters</button>
+            </aside>
+
+            <main>
+                <div class="search-bar">
+                    <input type="text" class="input-field" placeholder="Search by recipe, ingredient or cuisine">
+                    <select class="input-field" style="width: 180px;">
+                        <option>Most loved</option>
+                        <option>Newest</option>
+                        <option>Quickest</option>
+                    </select>
+                    <button class="btn btn-primary"><i class="fa-solid fa-magnifying-glass"></i> Search</button>
+                </div>
+
+                <div class="recipes-meta">
+                    <span>8 recipes · All cuisines</span>
+                    <span>Showing 1-8 of 8</span>
+                </div>
+
+                <div class="recipe-grid">
+
+                    <!-- Card 1 -->
+                    <a href="recipe-detail.html" class="recipe-card">
+                        <div class="card-img-wrap">
+                            <img src="https://images.unsplash.com/photo-1541518763669-27fef04b14ea?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80" alt="Chicken Maqluba" class="card-img">
+                            <button type="button" class="card-fav" title="Sign in to save"
+                                    data-requires-login="true" data-action="toggle-favorite"
+                                    onclick="event.preventDefault(); event.stopPropagation();">
+                                <i class="fa-regular fa-heart"></i>
+                            </button>
+                            <div class="card-cta">
+                                <span>Go to recipe</span>
+                                <i class="fa-solid fa-arrow-right"></i>
+                            </div>
+                            <div class="card-badges">
+                                <span class="card-badge"><i class="fa-solid fa-fire"></i> 520 kcal</span>
+                                <span class="card-badge"><i class="fa-solid fa-dumbbell"></i> 35g protein</span>
+                            </div>
+                        </div>
+                        <div class="card-body">
+                            <span class="card-tag">Traditional</span>
+                            <h3 class="card-title">Chicken Maqluba</h3>
+                            <p class="card-desc">Fragrant rice, tender chicken and vegetables, turned upside down with love.</p>
+                            <div class="card-meta">
+                                <span><i class="fa-solid fa-star" style="color:#F5A623;"></i> 4.9</span>
+                                <span><i class="fa-regular fa-clock"></i> 65 min</span>
+                                <span>Intermediate</span>
+                            </div>
+                        </div>
+                    </a>
+
+                    <!-- Card 2 -->
+                    <a href="recipe-detail.html" class="recipe-card">
+                        <div class="card-img-wrap">
+                            <img src="https://images.unsplash.com/photo-1626200419199-391ae4be7a41?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80" alt="Hearty Falafel Wrap" class="card-img">
+                            <button type="button" class="card-fav" title="Sign in to save"
+                                    data-requires-login="true" data-action="toggle-favorite"
+                                    onclick="event.preventDefault(); event.stopPropagation();">
+                                <i class="fa-regular fa-heart"></i>
+                            </button>
+                            <div class="card-cta">
+                                <span>Go to recipe</span>
+                                <i class="fa-solid fa-arrow-right"></i>
+                            </div>
+                            <div class="card-badges">
+                                <span class="card-badge"><i class="fa-solid fa-fire"></i> 380 kcal</span>
+                                <span class="card-badge"><i class="fa-solid fa-dumbbell"></i> 14g protein</span>
+                            </div>
+                        </div>
+                        <div class="card-body">
+                            <span class="card-tag">Vegetarian</span>
+                            <h3 class="card-title">Hearty Falafel Wrap</h3>
+                            <p class="card-desc">Crispy falafel tucked into warm flatbread, crunchy greens and tahini.</p>
+                            <div class="card-meta">
+                                <span><i class="fa-solid fa-star" style="color:#F5A623;"></i> 4.8</span>
+                                <span><i class="fa-regular fa-clock"></i> 30 min</span>
+                                <span>Easy</span>
+                            </div>
+                        </div>
+                    </a>
+
+                    <!-- Card 3 -->
+                    <a href="recipe-detail.html" class="recipe-card">
+                        <div class="card-img-wrap">
+                            <img src="https://images.unsplash.com/photo-1593560708920-61dd98c46a4e?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80" alt="Classic Shakshuka" class="card-img">
+                            <button type="button" class="card-fav" title="Sign in to save"
+                                    data-requires-login="true" data-action="toggle-favorite"
+                                    onclick="event.preventDefault(); event.stopPropagation();">
+                                <i class="fa-regular fa-heart"></i>
+                            </button>
+                            <div class="card-cta">
+                                <span>Go to recipe</span>
+                                <i class="fa-solid fa-arrow-right"></i>
+                            </div>
+                            <div class="card-badges">
+                                <span class="card-badge"><i class="fa-solid fa-fire"></i> 350 kcal</span>
+                                <span class="card-badge"><i class="fa-solid fa-dumbbell"></i> 16g protein</span>
+                            </div>
+                        </div>
+                        <div class="card-body">
+                            <span class="card-tag">Breakfast</span>
+                            <h3 class="card-title">Classic Shakshuka</h3>
+                            <p class="card-desc">Eggs nestled in a rich tomato sauce, with peppers, cumin and warmth.</p>
+                            <div class="card-meta">
+                                <span><i class="fa-solid fa-star" style="color:#F5A623;"></i> 4.9</span>
+                                <span><i class="fa-regular fa-clock"></i> 25 min</span>
+                                <span>Easy</span>
+                            </div>
+                        </div>
+                    </a>
+
+                    <!-- Card 4 -->
+                    <a href="recipe-detail.html" class="recipe-card">
+                        <div class="card-img-wrap">
+                            <img src="https://images.unsplash.com/photo-1541518763669-27fef04b14ea?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80" alt="Silky Hummus & Pita" class="card-img">
+                            <button type="button" class="card-fav" title="Sign in to save"
+                                    data-requires-login="true" data-action="toggle-favorite"
+                                    onclick="event.preventDefault(); event.stopPropagation();">
+                                <i class="fa-regular fa-heart"></i>
+                            </button>
+                            <div class="card-cta">
+                                <span>Go to recipe</span>
+                                <i class="fa-solid fa-arrow-right"></i>
+                            </div>
+                            <div class="card-badges">
+                                <span class="card-badge"><i class="fa-solid fa-fire"></i> 280 kcal</span>
+                                <span class="card-badge"><i class="fa-solid fa-dumbbell"></i> 8g protein</span>
+                            </div>
+                        </div>
+                        <div class="card-body">
+                            <span class="card-tag">Vegan</span>
+                            <h3 class="card-title">Silky Hummus &amp; Pita</h3>
+                            <p class="card-desc">Creamy, lemony hummus finished with olive oil and warm pita.</p>
+                            <div class="card-meta">
+                                <span><i class="fa-solid fa-star" style="color:#F5A623;"></i> 4.8</span>
+                                <span><i class="fa-regular fa-clock"></i> 15 min</span>
+                                <span>Easy</span>
+                            </div>
+                        </div>
+                    </a>
+
+                    <!-- Card 5 -->
+                    <a href="recipe-detail.html" class="recipe-card">
+                        <div class="card-img-wrap">
+                            <img src="https://images.unsplash.com/photo-1544025162-d76694265947?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80" alt="Chicken Shawarma Bowl" class="card-img">
+                            <button type="button" class="card-fav" title="Sign in to save"
+                                    data-requires-login="true" data-action="toggle-favorite"
+                                    onclick="event.preventDefault(); event.stopPropagation();">
+                                <i class="fa-regular fa-heart"></i>
+                            </button>
+                            <div class="card-cta">
+                                <span>Go to recipe</span>
+                                <i class="fa-solid fa-arrow-right"></i>
+                            </div>
+                            <div class="card-badges">
+                                <span class="card-badge"><i class="fa-solid fa-fire"></i> 450 kcal</span>
+                                <span class="card-badge"><i class="fa-solid fa-dumbbell"></i> 42g protein</span>
+                            </div>
+                        </div>
+                        <div class="card-body">
+                            <span class="card-tag">High Protein</span>
+                            <h3 class="card-title">Chicken Shawarma Bowl</h3>
+                            <p class="card-desc">Tender, spiced chicken, fluffy rice and a generous helping of fresh vegetables.</p>
+                            <div class="card-meta">
+                                <span><i class="fa-solid fa-star" style="color:#F5A623;"></i> 4.9</span>
+                                <span><i class="fa-regular fa-clock"></i> 40 min</span>
+                                <span>Easy</span>
+                            </div>
+                        </div>
+                    </a>
+
+                    <!-- Card 6 -->
+                    <a href="recipe-detail.html" class="recipe-card">
+                        <div class="card-img-wrap">
+                            <img src="https://images.unsplash.com/photo-1626200419199-391ae4be7a41?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80" alt="Fresh Tabbouleh" class="card-img">
+                            <button type="button" class="card-fav" title="Sign in to save"
+                                    data-requires-login="true" data-action="toggle-favorite"
+                                    onclick="event.preventDefault(); event.stopPropagation();">
+                                <i class="fa-regular fa-heart"></i>
+                            </button>
+                            <div class="card-cta">
+                                <span>Go to recipe</span>
+                                <i class="fa-solid fa-arrow-right"></i>
+                            </div>
+                            <div class="card-badges">
+                                <span class="card-badge"><i class="fa-solid fa-fire"></i> 250 kcal</span>
+                                <span class="card-badge"><i class="fa-solid fa-dumbbell"></i> 6g protein</span>
+                            </div>
+                        </div>
+                        <div class="card-body">
+                            <span class="card-tag">Light &amp; Fresh</span>
+                            <h3 class="card-title">Fresh Tabbouleh</h3>
+                            <p class="card-desc">A refreshing parsley, tomato and bulgur salad, bright with lemon.</p>
+                            <div class="card-meta">
+                                <span><i class="fa-solid fa-star" style="color:#F5A623;"></i> 4.8</span>
+                                <span><i class="fa-regular fa-clock"></i> 20 min</span>
+                                <span>Easy</span>
+                            </div>
+                        </div>
+                    </a>
+
+                    <!-- Card 7 -->
+                    <a href="recipe-detail.html" class="recipe-card">
+                        <div class="card-img-wrap">
+                            <img src="https://images.unsplash.com/photo-1541518763669-27fef04b14ea?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80" alt="Spiced Chicken Pilaf" class="card-img">
+                            <button type="button" class="card-fav" title="Sign in to save"
+                                    data-requires-login="true" data-action="toggle-favorite"
+                                    onclick="event.preventDefault(); event.stopPropagation();">
+                                <i class="fa-regular fa-heart"></i>
+                            </button>
+                            <div class="card-cta">
+                                <span>Go to recipe</span>
+                                <i class="fa-solid fa-arrow-right"></i>
+                            </div>
+                            <div class="card-badges">
+                                <span class="card-badge"><i class="fa-solid fa-fire"></i> 520 kcal</span>
+                                <span class="card-badge"><i class="fa-solid fa-dumbbell"></i> 30g protein</span>
+                            </div>
+                        </div>
+                        <div class="card-body">
+                            <span class="card-tag">Family Favorite</span>
+                            <h3 class="card-title">Spiced Chicken Pilaf</h3>
+                            <p class="card-desc">One-pot chicken and golden rice, toasted nuts and comforting spices.</p>
+                            <div class="card-meta">
+                                <span><i class="fa-solid fa-star" style="color:#F5A623;"></i> 4.8</span>
+                                <span><i class="fa-regular fa-clock"></i> 45 min</span>
+                                <span>Intermediate</span>
+                            </div>
+                        </div>
+                    </a>
+
+                    <!-- Card 8 -->
+                    <a href="recipe-detail.html" class="recipe-card">
+                        <div class="card-img-wrap">
+                            <img src="https://images.unsplash.com/photo-1626200419199-391ae4be7a41?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80" alt="Egyptian Koshary" class="card-img">
+                            <button type="button" class="card-fav" title="Sign in to save"
+                                    data-requires-login="true" data-action="toggle-favorite"
+                                    onclick="event.preventDefault(); event.stopPropagation();">
+                                <i class="fa-regular fa-heart"></i>
+                            </button>
+                            <div class="card-cta">
+                                <span>Go to recipe</span>
+                                <i class="fa-solid fa-arrow-right"></i>
+                            </div>
+                            <div class="card-badges">
+                                <span class="card-badge"><i class="fa-solid fa-fire"></i> 335 kcal</span>
+                                <span class="card-badge"><i class="fa-solid fa-dumbbell"></i> 12g protein</span>
+                            </div>
+                        </div>
+                        <div class="card-body">
+                            <span class="card-tag">Plant Based</span>
+                            <h3 class="card-title">Egyptian Koshary</h3>
+                            <p class="card-desc">Lentils, rice and pasta layered with tangy tomato sauce and crisp onions.</p>
+                            <div class="card-meta">
+                                <span><i class="fa-solid fa-star" style="color:#F5A623;"></i> 4.7</span>
+                                <span><i class="fa-regular fa-clock"></i> 50 min</span>
+                                <span>Intermediate</span>
+                            </div>
+                        </div>
+                    </a>
+
+                </div>
+
+                <div class="pagination">
+                    <div class="page-num active">1</div>
+                    <div class="page-num">2</div>
+                    <div class="page-num">3</div>
+                    <div class="page-num"><i class="fa-solid fa-arrow-right"></i></div>
+                </div>
+            </main>
+        </div>
+    </section>
+
+    <section class="container mb-6">
+        <div class="add-recipe-banner">
+            <div>
+                <h3>Your family favorite belongs here, too.</h3>
+                <p class="text-muted">Share a healthy recipe with the Sahtein table. Every submission is reviewed with care.</p>
+            </div>
+            <button type="button" class="btn btn-primary"
+                    data-requires-login="true" data-action="add-recipe">
+                Add a recipe <i class="fa-solid fa-arrow-right"></i>
+            </button>
+        </div>
+    </section>
+
+    <footer class="site-footer">
+        <div class="container">
+            <div class="footer-grid">
+                <div>
+                    <a href="index.html" class="logo" style="margin-bottom: 16px;">sahtein<span>.</span></a>
+                    <p class="text-muted text-sm">Good food brings us together. Discover, cook, and share with the world.</p>
+                </div>
+                <div>
+                    <h4>Explore</h4>
+                    <div class="footer-links">
+                        <a href="recipes.html">All recipes</a>
+                        <a href="healthy-day.html">Healthy Day</a>
+                        <a href="nutrition.html">Nutrition advice</a>
+                        <a href="ai-recipe.html">AI recipe assistant</a>
+                    </div>
+                </div>
+                <div>
+                    <h4>Your Space</h4>
+                    <div class="footer-links">
+                        <button type="button" data-requires-login="true" data-action="profile">Profile</button>
+                        <button type="button" data-requires-login="true" data-action="favorites">Saved recipes</button>
+                        <button type="button" data-requires-login="true" data-action="meal-planner">Meal planner</button>
+                        <a href="community.html">Community</a>
+                    </div>
+                </div>
+                <div>
+                    <h4 style="font-family: var(--font-serif); font-size: 1.2rem; text-transform: none; letter-spacing: 0;">Made with care, served with joy. <i class="fa-solid fa-star" style="color: var(--accent-orange);"></i></h4>
+                    <div class="footer-links" style="flex-direction: row; gap: 16px;">
+                        <span><i class="fa-brands fa-instagram"></i> Instagram</span> · <span><i class="fa-brands fa-facebook"></i> Facebook</span> · <span><i class="fa-brands fa-pinterest"></i> Pinterest</span>
+                    </div>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <span>© 2026 Sahtein. A recipe platform made for curious cooks.</span>
+                <a href="#">View our privacy policy <i class="fa-solid fa-arrow-right"></i></a>
+            </div>
+        </div>
+    </footer>
+
+    <script src="shared.js"></script>
+    <script src="auth-guard.js"></script>
+</body>
+</html>

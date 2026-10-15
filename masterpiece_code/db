@@ -1,0 +1,185 @@
+// ==========================================
+// 1. USERS & SOCIAL
+// ==========================================
+
+Table users {
+  id integer [primary key]
+  username varchar
+  email varchar [unique]
+  password_hash varchar
+  role varchar [note: 'user, admin']
+  created_at timestamp
+}
+
+Table follows {
+  following_user_id integer [not null]
+  followed_user_id integer [not null]
+  created_at timestamp
+  
+  Indexes {
+    (following_user_id, followed_user_id) [pk]
+  }
+}
+
+Table posts {
+  id integer [primary key]
+  user_id integer [not null]
+  title varchar
+  body text [note: 'Content of the post']
+  status varchar [note: 'active, reported, removed']
+  created_at timestamp
+}
+
+Table comments {
+  id integer [primary key]
+  user_id integer [not null]
+  post_id integer [not null]
+  parent_comment_id integer [note: 'For nested replies']
+  body text
+  created_at timestamp
+}
+
+// ==========================================
+// 2. RECIPES & INGREDIENTS
+// ==========================================
+
+Table ingredients {
+  id integer [primary key]
+  name varchar
+  category varchar [note: 'Protein, Vegetable, Dairy, etc.']
+  measurement_unit varchar [note: '100g, 1 tbsp, 1 medium']
+  calories_per_unit integer
+  protein_g decimal
+  carbs_g decimal
+  fat_g decimal
+  created_at timestamp
+}
+
+Table recipes {
+  id integer [primary key]
+  user_id integer [not null, note: 'Author of the recipe']
+  name varchar
+  description text
+  instructions text
+  prep_time_minutes integer
+  cook_time_minutes integer
+  servings integer
+  image_url varchar
+  status varchar [note: 'draft, published, archived']
+  created_at timestamp
+}
+
+Table recipe_ingredients {
+  id integer [primary key]
+  recipe_id integer [not null]
+  ingredient_id integer [not null]
+  quantity decimal
+  unit varchar [note: 'g, cups, tbsp, whole']
+}
+
+Table categories {
+  id integer [primary key]
+  name varchar [note: 'e.g., Jordanian, Vegan, High-Protein']
+  type varchar [note: 'cuisine, meal_type, dietary']
+}
+
+Table recipe_categories {
+  recipe_id integer [not null]
+  category_id integer [not null]
+  
+  Indexes {
+    (recipe_id, category_id) [pk]
+  }
+}
+
+Table favorites {
+  user_id integer [not null]
+  recipe_id integer [not null]
+  created_at timestamp
+  
+  Indexes {
+    (user_id, recipe_id) [pk]
+  }
+}
+
+Table reviews {
+  id integer [primary key]
+  user_id integer [not null]
+  recipe_id integer [not null]
+  rating integer [note: '1 to 5 stars']
+  comment text
+  created_at timestamp
+}
+
+// ==========================================
+// 3. MEAL PLANNING & NUTRITION
+// ==========================================
+
+Table meal_plans {
+  id integer [primary key]
+  user_id integer [not null]
+  date date
+  meal_type varchar [note: 'Breakfast, Lunch, Dinner, Snack']
+  recipe_id integer [not null]
+  servings decimal [default: 1]
+}
+
+Table nutrition_logs {
+  id integer [primary key]
+  user_id integer [not null]
+  date date
+  meal_type varchar
+  recipe_id integer [note: 'Nullable if custom food']
+  custom_food_name varchar [note: 'If not a recipe']
+  calories integer
+  protein_g decimal
+  carbs_g decimal
+  fat_g decimal
+  created_at timestamp
+}
+
+// ==========================================
+// 4. AI RECIPES
+// ==========================================
+
+Table ai_generated_recipes {
+  id integer [primary key]
+  user_id integer [not null]
+  title varchar
+  ingredients_input text [note: 'What the user typed in']
+  generated_body text [note: 'The AI output']
+  status varchar [note: 'pending, published, rejected']
+  created_at timestamp
+}
+
+// ==========================================
+// RELATIONSHIPS (REFERENCES)
+// ==========================================
+
+// Social
+Ref: posts.user_id > users.id
+Ref: comments.user_id > users.id
+Ref: comments.post_id > posts.id
+Ref: comments.parent_comment_id > comments.id // FIXED: Optional relationship
+Ref: follows.following_user_id > users.id
+Ref: follows.followed_user_id > users.id
+
+// Recipes & Ingredients
+Ref: recipes.user_id > users.id
+Ref: recipe_ingredients.recipe_id > recipes.id
+Ref: recipe_ingredients.ingredient_id > ingredients.id
+Ref: recipe_categories.recipe_id > recipes.id
+Ref: recipe_categories.category_id > categories.id
+Ref: favorites.user_id > users.id
+Ref: favorites.recipe_id > recipes.id
+Ref: reviews.user_id > users.id
+Ref: reviews.recipe_id > recipes.id
+
+// Planning & Logging
+Ref: meal_plans.user_id > users.id
+Ref: meal_plans.recipe_id > recipes.id
+Ref: nutrition_logs.user_id > users.id
+Ref: nutrition_logs.recipe_id > recipes.id // FIXED: Optional relationship
+
+// AI
+Ref: ai_generated_recipes.user_id > users.id

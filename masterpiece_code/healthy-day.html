@@ -1,0 +1,452 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sahtein - Your Healthy Day</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,700&family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="shared.css">
+    <style>
+        /* =========================================================
+           Healthy-day-page-only styles
+           ========================================================= */
+        .page-header { padding: 32px 0 14px; }
+        .page-header h1 { font-size: 2.1rem; margin-bottom: 8px; }
+        .page-header p { font-size: 0.92rem; }
+        .page-header-actions { display: flex; gap: 8px; flex-wrap: wrap; }
+
+        /* ---------- Summary grid ---------- */
+        .summary-grid {
+            display: grid;
+            grid-template-columns: 2fr 1fr;
+            gap: 16px;
+            margin-bottom: 22px;
+        }
+        .calorie-card {
+            background: var(--accent-green);
+            color: #fff;
+            padding: 22px;
+            border-radius: var(--radius-md);
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+        .calorie-card h3 { font-size: 1.35rem; margin-bottom: 10px; }
+        .calorie-stats {
+            display: flex;
+            justify-content: space-between;
+            gap: 12px;
+            margin-top: 14px;
+        }
+        .calorie-stats div { text-align: center; flex: 1; }
+        .calorie-stats strong {
+            display: block;
+            font-size: 1.2rem;
+            font-family: var(--font-serif);
+        }
+        .calorie-stats span { font-size: 0.72rem; opacity: 0.8; }
+
+        .macro-card {
+            background: var(--bg-white);
+            padding: 18px;
+            border-radius: var(--radius-md);
+            border: 1px solid var(--border-color);
+        }
+        .macro-card h3 { font-size: 1.05rem; margin-bottom: 12px; }
+        .macro-bar { margin-bottom: 10px; }
+        .macro-bar .flex-between { margin-bottom: 4px; font-size: 0.78rem; }
+        .bar-bg {
+            height: 6px;
+            background: #eee;
+            border-radius: 10px;
+            overflow: hidden;
+        }
+        .bar-fill { height: 100%; border-radius: 10px; }
+        .fill-protein { background: var(--accent-orange); }
+        .fill-carbs   { background: var(--accent-green); }
+        .fill-fat     { background: #E2B04A; }
+        .fill-fiber   { background: #8B5CF6; }
+
+        /* ---------- Quick habits row ---------- */
+        .quick-habits {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 16px;
+            margin-bottom: 22px;
+        }
+        .habit-card {
+            background: var(--bg-white);
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-md);
+            padding: 20px 22px;
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            text-decoration: none;
+            color: inherit;
+            transition: var(--transition);
+        }
+        .habit-card:hover {
+            border-color: var(--accent-green);
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-md);
+        }
+        .habit-icon {
+            width: 48px;
+            height: 48px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.15rem;
+            flex-shrink: 0;
+        }
+        .habit-icon.water  { background: #E3F2FD; color: #1976D2; }
+        .habit-icon.fast   { background: var(--accent-orange-light); color: var(--accent-orange); }
+        .habit-body { flex: 1; }
+        .habit-body strong { display: block; font-size: 1rem; margin-bottom: 2px; }
+        .habit-body span {
+            font-size: 0.78rem;
+            color: var(--text-muted);
+        }
+        .habit-arrow {
+            color: var(--text-muted);
+            font-size: 0.9rem;
+            transition: var(--transition);
+        }
+        .habit-card:hover .habit-arrow { color: var(--accent-green); transform: translateX(3px); }
+
+        /* ---------- Meal log grid ---------- */
+        .meal-log-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 16px;
+            margin-bottom: 22px;
+        }
+        .meal-card {
+            background: var(--bg-white);
+            padding: 18px;
+            border-radius: var(--radius-md);
+            border: 1px solid var(--border-color);
+        }
+        .meal-card h3 { font-size: 1.05rem; margin-bottom: 10px; }
+        .meal-item {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 8px 0;
+            border-bottom: 1px solid var(--border-color);
+        }
+        .meal-item:last-child { border-bottom: none; }
+        .meal-item img {
+            width: 40px;
+            height: 40px;
+            border-radius: 8px;
+            object-fit: cover;
+        }
+        .meal-item div { flex: 1; font-size: 0.85rem; }
+        .meal-item .kcal {
+            font-weight: 500;
+            font-size: 0.82rem;
+            color: var(--accent-green);
+        }
+
+        /* ---------- Nutritionist recommendations ---------- */
+        .nutritionist-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 16px;
+            margin-bottom: 22px;
+        }
+        .nutritionist-card {
+            background: var(--accent-green-light);
+            padding: 18px;
+            border-radius: var(--radius-md);
+        }
+        .nutritionist-card h4 {
+            font-family: var(--font-sans);
+            font-size: 0.72rem;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            color: var(--accent-green);
+            margin-bottom: 4px;
+        }
+        .nutritionist-card h3 { font-size: 1.05rem; margin-bottom: 6px; }
+        .nutritionist-card p {
+            font-size: 0.82rem;
+            color: var(--text-muted);
+            margin-bottom: 12px;
+        }
+
+        /* ---------- Responsive ---------- */
+        @media (max-width: 1024px) {
+            .summary-grid { grid-template-columns: 1fr; }
+            .meal-log-grid { grid-template-columns: 1fr; }
+            .nutritionist-grid { grid-template-columns: 1fr; }
+            .quick-habits { grid-template-columns: 1fr; }
+        }
+        @media (max-width: 768px) {
+            .page-header h1 { font-size: 1.8rem; }
+        }
+    </style>
+</head>
+<body>
+    <!-- Announcement bar -->
+    <div class="announcement">
+        <strong>GOOD FOOD, GOOD FEELING.</strong>
+        A little joy in every bite.
+        <a href="ai-recipe.html">Cook with what you have →</a>
+    </div>
+
+    <header class="site-header">
+        <div class="container header-inner">
+            <a href="index.html" class="logo">sahtein<span>.</span></a>
+            <nav class="nav-links">
+                <a href="index.html">Home</a>
+                <a href="recipes.html">Recipes</a>
+                <a href="healthy-day.html">Healthy Day</a>
+                <a href="meal-planner.html">Meal Planner</a>
+                <a href="community.html">Community</a>
+                <a href="nutrition.html">Nutrition</a>
+                <a href="ai-recipe.html">AI Recipe</a>
+            </nav>
+            <div class="header-actions">
+                <button type="button" class="icon-btn" title="Sign in to save favorites"
+                        data-requires-login="true" data-action="favorites">
+                    <i class="fa-regular fa-heart"></i>
+                </button>
+                <button type="button" class="icon-btn" title="Sign in to view profile"
+                        data-requires-login="true" data-action="profile">
+                    <i class="fa-regular fa-user"></i>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <section class="container page-header">
+        <div class="flex-between" style="flex-wrap: wrap; gap: 16px;">
+            <div>
+                <span class="section-label">Your wellness companion</span>
+                <h1>Your healthy day.</h1>
+                <p class="text-muted">Little choices add up. Here's how your day is looking.</p>
+                <p class="text-muted text-sm mt-2">Monday, October 12, 2026 · Today</p>
+            </div>
+            <div class="page-header-actions">
+                <button type="button" class="btn btn-outline btn-sm"
+                        data-requires-login="true" data-action="meal-planner">
+                    <i class="fa-regular fa-calendar"></i> Meal planner
+                </button>
+                <button type="button" class="btn btn-outline btn-sm"
+                        data-requires-login="true" data-action="edit-goals">
+                    Edit daily goals
+                </button>
+            </div>
+        </div>
+    </section>
+
+    <!-- SUMMARY -->
+    <section class="container">
+        <div class="summary-grid">
+            <div class="calorie-card">
+                <div>
+                    <span class="section-label" style="color: rgba(255,255,255,0.7);">Today's nourishment</span>
+                    <h3>Make room for what nourishes you.</h3>
+                </div>
+                <div class="calorie-stats">
+                    <div><strong>1,800</strong><span>Target · kcal</span></div>
+                    <div><strong>1,000</strong><span>Consumed · kcal</span></div>
+                    <div><strong>800</strong><span>Remaining · kcal</span></div>
+                </div>
+            </div>
+            <div class="macro-card">
+                <span class="section-label">Nutrition summary</span>
+                <h3>The little details</h3>
+                <div class="macro-bar">
+                    <div class="flex-between"><span>Protein</span> <span>75g / 90g</span></div>
+                    <div class="bar-bg"><div class="bar-fill fill-protein" style="width: 83%;"></div></div>
+                </div>
+                <div class="macro-bar">
+                    <div class="flex-between"><span>Carbs</span> <span>130g / 200g</span></div>
+                    <div class="bar-bg"><div class="bar-fill fill-carbs" style="width: 65%;"></div></div>
+                </div>
+                <div class="macro-bar">
+                    <div class="flex-between"><span>Fat</span> <span>45g / 65g</span></div>
+                    <div class="bar-bg"><div class="bar-fill fill-fat" style="width: 69%;"></div></div>
+                </div>
+                <div class="macro-bar">
+                    <div class="flex-between"><span>Fiber</span> <span>18g / 25g</span></div>
+                    <div class="bar-bg"><div class="bar-fill fill-fiber" style="width: 72%;"></div></div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- QUICK HABITS (Water + Fasting) -->
+    <section class="container">
+        <div class="quick-habits">
+            <a href="water.html" class="habit-card">
+                <div class="habit-icon water"><i class="fa-solid fa-droplet"></i></div>
+                <div class="habit-body">
+                    <strong>Water tracker</strong>
+                    <span>Log your glasses and see the day fill up.</span>
+                </div>
+                <span class="habit-arrow"><i class="fa-solid fa-arrow-right"></i></span>
+            </a>
+            <a href="fasting.html" class="habit-card">
+                <div class="habit-icon fast"><i class="fa-solid fa-hourglass-half"></i></div>
+                <div class="habit-body">
+                    <strong>Intermittent fasting</strong>
+                    <span>Pick a plan, start the timer, keep the record.</span>
+                </div>
+                <span class="habit-arrow"><i class="fa-solid fa-arrow-right"></i></span>
+            </a>
+        </div>
+    </section>
+
+    <!-- MEALS -->
+    <section class="container">
+        <div class="meal-log-grid">
+            <div class="meal-card">
+                <span class="section-label">A bit of your table</span>
+                <h3>Today's meals</h3>
+                <p class="text-muted text-sm mb-4">Consumed meals only · 1,000 kcal logged</p>
+                <div class="meal-item">
+                    <img src="https://images.unsplash.com/photo-1593560708920-61dd98c46a4e?ixlib=rb-4.0.3&auto=format&fit=crop&w=100&q=80" alt="Shakshuka">
+                    <div>
+                        <strong>Classic Shakshuka</strong><br>
+                        <span class="text-muted text-sm">Breakfast · 8:30 am</span>
+                    </div>
+                    <span class="kcal">350 kcal</span>
+                </div>
+                <div class="meal-item">
+                    <img src="https://images.unsplash.com/photo-1626200419199-391ae4be7a41?ixlib=rb-4.0.3&auto=format&fit=crop&w=100&q=80" alt="Tabbouleh">
+                    <div>
+                        <strong>Fresh Tabbouleh</strong><br>
+                        <span class="text-muted text-sm">Lunch · 1:00 pm</span>
+                    </div>
+                    <span class="kcal">250 kcal</span>
+                </div>
+                <div class="meal-item">
+                    <img src="https://images.unsplash.com/photo-1544025162-d76694265947?ixlib=rb-4.0.3&auto=format&fit=crop&w=100&q=80" alt="Shawarma Bowl">
+                    <div>
+                        <strong>Chicken Shawarma Bowl</strong><br>
+                        <span class="text-muted text-sm">Dinner · smaller portion · 7:00 pm</span>
+                    </div>
+                    <span class="kcal">400 kcal</span>
+                </div>
+                <p class="text-muted text-sm mt-4">Snack · Nothing planned yet</p>
+                <button type="button" class="btn btn-outline btn-sm mt-2"
+                        data-requires-login="true" data-action="log-meal">
+                    + Log a meal
+                </button>
+            </div>
+            <div class="meal-card">
+                <span class="section-label">Thoughtfully picked for you</span>
+                <h3>What fits your day</h3>
+                <p class="text-muted text-sm mb-4">These are suggestions, not meals you've eaten.</p>
+                <div class="meal-item">
+                    <img src="https://images.unsplash.com/photo-1544025162-d76694265947?ixlib=rb-4.0.3&auto=format&fit=crop&w=100&q=80" alt="Shawarma">
+                    <div>
+                        <strong>Chicken Shawarma Bowl</strong><br>
+                        <span class="text-muted text-sm">450 kcal · 40 min</span>
+                    </div>
+                    <button type="button" class="btn btn-outline btn-sm"
+                            data-requires-login="true" data-action="add-to-plan">+ Plan</button>
+                </div>
+                <div class="meal-item">
+                    <img src="https://images.unsplash.com/photo-1593560708920-61dd98c46a4e?ixlib=rb-4.0.3&auto=format&fit=crop&w=100&q=80" alt="Shakshuka">
+                    <div>
+                        <strong>Classic Shakshuka</strong><br>
+                        <span class="text-muted text-sm">350 kcal · 25 min</span>
+                    </div>
+                    <button type="button" class="btn btn-outline btn-sm"
+                            data-requires-login="true" data-action="add-to-plan">+ Plan</button>
+                </div>
+                <div class="meal-item">
+                    <img src="https://images.unsplash.com/photo-1626200419199-391ae4be7a41?ixlib=rb-4.0.3&auto=format&fit=crop&w=100&q=80" alt="Tabbouleh">
+                    <div>
+                        <strong>Fresh Tabbouleh</strong><br>
+                        <span class="text-muted text-sm">250 kcal · 20 min</span>
+                    </div>
+                    <button type="button" class="btn btn-outline btn-sm"
+                            data-requires-login="true" data-action="add-to-plan">+ Plan</button>
+                </div>
+                <a href="recipes.html" class="btn btn-outline mt-4" style="width: 100%;">
+                    Find more recipes <i class="fa-solid fa-arrow-right"></i>
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- NUTRITIONIST RECOMMENDATIONS -->
+    <section class="container">
+        <span class="section-label">A little expert inspiration</span>
+        <h2 class="mb-4" style="font-size: 1.7rem;">Nutritionist Recommendations</h2>
+        <p class="text-muted text-sm mb-6">Illustrative expert profiles and sample recommendations, not medical endorsements or personalized medical advice.</p>
+        <div class="nutritionist-grid">
+            <div class="nutritionist-card">
+                <h4>Nour Haddad</h4>
+                <p class="text-muted text-sm mb-2">Illustrative nutritionist · Balanced eating</p>
+                <h3>Build a more balanced bowl.</h3>
+                <p>Pair shawarma with colorful vegetables and a measured portion of rice. Protein and fiber help make a satisfying meal.</p>
+                <a href="recipe-detail.html" class="btn btn-outline btn-sm">Try Chicken Shawarma Bowl <i class="fa-solid fa-arrow-right"></i></a>
+            </div>
+            <div class="nutritionist-card">
+                <h4>Lina Mansour</h4>
+                <p class="text-muted text-sm mb-2">Illustrative nutritionist · Plant-forward meals</p>
+                <h3>Give plants a place at every meal.</h3>
+                <p>Try parsley-rich tabbouleh alongside chickpeas or hummus. A variety of plant foods brings fiber and flavor to your day.</p>
+                <button type="button" class="btn btn-outline btn-sm"
+                        data-requires-login="true" data-action="add-to-plan">
+                    Add Fresh Tabbouleh to your plan <i class="fa-solid fa-arrow-right"></i>
+                </button>
+            </div>
+        </div>
+    </section>
+
+    <footer class="site-footer">
+        <div class="container">
+            <div class="footer-grid">
+                <div>
+                    <a href="index.html" class="logo" style="margin-bottom: 16px;">sahtein<span>.</span></a>
+                    <p class="text-muted text-sm">Good food brings us together. Discover, cook, and share with the world.</p>
+                </div>
+                <div>
+                    <h4>Explore</h4>
+                    <div class="footer-links">
+                        <a href="recipes.html">All recipes</a>
+                        <a href="healthy-day.html">Healthy Day</a>
+                        <a href="nutrition.html">Nutrition advice</a>
+                        <a href="ai-recipe.html">AI recipe assistant</a>
+                    </div>
+                </div>
+                <div>
+                    <h4>Your Space</h4>
+                    <div class="footer-links">
+                        <button type="button" data-requires-login="true" data-action="profile">Profile</button>
+                        <button type="button" data-requires-login="true" data-action="favorites">Saved recipes</button>
+                        <button type="button" data-requires-login="true" data-action="meal-planner">Meal planner</button>
+                        <a href="community.html">Community</a>
+                    </div>
+                </div>
+                <div>
+                    <h4 style="font-family: var(--font-serif); font-size: 1.2rem; text-transform: none; letter-spacing: 0;">Made with care, served with joy. <i class="fa-solid fa-star" style="color: var(--accent-orange);"></i></h4>
+                    <div class="footer-links" style="flex-direction: row; gap: 16px;">
+                        <span><i class="fa-brands fa-instagram"></i> Instagram</span> · <span><i class="fa-brands fa-facebook"></i> Facebook</span> · <span><i class="fa-brands fa-pinterest"></i> Pinterest</span>
+                    </div>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <span>© 2026 Sahtein. A recipe platform made for curious cooks.</span>
+                <a href="#">View our privacy policy <i class="fa-solid fa-arrow-right"></i></a>
+            </div>
+        </div>
+    </footer>
+
+    <script src="shared.js"></script>
+    <script src="auth-guard.js"></script>
+</body>
+</html>

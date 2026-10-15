@@ -1,0 +1,953 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sahtein - Your Profile</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,700&family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="shared.css">
+    <style>
+        /* =========================================================
+           Profile-page-only styles (matches admin-profile style)
+           ========================================================= */
+
+        .page-header { padding: 32px 0 14px; }
+        .page-header h1 { font-size: 2.1rem; margin-bottom: 8px; }
+        .page-header p { font-size: 0.92rem; }
+
+        /* ---------- Edit profile card (same as admin) ---------- */
+        .edit-profile-card {
+            background: var(--bg-white);
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-md);
+            padding: 24px 28px;
+            margin-bottom: 24px;
+        }
+        .edit-profile-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-end;
+            gap: 16px;
+            flex-wrap: wrap;
+            margin-bottom: 24px;
+            padding-bottom: 16px;
+            border-bottom: 1px solid var(--border-color);
+        }
+        .edit-profile-header h3 { font-size: 1.3rem; }
+        .edit-profile-actions { display: flex; gap: 8px; flex-wrap: wrap; }
+
+        .edit-profile-body {
+            display: grid;
+            grid-template-columns: 160px 1fr;
+            gap: 32px;
+            align-items: start;
+        }
+        .avatar-column {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 6px;
+        }
+        .avatar-preview {
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+            background: var(--accent-orange);
+            color: #fff;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2.4rem;
+            font-family: var(--font-serif);
+            font-weight: 700;
+            overflow: hidden;
+            margin-bottom: 10px;
+            border: 3px solid var(--bg-cream);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+        }
+        .avatar-preview img { width: 100%; height: 100%; object-fit: cover; display: block; }
+
+        .fields-column { display: flex; flex-direction: column; gap: 14px; }
+        .fields-column .input-group { margin-bottom: 0; }
+        .fields-column label {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 0.82rem;
+            font-weight: 500;
+            color: var(--text-main);
+            margin-bottom: 6px;
+        }
+        .locked-tag {
+            font-size: 0.65rem;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            font-weight: 600;
+            color: var(--text-muted);
+            background: var(--bg-cream);
+            padding: 2px 8px;
+            border-radius: 50px;
+        }
+        .fields-column input:disabled {
+            background: var(--bg-cream);
+            color: var(--text-muted);
+            cursor: not-allowed;
+        }
+        .fields-column .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 14px;
+        }
+
+        /* ---------- Change password modal (matches admin) ---------- */
+        .modal-overlay {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0,0,0,0.5); display: none;
+            justify-content: center; align-items: center;
+            z-index: 1000; padding: 20px;
+        }
+        .modal-overlay.active { display: flex; }
+        .modal-content {
+            background: var(--bg-white); padding: 32px;
+            border-radius: var(--radius-lg);
+            width: 100%; max-width: 440px;
+            box-shadow: 0 8px 24px rgba(0,0,0,0.06);
+        }
+        .modal-content h3 { margin-bottom: 8px; }
+        .modal-content p {
+            color: var(--text-muted);
+            font-size: 0.9rem;
+            margin-bottom: 20px;
+        }
+        .modal-content .input-group { margin-bottom: 16px; }
+        .modal-content .input-group label {
+            display: block;
+            font-size: 0.85rem;
+            font-weight: 500;
+            margin-bottom: 6px;
+        }
+        .modal-actions {
+            display: flex; gap: 12px;
+            justify-content: flex-end; margin-top: 24px;
+        }
+
+        /* ---------- Three-column grid ---------- */
+        .profile-grid {
+            display: grid;
+            grid-template-columns: 1fr 1.4fr 1fr;
+            gap: 16px;
+            margin-bottom: 32px;
+            align-items: start;
+        }
+
+        /* ---------- Identity card ---------- */
+        .profile-card {
+            background: var(--accent-green);
+            color: #fff;
+            padding: 22px;
+            border-radius: var(--radius-md);
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            gap: 20px;
+        }
+        .profile-avatar {
+            width: 52px;
+            height: 52px;
+            border-radius: 50%;
+            background: var(--accent-orange);
+            color: #fff;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.2rem;
+            font-weight: 700;
+            margin-bottom: 12px;
+            font-family: var(--font-serif);
+            overflow: hidden;
+        }
+        .profile-avatar img { width: 100%; height: 100%; object-fit: cover; }
+        .profile-card h3 { font-size: 1.2rem; margin-bottom: 6px; }
+        .profile-stats {
+            display: flex;
+            gap: 22px;
+            margin-top: 8px;
+            border-top: 1px solid rgba(255,255,255,0.2);
+            padding-top: 12px;
+        }
+        .profile-stats div strong {
+            display: block;
+            font-size: 1.2rem;
+            font-family: var(--font-serif);
+        }
+        .profile-stats div span { font-size: 0.72rem; opacity: 0.85; }
+
+        /* ---------- Preferences card ---------- */
+        .preferences-card {
+            background: var(--bg-white);
+            padding: 22px;
+            border-radius: var(--radius-md);
+            border: 1px solid var(--border-color);
+        }
+        .preferences-card h3 { font-size: 1.15rem; }
+        .pref-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 9px 0;
+            border-bottom: 1px solid var(--border-color);
+            font-size: 0.85rem;
+            gap: 12px;
+        }
+        .pref-item:last-child { border-bottom: none; }
+        .pref-item span:first-child { color: var(--text-muted); }
+        .pref-item span:last-child { font-weight: 500; text-align: right; }
+
+        /* ---------- Quick access ---------- */
+        .quick-access-card {
+            background: var(--bg-white);
+            padding: 22px;
+            border-radius: var(--radius-md);
+            border: 1px solid var(--border-color);
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+        }
+        .quick-access-card h3 { font-size: 1rem; margin-bottom: 10px; }
+        .quick-link {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 12px;
+            padding: 10px 0;
+            border-bottom: 1px solid var(--border-color);
+            font-size: 0.85rem;
+            transition: all 0.3s ease;
+            font-family: inherit;
+            color: inherit;
+            text-align: left;
+            width: 100%;
+            cursor: pointer;
+            background: none;
+            border-left: none;
+            border-right: none;
+            border-top: none;
+        }
+        .quick-link:last-child { border-bottom: none; }
+        .quick-link:hover { color: var(--accent-green); padding-left: 4px; }
+        .quick-link.signout { color: var(--accent-orange); }
+/* =========================================================
+   Force user-profile fields to match admin profile fields
+   ========================================================= */
+.fields-column .input-field,
+.fields-column input[type="text"],
+.fields-column input[type="email"],
+.fields-column input[type="tel"] {
+    width: 100%;
+    padding: 10px 16px;
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius-sm);
+    font-family: inherit;
+    font-size: 0.9rem;
+    background: var(--bg-white);
+    color: var(--text-main);
+    transition: all 0.3s ease;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+    box-shadow: none;
+    outline: none;
+    line-height: 1.5;
+    box-sizing: border-box;
+}
+
+.fields-column .input-field:focus,
+.fields-column input[type="text"]:focus,
+.fields-column input[type="email"]:focus,
+.fields-column input[type="tel"]:focus {
+    border-color: var(--accent-green);
+    box-shadow: 0 0 0 3px var(--accent-green-light);
+}
+
+/* Locked (disabled) fields — softer, cream background like admin */
+.fields-column input:disabled,
+.fields-column .input-field:disabled {
+    background: var(--bg-cream);
+    color: var(--text-muted);
+    cursor: not-allowed;
+    border: 1px solid var(--border-color);
+    opacity: 1; /* Firefox lowers opacity by default on disabled inputs */
+    -webkit-text-fill-color: var(--text-muted); /* Safari/Chrome override */
+}
+/* =========================================================
+   Change password modal — force consistent input styling
+   ========================================================= */
+.modal-content .input-field,
+.modal-content input[type="password"],
+.modal-content input[type="text"],
+.modal-content input[type="email"] {
+    width: 100%;
+    padding: 10px 16px;
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius-sm);
+    font-family: inherit;
+    font-size: 0.9rem;
+    background: var(--bg-white);
+    color: var(--text-main);
+    transition: all 0.3s ease;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+    box-shadow: none;
+    outline: none;
+    line-height: 1.5;
+    box-sizing: border-box;
+}
+.modal-content .input-field:focus,
+.modal-content input[type="password"]:focus {
+    border-color: var(--accent-green);
+    box-shadow: 0 0 0 3px var(--accent-green-light);
+}
+
+/* Password checklist inside the modal (matches login page) */
+.modal-content .pw-checklist {
+    list-style: none;
+    padding: 0;
+    margin: 10px 0 0;
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+}
+.modal-content .pw-checklist li {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 0.8rem;
+    color: var(--text-muted);
+    transition: color 0.25s ease;
+    line-height: 1.4;
+}
+.modal-content .pw-checklist li i {
+    font-size: 0.85rem;
+    color: #C9C4B8;
+    transition: color 0.25s ease;
+}
+.modal-content .pw-checklist li.ok { color: #2E7D32; }
+.modal-content .pw-checklist li.ok i { color: #2E7D32; }
+
+.modal-content .pw-match {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 0.8rem;
+    color: var(--text-muted);
+    margin-top: 8px;
+    line-height: 1.4;
+    transition: color 0.25s ease;
+}
+.modal-content .pw-match i {
+    font-size: 0.85rem;
+    color: #C9C4B8;
+    transition: color 0.25s ease;
+}
+.modal-content .pw-match.ok { color: #2E7D32; }
+.modal-content .pw-match.ok i { color: #2E7D32; }
+        /* ---------- Responsive ---------- */
+        @media (max-width: 1024px) {
+            .profile-grid { grid-template-columns: 1fr 1fr; }
+        }
+        @media (max-width: 768px) {
+            .edit-profile-body { grid-template-columns: 1fr; gap: 20px; }
+            .fields-column .form-row { grid-template-columns: 1fr; }
+            .profile-grid { grid-template-columns: 1fr; }
+            .page-header h1 { font-size: 1.8rem; }
+        }
+    </style>
+</head>
+<body>
+    <div class="announcement">
+        <strong>GOOD FOOD, GOOD FEELING.</strong>
+        A little joy in every bite.
+        <a href="ai-recipe.html">Cook with what you have →</a>
+    </div>
+
+    <header class="site-header">
+        <div class="container header-inner">
+            <a href="index.html" class="logo">sahtein<span>.</span></a>
+            <nav class="nav-links">
+                <a href="index.html">Home</a>
+                <a href="recipes.html">Recipes</a>
+                <a href="healthy-day.html">Healthy Day</a>
+                <a href="meal-planner.html">Meal Planner</a>
+                <a href="community.html">Community</a>
+                <a href="nutrition.html">Nutrition</a>
+                <a href="ai-recipe.html">AI Recipe</a>
+            </nav>
+            <div class="header-actions">
+                <button type="button" class="icon-btn" title="Saved recipes"
+                        data-requires-login="true" data-action="favorites">
+                    <i class="fa-regular fa-heart"></i>
+                </button>
+                <button type="button" class="icon-btn" title="Your profile"
+                        data-requires-login="true" data-action="profile">
+                    <i class="fa-regular fa-user"></i>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <section class="container page-header">
+        <span class="section-label">Your little corner</span>
+        <h1>Your profile.</h1>
+        <p class="text-muted">Everything that makes your Sahtein experience yours.</p>
+    </section>
+
+    <section class="container">
+        <!-- Edit profile card -->
+        <div class="edit-profile-card">
+            <div class="edit-profile-header">
+                <div>
+                    <span class="section-label">Your details</span>
+                    <h3>Edit profile</h3>
+                </div>
+                <div class="edit-profile-actions">
+                    <button type="button" class="btn btn-outline btn-sm" id="changePasswordBtn">
+                        <i class="fa-solid fa-lock"></i> Change password
+                    </button>
+                    <button type="button" class="btn btn-primary btn-sm" id="saveProfileBtn">
+                        <i class="fa-solid fa-check"></i> Save changes
+                    </button>
+                </div>
+            </div>
+
+            <div class="edit-profile-body">
+                <div class="avatar-column">
+                    <div id="avatarPreview" class="avatar-preview">D</div>
+                    <label for="avatarInput" class="btn btn-outline btn-sm" style="cursor: pointer;">
+                        <i class="fa-solid fa-camera"></i> Change photo
+                    </label>
+                    <input type="file" id="avatarInput" accept="image/*" style="display: none;">
+                    <p class="text-muted text-sm" style="margin-top: 8px; text-align: center;">JPG or PNG · max 2 MB</p>
+                </div>
+
+                <div class="fields-column">
+                    <div class="form-row">
+                        <div class="input-group">
+                            <label>First name <span class="locked-tag">locked</span></label>
+                            <input type="text" id="profFirstName" class="input-field" disabled>
+                        </div>
+                        <div class="input-group">
+                            <label>Last name <span class="locked-tag">locked</span></label>
+                            <input type="text" id="profLastName" class="input-field" disabled>
+                        </div>
+                    </div>
+
+                    <div class="input-group">
+                        <label>Username <span class="locked-tag">locked</span></label>
+                        <input type="text" id="profUsername" class="input-field" disabled>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="input-group">
+                            <label for="profEmail">Email address</label>
+                            <input type="email" id="profEmail" class="input-field" placeholder="you@example.com">
+                        </div>
+                        <div class="input-group">
+                            <label for="profPhone">Phone number</label>
+                            <!-- <input type="tel" id="profPhone" class="input-field" placeholder="+962 7 0000 0000"> -->
+							 <input type="tel" id="profPhone" class="input-field" placeholder="+962 7 0000 0000"
+       inputmode="tel" autocomplete="tel" maxlength="25">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Change password modal -->
+        <div class="modal-overlay" id="changePasswordModal">
+            <!-- <div class="modal-content">
+                <h3>Change password</h3>
+                <p>Your password is stored locally for this demo only.</p>
+                <div class="input-group">
+                    <label for="newPass">New password</label>
+                    <input type="password" id="newPass" class="input-field" placeholder="••••••••">
+                </div>
+                <div class="input-group">
+                    <label for="confirmPass">Confirm password</label>
+                    <input type="password" id="confirmPass" class="input-field" placeholder="••••••••">
+                </div>
+                <div class="modal-actions">
+                    <button type="button" class="btn btn-outline" id="cancelPassBtn">Cancel</button>
+                    <button type="button" class="btn btn-primary" id="savePassBtn">Update password</button>
+                </div>
+            </div> -->
+			<div class="modal-content">
+    <h3>Change password</h3>
+    <p>Choose a new password. Requirements update as you type.</p>
+
+    <div class="input-group">
+        <label for="newPass">New password</label>
+        <input type="password" id="newPass" class="input-field" placeholder="••••••••">
+    </div>
+    <ul class="pw-checklist" id="modalPwChecklist">
+        <li data-rule="length"><i class="fa-regular fa-circle-check"></i> Password must be at least 8 characters.</li>
+        <li data-rule="number"><i class="fa-regular fa-circle-check"></i> Have at least 1 number.</li>
+        <li data-rule="special"><i class="fa-regular fa-circle-check"></i> Contain at least 1 special character ((!@#$%&amp;))</li>
+    </ul>
+
+    <div class="input-group" style="margin-top: 16px;">
+        <label for="confirmPass">Confirm password</label>
+        <input type="password" id="confirmPass" class="input-field" placeholder="••••••••">
+    </div>
+    <div class="pw-match" id="modalPwMatch">
+        <i class="fa-regular fa-circle-check"></i>
+        <span>Passwords match.</span>
+    </div>
+
+    <div class="modal-actions">
+        <button type="button" class="btn btn-outline" id="cancelPassBtn">Cancel</button>
+        <button type="button" class="btn btn-primary" id="savePassBtn">Update password</button>
+    </div>
+</div>
+        </div>
+		<!-- Preferences Edit Modal -->
+<div class="modal-overlay" id="preferencesModal">
+    <div class="modal-content" style="max-width: 480px;">
+        <h3>Edit your preferences</h3>
+        <p>Update your goals and preferences. These help us tailor recipes and plans.</p>
+
+        <div class="input-group">
+            <label for="prefCalories">Daily calorie target (kcal)</label>
+            <input type="number" id="prefCalories" class="input-field" placeholder="1800" min="800" max="5000">
+        </div>
+        <div class="input-group">
+            <label for="prefCuisine">Preferred cuisine</label>
+            <select id="prefCuisine" class="input-field">
+                <option>Middle Eastern</option>
+                <option>Jordanian</option>
+                <option>Palestinian</option>
+                <option>Lebanese</option>
+                <option>Syrian</option>
+                <option>Egyptian</option>
+                <option>Mediterranean</option>
+                <option>International</option>
+            </select>
+        </div>
+        <div class="input-group">
+            <label for="prefDiet">Dietary preferences</label>
+            <input type="text" id="prefDiet" class="input-field" placeholder="e.g., High protein · Healthy">
+        </div>
+        <div class="input-group">
+            <label for="prefMeasurement">Measurement system</label>
+            <select id="prefMeasurement" class="input-field">
+                <option>Metric</option>
+                <option>Imperial</option>
+            </select>
+        </div>
+        <div class="input-group">
+            <label for="prefServings">Default servings</label>
+            <input type="number" id="prefServings" class="input-field" placeholder="2" min="1" max="12">
+        </div>
+        <div class="input-group">
+            <label for="prefFasting">Fasting plan</label>
+            <input type="text" id="prefFasting" class="input-field" placeholder="e.g., 16:8">
+        </div>
+
+        <div class="modal-actions">
+            <button type="button" class="btn btn-outline" id="cancelPrefsBtn">Cancel</button>
+            <button type="button" class="btn btn-primary" id="savePrefsBtn">Save changes</button>
+        </div>
+    </div>
+</div>
+
+        <div class="profile-grid">
+            <!-- Identity card -->
+            <div class="profile-card">
+                <div>
+                    <div class="profile-avatar" id="profileAvatar">D</div>
+                    <span class="section-label" style="color: rgba(255,255,255,0.7);">Welcome back</span>
+                    <h3 id="profileName">Demo User</h3>
+                    <p class="text-sm" style="opacity: 0.8;">Good food. Good company. Good for you.</p>
+                </div>
+                <div class="profile-stats">
+                    <div><strong>1</strong><span>saved recipes</span></div>
+                    <div><strong>5</strong><span>planned meals</span></div>
+                </div>
+            </div>
+
+            <!-- Preferences -->
+            <div class="preferences-card">
+                <div class="flex-between mb-4">
+                    <div>
+                        <span class="section-label">All about you</span>
+                        <h3>Your preferences</h3>
+                    </div>
+                    <button type="button" class="btn btn-outline btn-sm"
+                            data-action="edit-preferences">
+                        <i class="fa-solid fa-pen"></i> Edit
+                    </button>
+                </div>
+                <div class="pref-item"><span>Daily calorie target</span> <span id="prefCaloriesView">1,800 kcal</span></div>
+                <div class="pref-item"><span>Preferred cuisine</span> <span id="prefCuisineView">Middle Eastern</span></div>
+                <div class="pref-item"><span>Dietary preferences</span> <span id="prefDietView">High protein · Healthy</span></div>
+                <div class="pref-item"><span>Measurement system</span> <span id="prefMeasurementView">Metric</span></div>
+                <div class="pref-item"><span>Default servings</span> <span id="prefServingsView">2 people</span></div>
+                <div class="pref-item"><span>Fasting plan</span> <span id="prefFastingView">16:8</span></div>
+            </div>
+
+            <!-- Quick access -->
+            <div class="quick-access-card">
+                <span class="section-label">Your collections</span>
+                <h3>Quick access</h3>
+                <button type="button" class="quick-link" data-action="favorites">
+                    <span><i class="fa-regular fa-heart"></i> Saved recipes</span>
+                    <span><i class="fa-solid fa-arrow-right"></i></span>
+                </button>
+                <button type="button" class="quick-link" data-action="meal-planner">
+                    <span><i class="fa-regular fa-calendar"></i> Meal planner</span>
+                    <span><i class="fa-solid fa-arrow-right"></i></span>
+                </button>
+                <button type="button" class="quick-link" data-action="ai-recipe">
+                    <span><i class="fa-solid fa-wand-magic-sparkles"></i> AI recipe assistant</span>
+                    <span><i class="fa-solid fa-arrow-right"></i></span>
+                </button>
+                <button type="button" class="quick-link" data-action="community">
+                    <span><i class="fa-solid fa-users"></i> Community table</span>
+                    <span><i class="fa-solid fa-arrow-right"></i></span>
+                </button>
+                <button type="button" class="quick-link" data-action="admin">
+                    <span><i class="fa-solid fa-gear"></i> Admin workspace</span>
+                    <span><i class="fa-solid fa-arrow-right"></i></span>
+                </button>
+                <button type="button" class="quick-link signout" data-action="sign-out">
+                    <span><i class="fa-solid fa-right-from-bracket"></i> Sign out</span>
+                    <span><i class="fa-solid fa-arrow-right"></i></span>
+                </button>
+            </div>
+        </div>
+    </section>
+
+    <footer class="site-footer">
+        <div class="container">
+            <div class="footer-grid">
+                <div>
+                    <a href="index.html" class="logo" style="margin-bottom: 16px;">sahtein<span>.</span></a>
+                    <p class="text-muted text-sm">Good food brings us together. Discover, cook, and share with the world.</p>
+                </div>
+                <div>
+                    <h4>Explore</h4>
+                    <div class="footer-links">
+                        <a href="recipes.html">All recipes</a>
+                        <a href="healthy-day.html">Healthy Day</a>
+                        <a href="nutrition.html">Nutrition advice</a>
+                        <a href="ai-recipe.html">AI recipe assistant</a>
+                    </div>
+                </div>
+                <div>
+                    <h4>Your Space</h4>
+                    <div class="footer-links">
+                        <button type="button" data-requires-login="true" data-action="profile">Profile</button>
+                        <button type="button" data-requires-login="true" data-action="favorites">Saved recipes</button>
+                        <button type="button" data-requires-login="true" data-action="meal-planner">Meal planner</button>
+                        <a href="community.html">Community</a>
+                    </div>
+                </div>
+                <div>
+                    <h4 style="font-family: var(--font-serif); font-size: 1.2rem; text-transform: none; letter-spacing: 0;">Made with care, served with joy. <i class="fa-solid fa-star" style="color: var(--accent-orange);"></i></h4>
+                    <div class="footer-links" style="flex-direction: row; gap: 16px;">
+                        <span><i class="fa-brands fa-instagram"></i> Instagram</span> · <span><i class="fa-brands fa-facebook"></i> Facebook</span> · <span><i class="fa-brands fa-pinterest"></i> Pinterest</span>
+                    </div>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <span>© 2026 Sahtein. A recipe platform made for curious cooks.</span>
+                <a href="#">View our privacy policy <i class="fa-solid fa-arrow-right"></i></a>
+            </div>
+        </div>
+    </footer>
+
+    <script src="shared.js"></script>
+    <script src="auth-guard.js"></script>
+    <script>
+    (function () {
+        'use strict';
+
+        const KEY = 'sahtein_user';
+        const $ = function (id) { return document.getElementById(id); };
+
+        function toast(msg, isError) {
+            if (window.showToast) window.showToast(msg, isError);
+            else alert(msg);
+        }
+
+        function loadUser() {
+            try { return JSON.parse(localStorage.getItem(KEY)) || {}; }
+            catch (err) { return {}; }
+        }
+        function saveUser(user) {
+            try { localStorage.setItem(KEY, JSON.stringify(user)); } catch (err) {}
+        }
+        function getInitials(first, last) {
+            const a = (first || '?').charAt(0).toUpperCase();
+            const b = (last || '?').charAt(0).toUpperCase();
+            return (a + b).slice(0, 2);
+        }
+
+        let user = loadUser();
+        if (!user.firstName) {
+            user = {
+                firstName: 'Demo',
+                lastName: 'User',
+                username: 'demo_user',
+                email: 'demo@example.com',
+                phone: '',
+                avatar: '',
+                role: 'member'
+            };
+            saveUser(user);
+        }
+
+        function renderAvatarEverywhere() {
+            const src = user.avatar;
+            const inits = getInitials(user.firstName, user.lastName);
+
+            const preview = $('avatarPreview');
+            if (preview) {
+                preview.innerHTML = src ? '<img src="' + src + '" alt="avatar">' : inits;
+            }
+            const identityAvatar = $('profileAvatar');
+            if (identityAvatar) {
+                identityAvatar.innerHTML = src ? '<img src="' + src + '" alt="avatar">' : inits;
+            }
+            if (window.renderHeaderAvatars) window.renderHeaderAvatars();
+        }
+
+        const DEFAULT_PREFS = {
+            calories: '1800',
+            cuisine: 'Middle Eastern',
+            diet: 'High protein · Healthy',
+            measurement: 'Metric',
+            servings: '2',
+            fasting: '16:8'
+        };
+
+        function loadPrefs() {
+            try {
+                const saved = JSON.parse(localStorage.getItem('sahtein_user_prefs')) || {};
+                return { ...DEFAULT_PREFS, ...saved };
+            } catch (e) {
+                return { ...DEFAULT_PREFS };
+            }
+        }
+
+        function savePrefs(prefs) {
+            try { localStorage.setItem('sahtein_user_prefs', JSON.stringify(prefs)); } catch (e) {}
+        }
+
+        function renderPrefs() {
+            const p = loadPrefs();
+            if ($('prefCaloriesView')) $('prefCaloriesView').textContent = (p.calories || '—') + ' kcal';
+            if ($('prefCuisineView')) $('prefCuisineView').textContent = p.cuisine || '—';
+            if ($('prefDietView')) $('prefDietView').textContent = p.diet || '—';
+            if ($('prefMeasurementView')) $('prefMeasurementView').textContent = p.measurement || '—';
+            if ($('prefServingsView')) $('prefServingsView').textContent = (p.servings || '—') + ' people';
+            if ($('prefFastingView')) $('prefFastingView').textContent = p.fasting || '—';
+        }
+
+        function openPrefsModal() {
+            const prefsModal = $('preferencesModal');
+            if (!prefsModal) return;
+            const p = loadPrefs();
+            if ($('prefCalories')) $('prefCalories').value = p.calories || DEFAULT_PREFS.calories;
+            if ($('prefCuisine')) $('prefCuisine').value = p.cuisine || DEFAULT_PREFS.cuisine;
+            if ($('prefDiet')) $('prefDiet').value = p.diet || DEFAULT_PREFS.diet;
+            if ($('prefMeasurement')) $('prefMeasurement').value = p.measurement || DEFAULT_PREFS.measurement;
+            if ($('prefServings')) $('prefServings').value = p.servings || DEFAULT_PREFS.servings;
+            if ($('prefFasting')) $('prefFasting').value = p.fasting || DEFAULT_PREFS.fasting;
+            prefsModal.classList.add('active');
+        }
+
+        function render() {
+            $('profFirstName').value = user.firstName || '';
+            $('profLastName').value  = user.lastName || '';
+            $('profUsername').value  = '@' + (user.username || '');
+            $('profEmail').value     = user.email || '';
+            $('profPhone').value     = user.phone || '';
+
+            const fullName = [user.firstName, user.lastName].filter(Boolean).join(' ') || 'Demo User';
+            $('profileName').textContent = fullName;
+
+            renderAvatarEverywhere();
+            renderPrefs();
+        }
+
+        render();
+
+        document.querySelectorAll('[data-action="edit-preferences"]').forEach(function (btn) {
+            btn.addEventListener('click', function (e) {
+                e.preventDefault();
+                openPrefsModal();
+            });
+        });
+
+        const prefsModal = $('preferencesModal');
+        if (prefsModal) {
+            $('cancelPrefsBtn').addEventListener('click', function () {
+                prefsModal.classList.remove('active');
+            });
+
+            $('savePrefsBtn').addEventListener('click', function () {
+                const prefs = {
+                    calories: ($('prefCalories').value.trim() || DEFAULT_PREFS.calories),
+                    cuisine: $('prefCuisine').value,
+                    diet: ($('prefDiet').value.trim() || DEFAULT_PREFS.diet),
+                    measurement: $('prefMeasurement').value,
+                    servings: ($('prefServings').value.trim() || DEFAULT_PREFS.servings),
+                    fasting: ($('prefFasting').value.trim() || DEFAULT_PREFS.fasting)
+                };
+
+                savePrefs(prefs);
+                renderPrefs();
+                prefsModal.classList.remove('active');
+                toast('Preferences updated.');
+            });
+
+            prefsModal.addEventListener('click', function (e) {
+                if (e.target === prefsModal) prefsModal.classList.remove('active');
+            });
+        }
+
+        // ---------- Save profile ----------
+        $('saveProfileBtn').addEventListener('click', function () {
+            const email = $('profEmail').value.trim();
+            const phone = $('profPhone').value.trim();
+
+            if (!email) { toast('Email cannot be empty.', true); return; }
+
+            user.email = email;
+            user.phone = phone;
+            saveUser(user);
+            toast('Profile updated.');
+        });
+
+        // ---------- Avatar upload ----------
+        $('avatarInput').addEventListener('change', function (e) {
+            const file = e.target.files[0];
+            if (!file) return;
+
+            if (file.size > 2 * 1024 * 1024) {
+                toast('Please choose an image under 2 MB.', true);
+                return;
+            }
+
+            const reader = new FileReader();
+            reader.onload = function (evt) {
+                user.avatar = evt.target.result;
+                saveUser(user);
+                render();
+                toast('Profile photo updated.');
+            };
+            reader.readAsDataURL(file);
+        });
+
+        // ---------- Change password modal ----------
+        const modal = $('changePasswordModal');
+        $('changePasswordBtn').addEventListener('click', function () {
+            modal.classList.add('active');
+        });
+        $('cancelPassBtn').addEventListener('click', function () {
+            modal.classList.remove('active');
+        });
+        modal.addEventListener('click', function (e) {
+            if (e.target === modal) modal.classList.remove('active');
+        });
+
+        // $('savePassBtn').addEventListener('click', function () {
+        //     const p1 = $('newPass').value;
+        //     const p2 = $('confirmPass').value;
+
+        //     if (!p1 || p1.length < 6) {
+        //         toast('Password must be at least 6 characters.', true);
+        //         return;
+        //     }
+        //     if (p1 !== p2) {
+        //         toast("Passwords don't match.", true);
+        //         return;
+        //     }
+
+        //     user.passwordUpdatedAt = new Date().toISOString();
+        //     saveUser(user);
+        //     $('newPass').value = '';
+        //     $('confirmPass').value = '';
+        //     modal.classList.remove('active');
+        //     toast('Password updated.');
+        // });
+		$('savePassBtn').addEventListener('click', function () {
+    const check = validateModalPassword();
+    if (!check.ok) {
+        toast('Password does not meet the requirements.', true);
+        return;
+    }
+    if (!check.match) {
+        toast("Passwords don't match.", true);
+        return;
+    }
+
+    user.passwordUpdatedAt = new Date().toISOString();
+    saveUser(user);
+    $('newPass').value = '';
+    $('confirmPass').value = '';
+    validateModalPassword();
+    modal.classList.remove('active');
+    toast('Password updated.');
+});
+$('changePasswordBtn').addEventListener('click', function () {
+    $('newPass').value = '';
+    $('confirmPass').value = '';
+    validateModalPassword();
+    modal.classList.add('active');
+});
+		/* ---------- Live password validation inside the modal ---------- */
+const RULES = {
+    length:  v => v.length >= 8,
+    number:  v => /\d/.test(v),
+    special: v => /[!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]/.test(v)
+};
+
+function validateModalPassword() {
+    const newPw  = $('newPass');
+    const confPw = $('confirmPass');
+    const list   = $('modalPwChecklist');
+    const match  = $('modalPwMatch');
+    if (!newPw || !confPw) return { ok: false, match: false };
+
+    const v = newPw.value;
+    let allOk = true;
+    if (list) {
+        list.querySelectorAll('li').forEach(li => {
+            const ok = RULES[li.dataset.rule] ? RULES[li.dataset.rule](v) : false;
+            li.classList.toggle('ok', ok);
+            if (!ok) allOk = false;
+        });
+    }
+
+    const matches = v.length > 0 && v === confPw.value;
+    if (match) match.classList.toggle('ok', matches);
+
+    newPw.classList.toggle('pw-valid', allOk);
+    newPw.classList.toggle('pw-invalid', v.length > 0 && !allOk);
+    confPw.classList.toggle('pw-valid', matches);
+    confPw.classList.toggle('pw-invalid', confPw.value.length > 0 && !matches);
+
+    return { ok: allOk, match: matches };
+}
+
+if ($('newPass'))   $('newPass').addEventListener('input', validateModalPassword);
+if ($('confirmPass')) $('confirmPass').addEventListener('input', validateModalPassword);
+    })();
+    </script>
+</body>
+</html>

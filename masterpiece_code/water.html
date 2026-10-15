@@ -1,0 +1,500 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sahtein - Water Tracker</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,700&family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="shared.css">
+    <style>
+        /* =========================================================
+           Water-page-only styles
+           ========================================================= */
+        .page-header { padding: 32px 0 14px; }
+        .page-header h1 { font-size: 2.1rem; margin-bottom: 8px; }
+        .page-header p { font-size: 0.92rem; }
+
+        /* Hero card */
+        .water-hero {
+            background: linear-gradient(135deg, #1976D2 0%, #0D47A1 100%);
+            color: #fff;
+            padding: 32px 36px;
+            border-radius: var(--radius-lg);
+            margin-bottom: 22px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 24px;
+            flex-wrap: wrap;
+        }
+        .water-hero .section-label { color: rgba(255,255,255,0.7); }
+        .water-hero h2 {
+            font-size: 2rem;
+            margin-bottom: 8px;
+            color: #fff;
+        }
+        .water-hero p { opacity: 0.9; font-size: 0.92rem; max-width: 460px; }
+        .water-hero-stats {
+            display: flex;
+            gap: 24px;
+        }
+        .water-hero-stats div { text-align: center; }
+        .water-hero-stats strong {
+            display: block;
+            font-family: var(--font-serif);
+            font-size: 1.7rem;
+            line-height: 1.1;
+        }
+        .water-hero-stats span {
+            font-size: 0.72rem;
+            opacity: 0.85;
+        }
+
+        /* Main card */
+        .water-card {
+            background: var(--bg-white);
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-md);
+            padding: 28px 32px;
+            margin-bottom: 22px;
+        }
+        .water-card-head {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-end;
+            gap: 16px;
+            flex-wrap: wrap;
+            margin-bottom: 20px;
+            padding-bottom: 16px;
+            border-bottom: 1px solid var(--border-color);
+        }
+        .water-card-head h3 { font-size: 1.25rem; }
+        .water-card-head p {
+            color: var(--text-muted);
+            font-size: 0.85rem;
+            margin-top: 4px;
+        }
+
+        /* Dots grid */
+        .water-dots-grid {
+            display: grid;
+            grid-template-columns: repeat(8, 1fr);
+            gap: 14px;
+            margin-bottom: 22px;
+        }
+        .water-dot-btn {
+            aspect-ratio: 1;
+            border-radius: 50%;
+            background: var(--bg-cream);
+            border: 2px solid var(--border-color);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: var(--transition);
+            font-size: 1.05rem;
+            color: var(--border-color);
+            position: relative;
+        }
+        .water-dot-btn:hover { border-color: #1976D2; }
+        .water-dot-btn.filled {
+            background: linear-gradient(135deg, #64B5F6, #1976D2);
+            border-color: #1976D2;
+            color: #fff;
+        }
+        .water-dot-btn.filled i { color: #fff; }
+
+        /* Progress bar */
+        .water-progress {
+            margin-bottom: 22px;
+        }
+        .water-progress .flex-between {
+            font-size: 0.82rem;
+            margin-bottom: 6px;
+            color: var(--text-muted);
+        }
+        .water-bar {
+            height: 10px;
+            background: #eee;
+            border-radius: 10px;
+            overflow: hidden;
+        }
+        .water-bar-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #64B5F6, #1976D2);
+            border-radius: 10px;
+            transition: width 0.4s ease;
+        }
+
+        /* Actions */
+        .water-actions {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+
+        /* Week */
+        .water-week {
+            display: grid;
+            grid-template-columns: repeat(7, 1fr);
+            gap: 10px;
+        }
+        .water-day {
+            background: var(--bg-cream);
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-sm);
+            padding: 12px 8px;
+            text-align: center;
+        }
+        .water-day .wd-name {
+            font-size: 0.68rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: var(--text-muted);
+            display: block;
+            margin-bottom: 6px;
+        }
+        .water-day .wd-glasses {
+            font-family: var(--font-serif);
+            font-size: 1.05rem;
+            font-weight: 700;
+            color: var(--text-main);
+            display: block;
+        }
+        .water-day .wd-status {
+            display: inline-block;
+            margin-top: 6px;
+            font-size: 0.62rem;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            font-weight: 700;
+            padding: 3px 8px;
+            border-radius: 50px;
+        }
+        .water-day.met    .wd-status { background: #E3F2FD; color: #0D47A1; }
+        .water-day.missed .wd-status { background: #FFEBEE; color: #C62828; }
+        .water-day.empty  .wd-status { background: var(--border-color); color: var(--text-muted); }
+        .water-day.today  { border-color: #1976D2; }
+
+        @media (max-width: 1024px) {
+            .water-dots-grid { grid-template-columns: repeat(4, 1fr); }
+        }
+        @media (max-width: 640px) {
+            .water-week { grid-template-columns: repeat(4, 1fr); }
+            .water-hero { padding: 24px; }
+            .water-hero h2 { font-size: 1.6rem; }
+        }
+    </style>
+</head>
+<body>
+    <div class="announcement">
+        <strong>GOOD FOOD, GOOD FEELING.</strong>
+        A little joy in every bite.
+        <a href="ai-recipe.html">Cook with what you have →</a>
+    </div>
+
+    <header class="site-header">
+        <div class="container header-inner">
+            <a href="index.html" class="logo">sahtein<span>.</span></a>
+            <nav class="nav-links">
+                <a href="index.html">Home</a>
+                <a href="recipes.html">Recipes</a>
+                <a href="healthy-day.html">Healthy Day</a>
+                <a href="meal-planner.html">Meal Planner</a>
+                <a href="community.html">Community</a>
+                <a href="nutrition.html">Nutrition</a>
+                <a href="ai-recipe.html">AI Recipe</a>
+            </nav>
+            <div class="header-actions">
+                <button type="button" class="icon-btn" title="Sign in to save favorites"
+                        data-requires-login="true" data-action="favorites">
+                    <i class="fa-regular fa-heart"></i>
+                </button>
+                <button type="button" class="icon-btn" title="Sign in to view profile"
+                        data-requires-login="true" data-action="profile">
+                    <i class="fa-regular fa-user"></i>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <section class="container page-header">
+        <a href="healthy-day.html" class="btn btn-outline btn-sm" style="margin-bottom: 12px;">
+            <i class="fa-solid fa-arrow-left"></i> Back to Healthy Day
+        </a>
+        <span class="section-label">A small daily ritual</span>
+        <h1>Water tracker.</h1>
+        <p class="text-muted">Log your glasses and see the day fill up. Small sips, big difference.</p>
+    </section>
+
+    <section class="container">
+        <div class="water-hero">
+            <div>
+                <span class="section-label">Today</span>
+                <h2 id="waterHeroTitle">0 of 8 glasses</h2>
+                <p>Tap a glass below to mark it. Tap again to undo.</p>
+            </div>
+            <div class="water-hero-stats">
+                <div><strong id="waterHeroLitres">0.00</strong><span>Litres</span></div>
+                <div><strong id="waterHeroGoal">2 L</strong><span>Daily goal</span></div>
+            </div>
+        </div>
+    </section>
+
+    <section class="container">
+        <div class="water-card">
+            <div class="water-card-head">
+                <div>
+                    <h3>Today's glasses</h3>
+                    <p>Standard glass = 250 ml</p>
+                </div>
+                <button type="button" class="btn btn-outline btn-sm" id="waterResetBtn">
+                    <i class="fa-solid fa-rotate-left"></i> Reset today
+                </button>
+            </div>
+
+            <div class="water-dots-grid" id="waterDots"></div>
+
+            <div class="water-progress">
+                <div class="flex-between">
+                    <span>Progress</span>
+                    <span id="waterProgressLabel">0%</span>
+                </div>
+                <div class="water-bar"><div class="water-bar-fill" id="waterBarFill" style="width: 0%;"></div></div>
+            </div>
+
+            <div class="water-actions">
+                <button type="button" class="btn btn-primary" id="waterAddBtn">
+                    <i class="fa-solid fa-plus"></i> Log a glass
+                </button>
+                <button type="button" class="btn btn-outline" id="waterUndoBtn">
+                    <i class="fa-solid fa-minus"></i> Undo last
+                </button>
+            </div>
+        </div>
+    </section>
+
+    <section class="container mb-6">
+        <div class="water-card">
+            <div class="water-card-head">
+                <div>
+                    <h3>This week</h3>
+                    <p>Your glasses per day</p>
+                </div>
+                <span class="text-muted text-sm" id="waterWeekSummary">0 of 0 days met goal</span>
+            </div>
+            <div class="water-week" id="waterWeek"></div>
+        </div>
+    </section>
+
+    <footer class="site-footer">
+        <div class="container">
+            <div class="footer-grid">
+                <div>
+                    <a href="index.html" class="logo" style="margin-bottom: 16px;">sahtein<span>.</span></a>
+                    <p class="text-muted text-sm">Good food brings us together. Discover, cook, and share with the world.</p>
+                </div>
+                <div>
+                    <h4>Explore</h4>
+                    <div class="footer-links">
+                        <a href="recipes.html">All recipes</a>
+                        <a href="healthy-day.html">Healthy Day</a>
+                        <a href="nutrition.html">Nutrition advice</a>
+                        <a href="ai-recipe.html">AI recipe assistant</a>
+                    </div>
+                </div>
+                <div>
+                    <h4>Your Space</h4>
+                    <div class="footer-links">
+                        <button type="button" data-requires-login="true" data-action="profile">Profile</button>
+                        <button type="button" data-requires-login="true" data-action="favorites">Saved recipes</button>
+                        <button type="button" data-requires-login="true" data-action="meal-planner">Meal planner</button>
+                        <a href="community.html">Community</a>
+                    </div>
+                </div>
+                <div>
+                    <h4 style="font-family: var(--font-serif); font-size: 1.2rem; text-transform: none; letter-spacing: 0;">Made with care, served with joy. <i class="fa-solid fa-star" style="color: var(--accent-orange);"></i></h4>
+                    <div class="footer-links" style="flex-direction: row; gap: 16px;">
+                        <span><i class="fa-brands fa-instagram"></i> Instagram</span> · <span><i class="fa-brands fa-facebook"></i> Facebook</span> · <span><i class="fa-brands fa-pinterest"></i> Pinterest</span>
+                    </div>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <span>© 2026 Sahtein. A recipe platform made for curious cooks.</span>
+                <a href="#">View our privacy policy <i class="fa-solid fa-arrow-right"></i></a>
+            </div>
+        </div>
+    </footer>
+
+    <script src="shared.js"></script>
+    <script src="auth-guard.js"></script>
+    <script>
+    (function () {
+        'use strict';
+
+        const GOAL_GLASSES  = 8;
+        const ML_PER_GLASS  = 250;
+        const STORAGE_KEY   = 'sahtein_water_log';
+
+        const $ = function (id) { return document.getElementById(id); };
+
+        function ymd(date) {
+            const d = new Date(date);
+            const y = d.getFullYear();
+            const m = String(d.getMonth() + 1).padStart(2, '0');
+            const day = String(d.getDate()).padStart(2, '0');
+            return y + '-' + m + '-' + day;
+        }
+
+        function getLog() {
+            try { return JSON.parse(localStorage.getItem(STORAGE_KEY)) || {}; }
+            catch (e) { return {}; }
+        }
+        function setLog(log) {
+            try { localStorage.setItem(STORAGE_KEY, JSON.stringify(log)); } catch (e) {}
+        }
+
+        function getToday() {
+            const log = getLog();
+            const key = ymd(new Date());
+            return log[key] || 0;
+        }
+        function setToday(n) {
+            const log = getLog();
+            const key = ymd(new Date());
+            if (n <= 0) delete log[key];
+            else log[key] = n;
+            setLog(log);
+        }
+
+        /* ---------- Render today ---------- */
+        function renderToday() {
+            const count = getToday();
+            const dotsWrap = $('waterDots');
+            if (dotsWrap) {
+                dotsWrap.innerHTML = '';
+                for (let i = 0; i < GOAL_GLASSES; i++) {
+                    const btn = document.createElement('button');
+                    btn.type = 'button';
+                    btn.className = 'water-dot-btn' + (i < count ? ' filled' : '');
+                    btn.innerHTML = i < count
+                        ? '<i class="fa-solid fa-droplet"></i>'
+                        : '<i class="fa-regular fa-circle"></i>';
+                    btn.title = 'Glass ' + (i + 1);
+                    btn.addEventListener('click', function () {
+                        // Clicking a filled dot un-fills from that point onward
+                        if (i < count) setToday(i);
+                        else           setToday(i + 1);
+                        renderAll();
+                    });
+                    dotsWrap.appendChild(btn);
+                }
+            }
+
+            // Hero
+            if ($('waterHeroTitle'))  $('waterHeroTitle').textContent  = count + ' of ' + GOAL_GLASSES + ' glasses';
+            if ($('waterHeroLitres')) $('waterHeroLitres').textContent = (count * ML_PER_GLASS / 1000).toFixed(2);
+            if ($('waterHeroGoal'))   $('waterHeroGoal').textContent   = (GOAL_GLASSES * ML_PER_GLASS / 1000) + ' L';
+
+            // Progress bar
+            const pct = Math.min(count / GOAL_GLASSES, 1) * 100;
+            if ($('waterBarFill'))      $('waterBarFill').style.width  = pct + '%';
+            if ($('waterProgressLabel')) $('waterProgressLabel').textContent = Math.round(pct) + '%';
+        }
+
+        /* ---------- Render week ---------- */
+        function renderWeek() {
+            const wrap = $('waterWeek');
+            if (!wrap) return;
+            wrap.innerHTML = '';
+
+            const log = getLog();
+            const today = new Date();
+            const dayNames = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
+            const start = new Date(today);
+            start.setDate(today.getDate() - today.getDay());
+
+            let met = 0, logged = 0;
+
+            for (let i = 0; i < 7; i++) {
+                const d = new Date(start);
+                d.setDate(start.getDate() + i);
+                const key = ymd(d);
+                const count = log[key] || 0;
+                const isToday = key === ymd(today);
+
+                let status = 'empty', label = '—';
+                if (count > 0) {
+                    logged++;
+                    if (count >= GOAL_GLASSES) { status = 'met'; label = 'Met'; met++; }
+                    else                       { status = 'missed'; label = 'Missed'; }
+                }
+
+                const cell = document.createElement('div');
+                cell.className = 'water-day ' + status + (isToday ? ' today' : '');
+                cell.innerHTML =
+                    '<span class="wd-name">' + dayNames[d.getDay()] + ' ' + d.getDate() + '</span>' +
+                    '<span class="wd-glasses">' + count + '/' + GOAL_GLASSES + '</span>' +
+                    '<span class="wd-status">' + label + '</span>';
+                wrap.appendChild(cell);
+            }
+
+            if ($('waterWeekSummary')) {
+                $('waterWeekSummary').textContent =
+                    met + ' of ' + logged + ' logged day' + (logged === 1 ? '' : 's') + ' met goal';
+            }
+        }
+
+        function renderAll() {
+            renderToday();
+            renderWeek();
+        }
+
+        /* ---------- Actions ---------- */
+        function addGlass() {
+            const count = getToday();
+            if (count >= GOAL_GLASSES) {
+                if (window.showToast) window.showToast('Already hit your goal for today 🎉');
+                return;
+            }
+            setToday(count + 1);
+            renderAll();
+            if (window.showToast && count + 1 === GOAL_GLASSES) {
+                window.showToast('Daily goal reached. Nice work!');
+            }
+        }
+
+        function undoGlass() {
+            const count = getToday();
+            if (count <= 0) return;
+            setToday(count - 1);
+            renderAll();
+        }
+
+        function resetToday() {
+            setToday(0);
+            renderAll();
+            if (window.showToast) window.showToast('Today reset.');
+        }
+
+        /* ---------- Init ---------- */
+        function init() {
+            if ($('waterAddBtn'))   $('waterAddBtn').addEventListener('click', addGlass);
+            if ($('waterUndoBtn'))  $('waterUndoBtn').addEventListener('click', undoGlass);
+            if ($('waterResetBtn')) $('waterResetBtn').addEventListener('click', resetToday);
+
+            renderAll();
+        }
+
+        if (document.readyState === 'loading') {
+            document.addEventListener('DOMContentLoaded', init);
+        } else {
+            init();
+        }
+    })();
+    </script>
+</body>
+</html>

@@ -1,0 +1,751 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sahtein - Intermittent Fasting</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,700&family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="shared.css">
+    <style>
+        /* =========================================================
+           Fasting-page-only styles
+           ========================================================= */
+        .page-header { padding: 32px 0 14px; }
+        .page-header h1 { font-size: 2.1rem; margin-bottom: 8px; }
+        .page-header p { font-size: 0.92rem; }
+
+        .fasting-section {
+            background: var(--bg-white);
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-md);
+            padding: 24px 28px;
+            margin-bottom: 22px;
+        }
+        .fasting-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-end;
+            gap: 16px;
+            flex-wrap: wrap;
+            margin-bottom: 22px;
+            padding-bottom: 16px;
+            border-bottom: 1px solid var(--border-color);
+        }
+        .fasting-body {
+            display: grid;
+            grid-template-columns: 260px 1fr;
+            gap: 32px;
+            align-items: center;
+            margin-bottom: 28px;
+        }
+
+        /* --- Timer ring --- */
+        .fasting-timer-wrap {
+            position: relative;
+            width: 220px;
+            height: 220px;
+            margin: 0 auto;
+        }
+        .fasting-ring {
+            width: 100%;
+            height: 100%;
+            transform: rotate(-90deg);
+        }
+        .fasting-ring .ring-bg {
+            fill: none;
+            stroke: var(--border-color);
+            stroke-width: 10;
+        }
+        .fasting-ring .ring-fill {
+            fill: none;
+            stroke: var(--accent-green);
+            stroke-width: 10;
+            stroke-linecap: round;
+            stroke-dasharray: 552.92;
+            stroke-dashoffset: 552.92;
+            transition: stroke-dashoffset 0.6s ease, stroke 0.3s ease;
+        }
+        .fasting-ring .ring-fill.complete { stroke: var(--accent-orange); }
+
+        .fasting-timer-text {
+            position: absolute;
+            inset: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            gap: 4px;
+        }
+        .fasting-state {
+            font-size: 0.72rem;
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            font-weight: 700;
+            color: var(--accent-orange);
+        }
+        .fasting-time {
+            font-family: var(--font-serif);
+            font-size: 1.9rem;
+            font-weight: 700;
+            color: var(--text-main);
+            line-height: 1;
+        }
+        .fasting-target {
+            font-size: 0.72rem;
+            color: var(--text-muted);
+        }
+
+        /* --- Info column --- */
+        .fasting-info { display: flex; flex-direction: column; gap: 18px; }
+        .fasting-stat-row {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 12px;
+        }
+        .fasting-stat {
+            background: var(--bg-cream);
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-sm);
+            padding: 10px 14px;
+        }
+        .fasting-stat .fs-label {
+            display: block;
+            font-size: 0.68rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: var(--text-muted);
+            margin-bottom: 4px;
+        }
+        .fasting-stat strong {
+            font-family: var(--font-serif);
+            font-size: 1rem;
+            color: var(--text-main);
+        }
+        .fasting-actions { display: flex; gap: 10px; flex-wrap: wrap; }
+        .fasting-tip {
+            display: flex;
+            gap: 10px;
+            align-items: flex-start;
+            background: var(--accent-green-light);
+            border-radius: var(--radius-sm);
+            padding: 12px 14px;
+            font-size: 0.82rem;
+            color: var(--text-muted);
+        }
+        .fasting-tip i { color: var(--accent-green); margin-top: 3px; }
+
+        /* --- Week record --- */
+        .fasting-history {
+            border-top: 1px solid var(--border-color);
+            padding-top: 20px;
+        }
+        .fasting-history-head {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 14px;
+            flex-wrap: wrap;
+            gap: 8px;
+        }
+        .fasting-week {
+            display: grid;
+            grid-template-columns: repeat(7, 1fr);
+            gap: 10px;
+        }
+        .fasting-day {
+            background: var(--bg-cream);
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-sm);
+            padding: 12px 8px;
+            text-align: center;
+        }
+        .fasting-day .fd-name {
+            font-size: 0.68rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: var(--text-muted);
+            display: block;
+            margin-bottom: 4px;
+        }
+        .fasting-day .fd-hours {
+            font-family: var(--font-serif);
+            font-size: 1.05rem;
+            font-weight: 700;
+            color: var(--text-main);
+            display: block;
+        }
+        .fasting-day .fd-status {
+            display: inline-block;
+            margin-top: 6px;
+            font-size: 0.62rem;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            font-weight: 700;
+            padding: 3px 8px;
+            border-radius: 50px;
+        }
+        .fasting-day.met    .fd-status { background: #E8F5E9; color: #2E7D32; }
+        .fasting-day.missed .fd-status { background: #FFEBEE; color: #C62828; }
+        .fasting-day.empty  .fd-status { background: var(--border-color); color: var(--text-muted); }
+        .fasting-day.today  { border-color: var(--accent-orange); }
+
+        /* --- Plan chips (modal) --- */
+        .fasting-plans {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 8px;
+        }
+        .fasting-plan-chip {
+            background: var(--bg-cream);
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-sm);
+            padding: 12px 8px;
+            text-align: center;
+            cursor: pointer;
+            transition: var(--transition);
+            font-family: inherit;
+        }
+        .fasting-plan-chip:hover { border-color: var(--accent-green); }
+        .fasting-plan-chip.selected {
+            background: var(--accent-green);
+            color: #fff;
+            border-color: var(--accent-green);
+        }
+        .fasting-plan-chip strong {
+            display: block;
+            font-family: var(--font-serif);
+            font-size: 1.05rem;
+            margin-bottom: 2px;
+        }
+        .fasting-plan-chip span { font-size: 0.68rem; opacity: 0.85; }
+
+        /* --- Plan modal --- */
+        .fasting-modal-overlay {
+            position: fixed;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            background: rgba(0,0,0,0.5);
+            display: none;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+            padding: 20px;
+        }
+        .fasting-modal-overlay.active { display: flex; }
+        .fasting-modal-content {
+            background: var(--bg-white);
+            padding: 28px 32px;
+            border-radius: var(--radius-lg);
+            width: 100%;
+            max-width: 480px;
+            box-shadow: var(--shadow-md);
+        }
+        .fasting-modal-content h3 { margin-bottom: 6px; font-family: var(--font-serif); }
+        .fasting-modal-content > p {
+            color: var(--text-muted);
+            font-size: 0.9rem;
+            margin-bottom: 20px;
+        }
+        .fasting-modal-content .input-group { margin-bottom: 20px; }
+        .fasting-modal-content .input-group label {
+            display: block;
+            font-size: 0.85rem;
+            font-weight: 500;
+            margin-bottom: 6px;
+        }
+        .fasting-modal-content .input-field {
+            width: 100%;
+            padding: 10px 16px;
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-sm);
+            font-family: inherit;
+            font-size: 0.9rem;
+            background: var(--bg-white);
+            box-sizing: border-box;
+        }
+        .fasting-modal-content .input-field:focus {
+            outline: none;
+            border-color: var(--accent-green);
+            box-shadow: 0 0 0 3px var(--accent-green-light);
+        }
+        .fasting-modal-content .modal-actions {
+            display: flex;
+            gap: 12px;
+            justify-content: flex-end;
+            margin-top: 24px;
+        }
+
+        @media (max-width: 900px) {
+            .fasting-body { grid-template-columns: 1fr; gap: 24px; }
+        }
+        @media (max-width: 640px) {
+            .fasting-week { grid-template-columns: repeat(4, 1fr); }
+            .fasting-stat-row { grid-template-columns: 1fr 1fr; }
+            .fasting-plans { grid-template-columns: repeat(2, 1fr); }
+        }
+    </style>
+</head>
+<body>
+    <div class="announcement">
+        <strong>GOOD FOOD, GOOD FEELING.</strong>
+        A little joy in every bite.
+        <a href="ai-recipe.html">Cook with what you have →</a>
+    </div>
+
+    <header class="site-header">
+        <div class="container header-inner">
+            <a href="index.html" class="logo">sahtein<span>.</span></a>
+            <nav class="nav-links">
+                <a href="index.html">Home</a>
+                <a href="recipes.html">Recipes</a>
+                <a href="healthy-day.html">Healthy Day</a>
+                <a href="meal-planner.html">Meal Planner</a>
+                <a href="community.html">Community</a>
+                <a href="nutrition.html">Nutrition</a>
+                <a href="ai-recipe.html">AI Recipe</a>
+            </nav>
+            <div class="header-actions">
+                <button type="button" class="icon-btn" title="Sign in to save favorites"
+                        data-requires-login="true" data-action="favorites">
+                    <i class="fa-regular fa-heart"></i>
+                </button>
+                <button type="button" class="icon-btn" title="Sign in to view profile"
+                        data-requires-login="true" data-action="profile">
+                    <i class="fa-regular fa-user"></i>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <section class="container page-header">
+        <a href="healthy-day.html" class="btn btn-outline btn-sm" style="margin-bottom: 12px;">
+            <i class="fa-solid fa-arrow-left"></i> Back to Healthy Day
+        </a>
+        <span class="section-label">A rhythm for your day</span>
+        <h1>Intermittent fasting.</h1>
+        <p class="text-muted">Pick a plan, start the timer, and keep a record of how each day went.</p>
+    </section>
+
+    <section class="container">
+        <div class="fasting-section">
+            <div class="fasting-header">
+                <div>
+                    <span class="section-label">Your current plan</span>
+                    <h2 id="fastingTitle" style="font-size: 1.5rem;">16:8</h2>
+                    <p class="text-muted text-sm">16 hours fasting · 8 hours eating window.</p>
+                </div>
+                <button type="button" class="btn btn-outline btn-sm" id="openFastingSettings">
+                    <i class="fa-solid fa-sliders"></i> Change plan
+                </button>
+            </div>
+
+            <div class="fasting-body">
+                <div class="fasting-timer-wrap">
+                    <svg class="fasting-ring" viewBox="0 0 200 200">
+                        <circle cx="100" cy="100" r="88" class="ring-bg"></circle>
+                        <circle cx="100" cy="100" r="88" class="ring-fill" id="fastingRingFill"></circle>
+                    </svg>
+                    <div class="fasting-timer-text">
+                        <div class="fasting-state" id="fastingState">Not started</div>
+                        <div class="fasting-time" id="fastingTime">00:00:00</div>
+                        <div class="fasting-target" id="fastingTarget">Goal: 16h fasting</div>
+                    </div>
+                </div>
+
+                <div class="fasting-info">
+                    <div class="fasting-stat-row">
+                        <div class="fasting-stat">
+                            <span class="fs-label">Plan</span>
+                            <strong id="fastingPlanLabel">16:8</strong>
+                        </div>
+                        <div class="fasting-stat">
+                            <span class="fs-label">Started</span>
+                            <strong id="fastingStartLabel">—</strong>
+                        </div>
+                        <div class="fasting-stat">
+                            <span class="fs-label">Today</span>
+                            <strong id="fastingTodayLabel">0h 0m</strong>
+                        </div>
+                    </div>
+
+                    <div class="fasting-actions">
+                        <button type="button" class="btn btn-primary" id="startFastBtn">
+                            <i class="fa-solid fa-play"></i> Start fasting
+                        </button>
+                        <button type="button" class="btn btn-outline" id="endFastBtn" disabled>
+                            <i class="fa-solid fa-stop"></i> End fast
+                        </button>
+                    </div>
+
+                    <div class="fasting-tip">
+                        <i class="fa-solid fa-circle-info"></i>
+                        <span>Your timer keeps running even if you close this page — just come back any time.</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="fasting-history">
+                <div class="fasting-history-head">
+                    <h3 style="font-size: 1.05rem; margin: 0;">This week</h3>
+                    <span class="text-muted text-sm" id="fastingSummaryText">0 of 0 days met goal</span>
+                </div>
+                <div class="fasting-week" id="fastingWeek"></div>
+            </div>
+        </div>
+    </section>
+
+    <div class="fasting-modal-overlay" id="fastingPlanModal">
+        <div class="fasting-modal-content">
+            <h3>Choose your fasting plan</h3>
+            <p>How many hours would you like to fast each day?</p>
+
+            <div class="fasting-plans" id="fastingPlans"></div>
+
+            <div class="input-group" style="margin-top: 16px;">
+                <label for="customFastHours">Custom fasting hours (optional)</label>
+                <input type="number" id="customFastHours" class="input-field"
+                       placeholder="e.g., 13" min="8" max="23" step="1">
+            </div>
+
+            <div class="modal-actions">
+                <button type="button" class="btn btn-outline" id="cancelPlanBtn">Cancel</button>
+                <button type="button" class="btn btn-primary" id="savePlanBtn">Save plan</button>
+            </div>
+        </div>
+    </div>
+
+    <footer class="site-footer">
+        <div class="container">
+            <div class="footer-grid">
+                <div>
+                    <a href="index.html" class="logo" style="margin-bottom: 16px;">sahtein<span>.</span></a>
+                    <p class="text-muted text-sm">Good food brings us together. Discover, cook, and share with the world.</p>
+                </div>
+                <div>
+                    <h4>Explore</h4>
+                    <div class="footer-links">
+                        <a href="recipes.html">All recipes</a>
+                        <a href="healthy-day.html">Healthy Day</a>
+                        <a href="nutrition.html">Nutrition advice</a>
+                        <a href="ai-recipe.html">AI recipe assistant</a>
+                    </div>
+                </div>
+                <div>
+                    <h4>Your Space</h4>
+                    <div class="footer-links">
+                        <button type="button" data-requires-login="true" data-action="profile">Profile</button>
+                        <button type="button" data-requires-login="true" data-action="favorites">Saved recipes</button>
+                        <button type="button" data-requires-login="true" data-action="meal-planner">Meal planner</button>
+                        <a href="community.html">Community</a>
+                    </div>
+                </div>
+                <div>
+                    <h4 style="font-family: var(--font-serif); font-size: 1.2rem; text-transform: none; letter-spacing: 0;">Made with care, served with joy. <i class="fa-solid fa-star" style="color: var(--accent-orange);"></i></h4>
+                    <div class="footer-links" style="flex-direction: row; gap: 16px;">
+                        <span><i class="fa-brands fa-instagram"></i> Instagram</span> · <span><i class="fa-brands fa-facebook"></i> Facebook</span> · <span><i class="fa-brands fa-pinterest"></i> Pinterest</span>
+                    </div>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <span>© 2026 Sahtein. A recipe platform made for curious cooks.</span>
+                <a href="#">View our privacy policy <i class="fa-solid fa-arrow-right"></i></a>
+            </div>
+        </div>
+    </footer>
+
+    <script src="shared.js"></script>
+    <script src="auth-guard.js"></script>
+    <script>
+    (function () {
+        'use strict';
+
+        const STORAGE_PLAN  = 'sahtein_fasting_plan';
+        const STORAGE_LOG   = 'sahtein_fasting_log';
+        const STORAGE_STATE = 'sahtein_fasting_state';
+
+        const $ = function (id) { return document.getElementById(id); };
+
+        function getPlan() {
+            try {
+                const v = parseInt(localStorage.getItem(STORAGE_PLAN), 10);
+                return (v >= 8 && v <= 23) ? v : 16;
+            } catch (e) { return 16; }
+        }
+        function setPlan(hours) {
+            try { localStorage.setItem(STORAGE_PLAN, String(hours)); } catch (e) {}
+        }
+
+        function getLog() {
+            try { return JSON.parse(localStorage.getItem(STORAGE_LOG)) || {}; }
+            catch (e) { return {}; }
+        }
+        function setLog(log) {
+            try { localStorage.setItem(STORAGE_LOG, JSON.stringify(log)); } catch (e) {}
+        }
+
+        function getState() {
+            try { return JSON.parse(localStorage.getItem(STORAGE_STATE)) || null; }
+            catch (e) { return null; }
+        }
+        function setState(s) {
+            try {
+                if (s) localStorage.setItem(STORAGE_STATE, JSON.stringify(s));
+                else   localStorage.removeItem(STORAGE_STATE);
+            } catch (e) {}
+        }
+
+        function ymd(date) {
+            const d = new Date(date);
+            const y = d.getFullYear();
+            const m = String(d.getMonth() + 1).padStart(2, '0');
+            const day = String(d.getDate()).padStart(2, '0');
+            return y + '-' + m + '-' + day;
+        }
+        function fmtHMS(ms) {
+            if (ms < 0) ms = 0;
+            const totalSec = Math.floor(ms / 1000);
+            const h = Math.floor(totalSec / 3600);
+            const m = Math.floor((totalSec % 3600) / 60);
+            const s = totalSec % 60;
+            return String(h).padStart(2, '0') + ':' +
+                   String(m).padStart(2, '0') + ':' +
+                   String(s).padStart(2, '0');
+        }
+        function fmtHM(ms) {
+            if (ms < 0) ms = 0;
+            const totalMin = Math.floor(ms / 60000);
+            const h = Math.floor(totalMin / 60);
+            const m = totalMin % 60;
+            return h + 'h ' + m + 'm';
+        }
+        function fmtClock(ts) {
+            if (!ts) return '—';
+            const d = new Date(ts);
+            return d.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+        }
+
+        let ticker = null;
+        function getGoalMs() { return getPlan() * 60 * 60 * 1000; }
+
+        function render() {
+            const plan = getPlan();
+            const goalMs = getGoalMs();
+            const state = getState();
+
+            if ($('fastingPlanLabel')) $('fastingPlanLabel').textContent = plan + ':' + (24 - plan);
+            if ($('fastingTarget'))    $('fastingTarget').textContent    = 'Goal: ' + plan + 'h fasting';
+            if ($('fastingTitle')) {
+                $('fastingTitle').textContent = plan + ':' + (24 - plan);
+                const sub = $('fastingTitle').parentElement.querySelector('p');
+                if (sub) sub.textContent = plan + ' hours fasting · ' + (24 - plan) + ' hours eating window.';
+            }
+
+            let elapsed = 0;
+
+            if (state && state.start) {
+                elapsed = Date.now() - state.start;
+                if ($('fastingState')) $('fastingState').textContent = 'Fasting';
+                if ($('fastingStartLabel')) $('fastingStartLabel').textContent = fmtClock(state.start);
+                if ($('startFastBtn')) $('startFastBtn').disabled = true;
+                if ($('endFastBtn'))   $('endFastBtn').disabled   = false;
+            } else {
+                if ($('fastingState')) $('fastingState').textContent = 'Not started';
+                if ($('fastingStartLabel')) $('fastingStartLabel').textContent = '—';
+                if ($('startFastBtn')) $('startFastBtn').disabled = false;
+                if ($('endFastBtn'))   $('endFastBtn').disabled   = true;
+            }
+
+            if ($('fastingTime')) $('fastingTime').textContent = fmtHMS(elapsed);
+
+            const ratio = Math.min(elapsed / goalMs, 1);
+            const circumference = 552.92;
+            const ringFill = $('fastingRingFill');
+            if (ringFill) {
+                ringFill.style.strokeDashoffset = String(circumference * (1 - ratio));
+                ringFill.classList.toggle('complete', ratio >= 1);
+            }
+
+            const today = ymd(new Date());
+            const log = getLog();
+            const todayHours = log[today] && typeof log[today].hours === 'number'
+                ? log[today].hours
+                : (state && state.start ? elapsed / 3600000 : 0);
+            if ($('fastingTodayLabel')) {
+                $('fastingTodayLabel').textContent = fmtHM(todayHours * 3600000);
+            }
+
+            renderWeek(log, plan, state);
+        }
+
+        function renderWeek(log, plan, state) {
+            const container = $('fastingWeek');
+            if (!container) return;
+            container.innerHTML = '';
+
+            const today = new Date();
+            const dayNames = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
+            const start = new Date(today);
+            start.setDate(today.getDate() - today.getDay());
+
+            let metCount = 0, loggedCount = 0;
+
+            for (let i = 0; i < 7; i++) {
+                const d = new Date(start);
+                d.setDate(start.getDate() + i);
+                const key = ymd(d);
+                const isToday = key === ymd(today);
+                const entry = log[key];
+
+                let hours = 0;
+                let status = 'empty';
+                let label = '—';
+
+                if (entry && typeof entry.hours === 'number') {
+                    hours = entry.hours;
+                    loggedCount++;
+                    if (hours >= plan) { status = 'met'; label = 'Met'; metCount++; }
+                    else               { status = 'missed'; label = 'Missed'; }
+                } else if (isToday && state && state.start) {
+                    const liveHours = (Date.now() - state.start) / 3600000;
+                    hours = liveHours;
+                    label = 'Live';
+                    status = liveHours >= plan ? 'met' : 'empty';
+                }
+
+                const cell = document.createElement('div');
+                cell.className = 'fasting-day ' + status + (isToday ? ' today' : '');
+                cell.innerHTML =
+                    '<span class="fd-name">' + dayNames[d.getDay()] + ' ' + d.getDate() + '</span>' +
+                    '<span class="fd-hours">' + (hours > 0 ? hours.toFixed(1) + 'h' : '—') + '</span>' +
+                    '<span class="fd-status">' + label + '</span>';
+                container.appendChild(cell);
+            }
+
+            if ($('fastingSummaryText')) {
+                $('fastingSummaryText').textContent =
+                    metCount + ' of ' + loggedCount + ' logged day' +
+                    (loggedCount === 1 ? '' : 's') + ' met goal';
+            }
+        }
+
+        function startTicker() {
+            stopTicker();
+            ticker = setInterval(render, 1000);
+        }
+        function stopTicker() {
+            if (ticker) { clearInterval(ticker); ticker = null; }
+        }
+
+        function startFast() {
+            setState({ start: Date.now() });
+            startTicker();
+            render();
+            if (window.showToast) window.showToast('Fasting started. Good luck!');
+        }
+
+        function endFast() {
+            const state = getState();
+            if (!state || !state.start) return;
+
+            const elapsedMs = Date.now() - state.start;
+            const hours = elapsedMs / 3600000;
+            const plan = getPlan();
+            const key = ymd(new Date(state.start));
+
+            const log = getLog();
+            const prev = log[key] && typeof log[key].hours === 'number' ? log[key].hours : 0;
+            log[key] = { hours: prev + hours, goal: plan, endedAt: Date.now() };
+            setLog(log);
+            setState(null);
+            stopTicker();
+            render();
+
+            const met = (prev + hours) >= plan;
+            if (window.showToast) {
+                window.showToast(
+                    met
+                        ? 'Nice — ' + (prev + hours).toFixed(1) + 'h fasted. Goal met!'
+                        : 'Logged ' + (prev + hours).toFixed(1) + 'h. Keep going tomorrow!',
+                    !met
+                );
+            }
+        }
+
+        const PLANS = [12, 14, 16, 18, 20, 22];
+        let selectedPlan = 16;
+
+        function renderPlanChips() {
+            const wrap = $('fastingPlans');
+            if (!wrap) return;
+            wrap.innerHTML = '';
+            PLANS.forEach(function (h) {
+                const chip = document.createElement('button');
+                chip.type = 'button';
+                chip.className = 'fasting-plan-chip' + (h === selectedPlan ? ' selected' : '');
+                chip.dataset.hours = h;
+                chip.innerHTML = '<strong>' + h + ':' + (24 - h) + '</strong><span>' + h + 'h fast</span>';
+                chip.addEventListener('click', function () {
+                    selectedPlan = h;
+                    if ($('customFastHours')) $('customFastHours').value = '';
+                    renderPlanChips();
+                });
+                wrap.appendChild(chip);
+            });
+        }
+
+        function openPlanModal() {
+            selectedPlan = getPlan();
+            if ($('customFastHours')) $('customFastHours').value = '';
+            renderPlanChips();
+            $('fastingPlanModal').classList.add('active');
+        }
+        function closePlanModal() {
+            $('fastingPlanModal').classList.remove('active');
+        }
+
+        function savePlan() {
+            const custom = parseInt(($('customFastHours').value || '').trim(), 10);
+            let hours = selectedPlan;
+            if (!isNaN(custom) && custom >= 8 && custom <= 23) hours = custom;
+
+            setPlan(hours);
+            closePlanModal();
+            render();
+            if (window.showToast) window.showToast('Fasting plan set to ' + hours + ':' + (24 - hours) + '.');
+        }
+
+        function init() {
+            if ($('openFastingSettings')) $('openFastingSettings').addEventListener('click', openPlanModal);
+            if ($('cancelPlanBtn'))       $('cancelPlanBtn').addEventListener('click', closePlanModal);
+            if ($('savePlanBtn'))         $('savePlanBtn').addEventListener('click', savePlan);
+            if ($('startFastBtn'))        $('startFastBtn').addEventListener('click', startFast);
+            if ($('endFastBtn'))          $('endFastBtn').addEventListener('click', endFast);
+
+            const modal = $('fastingPlanModal');
+            if (modal) {
+                modal.addEventListener('click', function (e) {
+                    if (e.target === modal) closePlanModal();
+                });
+            }
+
+            if (getState() && getState().start) startTicker();
+            render();
+
+            setInterval(function () {
+                if (!ticker) render();
+            }, 1000);
+        }
+
+        if (document.readyState === 'loading') {
+            document.addEventListener('DOMContentLoaded', init);
+        } else {
+            init();
+        }
+    })();
+    </script>
+</body>
+</html>

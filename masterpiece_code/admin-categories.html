@@ -1,0 +1,426 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sahtein Admin - Category Management</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,700&family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --bg-cream: #FDFBF7; --bg-white: #FFFFFF; --text-main: #2C2C2C; --text-muted: #7A7A7A;
+            --accent-green: #2A4B3C; --accent-green-light: #E8F0EA; --accent-orange: #D96C4A;
+            --accent-orange-light: #FDF0EC; --border-color: #E6E2D8; --font-serif: 'Playfair Display', serif;
+            --font-sans: 'DM Sans', sans-serif; --radius-sm: 8px; --radius-md: 12px; --radius-lg: 20px;
+            --shadow-sm: 0 2px 8px rgba(0,0,0,0.04); --shadow-md: 0 8px 24px rgba(0,0,0,0.06);
+            --transition: all 0.3s ease;
+        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: var(--font-sans); background-color: var(--bg-cream); color: var(--text-main); line-height: 1.6; -webkit-font-smoothing: antialiased; }
+        a { text-decoration: none; color: inherit; }
+        ul { list-style: none; }
+        img { max-width: 100%; display: block; }
+        button { cursor: pointer; font-family: inherit; border: none; background: none; }
+        h1, h2, h3, h4 { font-family: var(--font-serif); font-weight: 600; line-height: 1.2; }
+        h1 { font-size: 2.2rem; letter-spacing: -0.5px; }
+        h2 { font-size: 1.8rem; }
+        h3 { font-size: 1.3rem; }
+        .section-label { font-size: 0.75rem; text-transform: uppercase; letter-spacing: 1.5px; color: var(--accent-orange); font-weight: 700; margin-bottom: 0.5rem; display: block; }
+        .text-muted { color: var(--text-muted); font-size: 0.9rem; }
+        .text-sm { font-size: 0.85rem; }
+        .btn { display: inline-flex; align-items: center; justify-content: center; gap: 8px; padding: 10px 20px; border-radius: 50px; font-weight: 500; font-size: 0.9rem; transition: var(--transition); }
+        .btn-primary { background-color: var(--accent-green); color: #fff; }
+        .btn-primary:hover { background-color: #1e382c; }
+        .btn-outline { border: 1px solid var(--border-color); background: #fff; color: var(--text-main); }
+        .btn-outline:hover { border-color: var(--accent-green); color: var(--accent-green); }
+        .btn-sm { padding: 6px 14px; font-size: 0.8rem; }
+        .btn-danger { background-color: #FFEBEE; color: #C62828; }
+        .btn-danger:hover { background-color: #FFCDD2; }
+        .input-field { width: 100%; padding: 10px 16px; border: 1px solid var(--border-color); border-radius: var(--radius-sm); font-family: inherit; font-size: 0.9rem; background: var(--bg-white); transition: var(--transition); }
+        .input-field:focus { outline: none; border-color: var(--accent-green); box-shadow: 0 0 0 3px var(--accent-green-light); }
+        .dashboard-layout { display: flex; min-height: 100vh; }
+        .flex-between { display: flex; justify-content: space-between; align-items: center; }
+        .flex-center { display: flex; justify-content: center; align-items: center; }
+        .gap-2 { gap: 8px; } .gap-4 { gap: 16px; }
+        .mt-2 { margin-top: 8px; } .mt-4 { margin-top: 16px; } .mb-2 { margin-bottom: 8px; } .mb-4 { margin-bottom: 16px; } .mb-6 { margin-bottom: 24px; }
+        .sidebar { width: 260px; background: var(--bg-white); border-right: 1px solid var(--border-color); padding: 24px 0; display: flex; flex-direction: column; flex-shrink: 0; position: sticky; top: 0; height: 100vh; }
+        .sidebar-logo { padding: 0 24px 24px; border-bottom: 1px solid var(--border-color); margin-bottom: 16px; }
+        .sidebar-logo a { font-family: var(--font-serif); font-size: 1.5rem; font-weight: 700; color: var(--accent-green); display: flex; align-items: center; gap: 8px; }
+        .sidebar-logo a span { color: var(--accent-orange); }
+        .sidebar-logo .admin-badge { font-size: 0.65rem; background: var(--accent-orange-light); color: var(--accent-orange); padding: 2px 8px; border-radius: 50px; font-family: var(--font-sans); margin-left: 8px; text-transform: uppercase; letter-spacing: 1px; }
+        .sidebar-menu { display: flex; flex-direction: column; gap: 4px; padding: 0 16px; flex: 1; }
+        .sidebar-menu a { display: flex; align-items: center; gap: 12px; padding: 12px 16px; border-radius: var(--radius-sm); font-size: 0.9rem; font-weight: 500; color: var(--text-muted); transition: var(--transition); white-space: nowrap; }
+        .sidebar-menu a:hover { background: var(--bg-cream); color: var(--text-main); }
+        .sidebar-menu a.active { background: var(--accent-green-light); color: var(--accent-green); font-weight: 700; }
+        .sidebar-footer { padding: 16px 24px; border-top: 1px solid var(--border-color); margin-top: auto; }
+        .sidebar-exit { display: flex; align-items: center; gap: 8px; font-size: 0.85rem; color: var(--accent-orange); font-weight: 500; transition: var(--transition); }
+        .sidebar-exit:hover { text-decoration: underline; }
+        .main-content { flex: 1; padding: 32px 40px; background: var(--bg-cream); overflow-y: auto; }
+        .admin-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 24px; }
+        .admin-header h1 { font-size: 2rem; }
+
+        .tabs { display: flex; gap: 8px; border-bottom: 1px solid var(--border-color); margin-bottom: 24px; }
+        .tab { padding: 12px 20px; font-weight: 500; font-size: 0.9rem; color: var(--text-muted); cursor: pointer; border-bottom: 2px solid transparent; transition: var(--transition); display: flex; align-items: center; gap: 8px; font-family: inherit; background: none; }
+        .tab:hover { color: var(--text-main); }
+        .tab.active { color: var(--accent-green); border-bottom-color: var(--accent-green); }
+        .tab .badge { background: var(--accent-green-light); color: var(--accent-green); padding: 2px 8px; border-radius: 50px; font-size: 0.75rem; font-weight: 700; }
+        .tab.active .badge { background: var(--accent-green); color: #fff; }
+
+        .category-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; }
+        .category-card { background: var(--bg-white); padding: 20px 24px; border-radius: var(--radius-md); border: 1px solid var(--border-color); display: flex; flex-direction: column; justify-content: space-between; gap: 16px; transition: var(--transition); }
+        .category-card:hover { box-shadow: var(--shadow-md); transform: translateY(-2px); }
+        .category-card h4 { font-family: var(--font-sans); font-size: 1rem; font-weight: 600; margin-bottom: 4px; }
+        .category-card .count { font-size: 0.85rem; color: var(--text-muted); }
+        .category-actions { display: flex; gap: 8px; border-top: 1px solid var(--border-color); padding-top: 16px; }
+
+        .tab-content { display: none; }
+        .tab-content.active { display: block; }
+
+        /* Modal */
+        .modal-overlay {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0,0,0,0.5); display: none; justify-content: center; align-items: center;
+            z-index: 1000; padding: 20px;
+        }
+        .modal-overlay.active { display: flex; }
+        .modal-content {
+            background: var(--bg-white); padding: 32px; border-radius: var(--radius-lg);
+            width: 100%; max-width: 480px; box-shadow: var(--shadow-md);
+        }
+        .modal-content h3 { margin-bottom: 8px; }
+        .modal-content p { color: var(--text-muted); font-size: 0.9rem; margin-bottom: 20px; }
+        .modal-content .input-group { margin-bottom: 20px; }
+        .modal-content .input-group label { display: block; font-size: 0.85rem; font-weight: 500; margin-bottom: 6px; }
+        .modal-actions { display: flex; gap: 12px; justify-content: flex-end; margin-top: 24px; }
+
+        /* Toast */
+        .toast {
+            position: fixed; bottom: 24px; right: 24px;
+            background: var(--accent-green); color: #fff;
+            padding: 14px 24px; border-radius: 50px;
+            font-size: 0.9rem; font-weight: 500;
+            display: flex; align-items: center; gap: 10px;
+            box-shadow: var(--shadow-md);
+            transform: translateY(100px); opacity: 0;
+            transition: all 0.4s ease;
+            z-index: 2000;
+        }
+        .toast.show { transform: translateY(0); opacity: 1; }
+        .toast.error { background: #C62828; }
+
+        @media (max-width: 1024px) {
+            .category-grid { grid-template-columns: repeat(2, 1fr); }
+        }
+        @media (max-width: 768px) {
+            .dashboard-layout { flex-direction: column; }
+            .sidebar { width: 100%; height: auto; position: static; border-right: none; border-bottom: 1px solid var(--border-color); padding: 16px; }
+            .sidebar-menu { flex-direction: row; flex-wrap: wrap; justify-content: center; }
+            .main-content { padding: 20px; }
+            .admin-header { flex-direction: column; gap: 16px; align-items: flex-start; }
+            .category-grid { grid-template-columns: 1fr; }
+            .tabs { flex-wrap: wrap; }
+        }
+    </style>
+</head>
+<body>
+    <div class="dashboard-layout">
+        <aside class="sidebar">
+            <div class="sidebar-logo">
+                <a href="index.html">sahtein<span>.</span> <span class="admin-badge">Admin</span></a>
+            </div>
+            <nav class="sidebar-menu">
+                <a href="admin-dashboard.html"><i class="fa-solid fa-chart-line"></i> Dashboard</a>
+                <a href="admin-recipes.html"><i class="fa-solid fa-utensils"></i> Recipe Management</a>
+                <a href="admin-ingredients.html"><i class="fa-solid fa-carrot"></i> Ingredient Management</a>
+                <a href="admin-users.html"><i class="fa-solid fa-users"></i> User Management</a>
+                <a href="admin-categories.html" class="active"><i class="fa-solid fa-folder"></i> Category Management</a>
+                <a href="admin-ai-recipes.html"><i class="fa-solid fa-wand-magic-sparkles"></i> AI Generated Recipes</a>
+                <a href="admin-profile.html"><i class="fa-solid fa-user-gear"></i> Your Profile</a>
+            </nav>
+            <div class="sidebar-footer">
+                <button type="button" class="sidebar-exit" data-action="exit-admin">
+                    <i class="fa-solid fa-right-from-bracket"></i> Exit Admin
+                </button>
+            </div>
+        </aside>
+        <main class="main-content">
+            <div class="admin-header">
+                <div>
+                    <span class="section-label">Admin Workspace</span>
+                    <h1>Category Management</h1>
+                    <p class="text-muted">Manage cuisines, meal types, and dietary tags to organize your recipes.</p>
+                </div>
+                <button type="button" class="btn btn-primary" data-action="open-add-category">
+                    <i class="fa-solid fa-plus"></i> Add New Tag
+                </button>
+            </div>
+
+            <div class="tabs">
+                <button type="button" class="tab active" data-tab="cuisines"  data-action="switch-category-tab">
+                    <i class="fa-solid fa-globe"></i> Cuisines <span class="badge" id="count-cuisines">0</span>
+                </button>
+                <button type="button" class="tab" data-tab="mealtypes" data-action="switch-category-tab">
+                    <i class="fa-solid fa-clock"></i> Meal Types <span class="badge" id="count-mealtypes">0</span>
+                </button>
+                <button type="button" class="tab" data-tab="dietary" data-action="switch-category-tab">
+                    <i class="fa-solid fa-heart-pulse"></i> Dietary & Goals <span class="badge" id="count-dietary">0</span>
+                </button>
+            </div>
+
+            <div id="tab-cuisines" class="tab-content active">
+                <div class="category-grid" id="grid-cuisines"></div>
+            </div>
+            <div id="tab-mealtypes" class="tab-content">
+                <div class="category-grid" id="grid-mealtypes"></div>
+            </div>
+            <div id="tab-dietary" class="tab-content">
+                <div class="category-grid" id="grid-dietary"></div>
+            </div>
+        </main>
+    </div>
+
+    <!-- Add/Edit Modal -->
+    <div class="modal-overlay" id="categoryModal">
+        <div class="modal-content">
+            <h3 id="modalTitle">Add New Tag</h3>
+            <p id="modalSubtitle">This tag will appear in the current tab.</p>
+            <div class="input-group">
+                <label for="categoryName">Tag Name</label>
+                <input type="text" id="categoryName" class="input-field" placeholder="e.g., Jordanian, High-Protein...">
+            </div>
+            <div class="input-group">
+                <label for="categoryCount">Recipe Count (optional)</label>
+                <input type="number" id="categoryCount" class="input-field" placeholder="0" min="0" value="0">
+            </div>
+            <div class="modal-actions">
+                <button type="button" class="btn btn-outline" data-action="close-category-modal">Cancel</button>
+                <button type="button" class="btn btn-primary" id="modalSaveBtn" data-action="save-category">Save</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Delete Confirmation Modal -->
+    <div class="modal-overlay" id="deleteModal">
+        <div class="modal-content">
+            <h3>Delete this tag?</h3>
+            <p>Are you sure you want to delete <strong id="deleteName"></strong>? This action cannot be undone.</p>
+            <div class="modal-actions">
+                <button type="button" class="btn btn-outline" data-action="close-delete-modal">Cancel</button>
+                <button type="button" class="btn btn-danger" data-action="confirm-delete-category">Yes, Delete</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Toast -->
+    <div class="toast" id="toast">
+        <i class="fa-solid fa-circle-check"></i>
+        <span id="toastMessage">Done!</span>
+    </div>
+
+    <script src="auth-guard.js"></script>
+    <script>
+        /* =========================================================
+           Admin Categories — page-specific demo logic
+           Uses localStorage so the demo persists across reloads.
+           All buttons are wired via data-action attributes.
+           ========================================================= */
+        (function () {
+            const STORAGE_KEY = 'sahtein_categories_v1';
+
+            const DEFAULT_DATA = {
+                cuisines: [
+                    { name: 'Jordanian', count: 14 },
+                    { name: 'Palestinian', count: 11 },
+                    { name: 'Lebanese', count: 22 },
+                    { name: 'Syrian', count: 9 },
+                    { name: 'Egyptian', count: 7 },
+                    { name: 'Iraqi', count: 5 },
+                    { name: 'Gulf', count: 6 },
+                    { name: 'North African', count: 4 },
+                    { name: 'Turkish', count: 8 },
+                    { name: 'Mediterranean', count: 12 },
+                    { name: 'International', count: 3 }
+                ],
+                mealtypes: [
+                    { name: 'Breakfast', count: 12 }, { name: 'Lunch', count: 18 },
+                    { name: 'Dinner', count: 24 }, { name: 'Appetizer', count: 15 },
+                    { name: 'Main Course', count: 28 }, { name: 'Dessert', count: 8 },
+                    { name: 'Soup', count: 6 }, { name: 'Salad', count: 9 },
+                    { name: 'Snack', count: 7 }, { name: 'Drink', count: 5 }
+                ],
+                dietary: [
+                    { name: 'Vegetarian', count: 16 }, { name: 'Vegan', count: 9 },
+                    { name: 'Gluten-Free', count: 11 }, { name: 'Dairy-Free', count: 13 },
+                    { name: 'Nut-Free', count: 18 }, { name: 'High-Protein', count: 20 },
+                    { name: 'Low-Carb', count: 7 }, { name: 'Low-Calorie', count: 10 },
+                    { name: 'Keto', count: 4 }, { name: 'Paleo', count: 3 },
+                    { name: 'Weight Loss', count: 14 }, { name: 'Muscle Gain', count: 12 },
+                    { name: 'Maintenance', count: 22 }, { name: 'Heart-Healthy', count: 8 }
+                ]
+            };
+
+            let data = JSON.parse(localStorage.getItem(STORAGE_KEY)) ||
+                       JSON.parse(JSON.stringify(DEFAULT_DATA));
+
+            let currentTab   = 'cuisines';
+            let editingIndex = null;
+            let pendingDelete = null;
+
+            const gridCuisines  = document.getElementById('grid-cuisines');
+            const gridMealTypes = document.getElementById('grid-mealtypes');
+            const gridDietary   = document.getElementById('grid-dietary');
+            const modal         = document.getElementById('categoryModal');
+            const deleteModal   = document.getElementById('deleteModal');
+            const nameInput     = document.getElementById('categoryName');
+            const countInput    = document.getElementById('categoryCount');
+            const saveBtn       = document.getElementById('modalSaveBtn');
+
+            function escapeHtml(str) {
+                return String(str).replace(/[&<>"']/g, m => ({
+                    '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;'
+                }[m]));
+            }
+
+            function render() {
+                const map = { cuisines: gridCuisines, mealtypes: gridMealTypes, dietary: gridDietary };
+                Object.keys(map).forEach(tab => {
+                    const grid = map[tab];
+                    if (!grid) return;
+                    grid.innerHTML = '';
+                    data[tab].forEach((item, index) => {
+                        const card = document.createElement('div');
+                        card.className = 'category-card';
+                        card.innerHTML =
+                            '<div><h4>' + escapeHtml(item.name) + '</h4>' +
+                            '<span class="count">' + item.count + ' recipes</span></div>' +
+                            '<div class="category-actions">' +
+                                '<button type="button" class="btn btn-sm btn-outline" data-action="edit-category" data-tab="' + tab + '" data-index="' + index + '">' +
+                                    '<i class="fa-solid fa-pen"></i> Edit' +
+                                '</button>' +
+                                '<button type="button" class="btn btn-sm btn-danger" data-action="delete-category" data-tab="' + tab + '" data-index="' + index + '">' +
+                                    '<i class="fa-solid fa-trash"></i> Delete' +
+                                '</button>' +
+                            '</div>';
+                        grid.appendChild(card);
+                    });
+                    const badge = document.getElementById('count-' + tab);
+                    if (badge) badge.textContent = data[tab].length;
+                });
+            }
+
+            function saveData() {
+                localStorage.setItem(STORAGE_KEY, JSON.stringify(data));
+            }
+
+            function openAddModal() {
+                editingIndex = null;
+                document.getElementById('modalTitle').textContent = 'Add New Tag';
+                document.getElementById('modalSubtitle').textContent =
+                    'This tag will be added to the "' + currentTab + '" tab.';
+                nameInput.value  = '';
+                countInput.value = '0';
+                saveBtn.textContent = 'Save';
+                modal.classList.add('active');
+                setTimeout(() => nameInput.focus(), 100);
+            }
+
+            function openEditModal(tab, index) {
+                editingIndex = index;
+                currentTab   = tab;
+                const item   = data[tab][index];
+                document.getElementById('modalTitle').textContent = 'Edit Tag';
+                document.getElementById('modalSubtitle').textContent =
+                    'Update details for "' + item.name + '".';
+                nameInput.value  = item.name;
+                countInput.value = item.count;
+                saveBtn.textContent = 'Save Changes';
+                modal.classList.add('active');
+                setTimeout(() => nameInput.focus(), 100);
+            }
+
+            function closeModal() {
+                modal.classList.remove('active');
+                editingIndex = null;
+            }
+
+            function saveCategory() {
+                const name  = nameInput.value.trim();
+                const count = parseInt(countInput.value, 10) || 0;
+
+                if (!name) {
+                    alert('Please enter a tag name.');
+                    return;
+                }
+
+                if (editingIndex === null) {
+                    data[currentTab].push({ name: name, count: count });
+                } else {
+                    data[currentTab][editingIndex] = { name: name, count: count };
+                }
+
+                saveData();
+                render();
+                closeModal();
+            }
+
+            function openDeleteModal(tab, index) {
+                const item = data[tab][index];
+                pendingDelete = { tab: tab, index: index };
+                document.getElementById('deleteName').textContent = item.name;
+                deleteModal.classList.add('active');
+            }
+
+            function closeDeleteModal() {
+                deleteModal.classList.remove('active');
+                pendingDelete = null;
+            }
+
+            function confirmDelete() {
+                if (!pendingDelete) return;
+                data[pendingDelete.tab].splice(pendingDelete.index, 1);
+                saveData();
+                render();
+                closeDeleteModal();
+            }
+
+            /* ---- Page-specific click handler ---- */
+            document.addEventListener('click', function (e) {
+                const btn = e.target.closest('[data-action]');
+                if (!btn) return;
+
+                const action = btn.dataset.action;
+                const tab    = btn.dataset.tab;
+                const index  = btn.dataset.index !== undefined ? parseInt(btn.dataset.index, 10) : null;
+
+                switch (action) {
+                    case 'switch-category-tab': {
+                        currentTab = tab || btn.dataset.tab || 'cuisines';
+                        document.querySelectorAll('.tab-content').forEach(el => el.classList.remove('active'));
+                        document.querySelectorAll('.tab').forEach(el => el.classList.remove('active'));
+                        const tabContent = document.getElementById('tab-' + currentTab);
+                        if (tabContent) tabContent.classList.add('active');
+                        btn.classList.add('active');
+                        break;
+                    }
+                    case 'open-add-category':   openAddModal(); break;
+                    case 'edit-category':       openEditModal(tab, index); break;
+                    case 'delete-category':     openDeleteModal(tab, index); break;
+                    case 'close-category-modal': closeModal(); break;
+                    case 'save-category':       saveCategory(); break;
+                    case 'close-delete-modal':  closeDeleteModal(); break;
+                    case 'confirm-delete-category': confirmDelete(); break;
+                }
+            });
+
+            /* ---- Close modals on overlay click ---- */
+            modal.addEventListener('click', e => { if (e.target === modal) closeModal(); });
+            deleteModal.addEventListener('click', e => { if (e.target === deleteModal) closeDeleteModal(); });
+
+            /* ---- Initial render ---- */
+            render();
+        })();
+    </script>
+</body>
+</html>

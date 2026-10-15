@@ -1,0 +1,577 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sahtein - Nutrition Advice</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,700&family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="shared.css">
+    <style>
+        /* =========================================================
+           Nutrition-page-only styles
+           ========================================================= */
+
+        /* ---------- Hero ---------- */
+        .nutrition-hero {
+            background: linear-gradient(135deg, var(--accent-green) 0%, #1a2f25 100%);
+            color: #fff;
+            padding: 44px 40px;
+            border-radius: var(--radius-lg);
+            margin: 32px 0 32px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 32px;
+        }
+        .nutrition-hero h1 {
+            font-size: 2.2rem;
+            margin-bottom: 12px;
+            line-height: 1.1;
+        }
+        .nutrition-hero h1 em {
+            color: var(--accent-orange);
+            font-style: italic;
+        }
+        .nutrition-hero p {
+            opacity: 0.85;
+            max-width: 480px;
+            margin-bottom: 18px;
+            font-size: 0.92rem;
+        }
+        .nutrition-hero-badge {
+            background: rgba(255,255,255,0.1);
+            border: 1px solid rgba(255,255,255,0.2);
+            padding: 18px 24px;
+            border-radius: var(--radius-md);
+            text-align: center;
+            flex-shrink: 0;
+        }
+        .nutrition-hero-badge strong {
+            display: block;
+            font-size: 1.9rem;
+            font-family: var(--font-serif);
+            color: var(--accent-orange);
+        }
+        .nutrition-hero-badge span {
+            font-size: 0.72rem;
+            opacity: 0.8;
+        }
+
+        /* ---------- Tip cards grid ---------- */
+        .tips-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 16px;
+            margin-bottom: 32px;
+        }
+        .tip-card {
+            background: var(--bg-white);
+            padding: 20px;
+            border-radius: var(--radius-md);
+            border: 1px solid var(--border-color);
+            transition: var(--transition);
+            display: flex;
+            flex-direction: column;
+        }
+        .tip-card:hover {
+            box-shadow: var(--shadow-md);
+            transform: translateY(-4px);
+        }
+        .tip-icon {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: var(--accent-green-light);
+            color: var(--accent-green);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1rem;
+            margin-bottom: 12px;
+        }
+        .tip-card h3 {
+            font-size: 1rem;
+            margin-bottom: 6px;
+        }
+        .tip-card p {
+            font-size: 0.85rem;
+            color: var(--text-muted);
+            flex: 1;
+            margin-bottom: 12px;
+        }
+        .tip-card .tip-tag {
+            font-size: 0.62rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            font-weight: 700;
+            color: var(--accent-orange);
+            margin-bottom: 6px;
+            display: block;
+        }
+
+        /* ---------- Article / long-form section ---------- */
+        .article-section { margin-bottom: 40px; }
+        .article-grid {
+            display: grid;
+            grid-template-columns: 2fr 1fr;
+            gap: 28px;
+            align-items: start;
+        }
+        .article-body p { margin-bottom: 12px; font-size: 0.92rem; }
+        .article-body h2 { font-size: 1.5rem; margin-bottom: 14px; margin-top: 4px; }
+        .article-body h3 {
+            margin-bottom: 6px;
+            margin-top: 18px;
+            font-size: 1.05rem;
+        }
+        .article-sidebar {
+            background: var(--accent-green-light);
+            padding: 18px;
+            border-radius: var(--radius-md);
+            position: sticky;
+            top: 88px;
+        }
+        .article-sidebar h3 {
+            font-size: 0.98rem;
+            margin-bottom: 10px;
+            color: var(--accent-green);
+        }
+        .article-sidebar p {
+            font-size: 0.8rem;
+            color: var(--text-muted);
+            margin-bottom: 14px;
+        }
+
+        /* ---------- Macro pillar cards ---------- */
+        .macro-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 14px;
+            margin-bottom: 32px;
+        }
+        .macro-pillar {
+            background: var(--bg-white);
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-md);
+            padding: 18px;
+            text-align: center;
+        }
+        .macro-pillar .macro-value {
+            font-family: var(--font-serif);
+            font-size: 1.4rem;
+            color: var(--accent-green);
+            margin-bottom: 4px;
+        }
+        .macro-pillar .macro-name {
+            font-size: 0.7rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: var(--text-muted);
+            margin-bottom: 10px;
+        }
+        .macro-pillar p {
+            font-size: 0.78rem;
+            color: var(--text-muted);
+        }
+
+        /* ---------- Myth-busting list ---------- */
+        .myth-list {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 16px;
+            margin-bottom: 32px;
+        }
+        .myth-card {
+            background: var(--bg-white);
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-md);
+            padding: 18px;
+        }
+        .myth-card .myth-label {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            font-size: 0.68rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            font-weight: 700;
+            padding: 3px 9px;
+            border-radius: 50px;
+            margin-bottom: 10px;
+        }
+        .myth-label.myth { background: #FFEBEE; color: #C62828; }
+        .myth-label.fact { background: #E8F5E9; color: #2E7D32; }
+        .myth-card h4 {
+            font-size: 0.95rem;
+            margin-bottom: 6px;
+            font-family: var(--font-sans);
+            font-weight: 600;
+        }
+        .myth-card p { font-size: 0.82rem; color: var(--text-muted); }
+
+        /* ---------- CTA banner ---------- */
+        .nutrition-cta {
+            background: var(--accent-orange-light);
+            border: 1px solid var(--accent-orange);
+            border-radius: var(--radius-lg);
+            padding: 26px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 24px;
+            margin-bottom: 32px;
+        }
+        .nutrition-cta h3 {
+            color: var(--accent-orange);
+            margin-bottom: 6px;
+            font-size: 1.15rem;
+        }
+        .nutrition-cta p {
+            color: var(--text-muted);
+            font-size: 0.88rem;
+            max-width: 560px;
+        }
+
+        /* ---------- Disclaimer ---------- */
+        .disclaimer {
+            background: var(--bg-white);
+            border: 1px solid var(--border-color);
+            border-left: 4px solid var(--accent-orange);
+            padding: 16px 20px;
+            border-radius: var(--radius-sm);
+            font-size: 0.82rem;
+            color: var(--text-muted);
+            margin-bottom: 28px;
+        }
+        .disclaimer strong { color: var(--text-main); }
+
+        /* ---------- Section heading helpers (local, tighter) ---------- */
+        .section-heading-tight {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-end;
+            gap: 20px;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+        }
+        .section-heading-tight h2 { font-size: 1.5rem; }
+
+        /* ---------- Responsive ---------- */
+        @media (max-width: 1024px) {
+            .tips-grid { grid-template-columns: repeat(2, 1fr); }
+            .macro-grid { grid-template-columns: repeat(2, 1fr); }
+            .article-grid { grid-template-columns: 1fr; }
+            .article-sidebar { position: static; }
+            .nutrition-hero {
+                flex-direction: column;
+                text-align: center;
+                padding: 40px 32px;
+            }
+            .nutrition-hero h1 { font-size: 2.1rem; }
+        }
+        @media (max-width: 768px) {
+            .tips-grid,
+            .macro-grid,
+            .myth-list { grid-template-columns: 1fr; }
+            .nutrition-cta {
+                flex-direction: column;
+                text-align: center;
+            }
+            .nutrition-hero { padding: 32px 24px; }
+            .nutrition-hero h1 { font-size: 1.8rem; }
+        }
+    </style>
+</head>
+<body>
+    <!-- Announcement bar -->
+    <div class="announcement">
+        <strong>GOOD FOOD, GOOD FEELING.</strong>
+        A little joy in every bite.
+        <a href="ai-recipe.html">Cook with what you have →</a>
+    </div>
+
+    <header class="site-header">
+        <div class="container header-inner">
+            <a href="index.html" class="logo">sahtein<span>.</span></a>
+            <nav class="nav-links">
+                <a href="index.html">Home</a>
+                <a href="recipes.html">Recipes</a>
+                <a href="healthy-day.html">Healthy Day</a>
+                <a href="meal-planner.html">Meal Planner</a>
+                <a href="community.html">Community</a>
+                <a href="nutrition.html">Nutrition</a>
+                <a href="ai-recipe.html">AI Recipe</a>
+            </nav>
+            <div class="header-actions">
+                <button type="button" class="icon-btn" title="Sign in to save favorites"
+                        data-requires-login="true" data-action="favorites">
+                    <i class="fa-regular fa-heart"></i>
+                </button>
+                <button type="button" class="icon-btn" title="Sign in to view profile"
+                        data-requires-login="true" data-action="profile">
+                    <i class="fa-regular fa-user"></i>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <!-- HERO -->
+    <section class="container">
+        <div class="nutrition-hero">
+            <div>
+                <span class="section-label" style="color: rgba(255,255,255,0.7);">Eat well, feel well</span>
+                <h1>Nutrition that feels <em>like home.</em></h1>
+                <p>Simple, warm, evidence-informed guidance to help you build meals you enjoy — one plate at a time. No extremes, no guilt. Just food that works for you.</p>
+                <button type="button" class="btn btn-primary"
+                        data-requires-login="true" data-action="personalised-plan">
+                    <i class="fa-solid fa-wand-magic-sparkles"></i> Get a personalised plan
+                </button>
+            </div>
+            <div class="nutrition-hero-badge">
+                <strong>1,800</strong>
+                <span>average daily kcal target<br>for a balanced adult</span>
+            </div>
+        </div>
+    </section>
+
+    <!-- DISCLAIMER -->
+    <section class="container">
+        <div class="disclaimer">
+            <strong>Please note:</strong> The information on this page is general nutrition education and is not personalised medical advice. Individual needs vary. If you have a medical condition, are pregnant, or are unsure about your needs, please speak with a qualified healthcare professional or registered dietitian.
+        </div>
+    </section>
+
+    <!-- TIP CARDS -->
+    <section class="container">
+        <div class="section-heading-tight">
+            <div>
+                <span class="section-label">Small shifts, big difference</span>
+                <h2>Everyday nutrition tips.</h2>
+            </div>
+        </div>
+        <div class="tips-grid">
+            <div class="tip-card">
+                <div class="tip-icon"><i class="fa-solid fa-bowl-food"></i></div>
+                <span class="tip-tag">Balanced plate</span>
+                <h3>Build a colorful bowl.</h3>
+                <p>Aim for half vegetables, a quarter protein, and a quarter whole grains. Color usually means variety — and variety means more nutrients.</p>
+            </div>
+            <div class="tip-card">
+                <div class="tip-icon"><i class="fa-solid fa-droplet"></i></div>
+                <span class="tip-tag">Hydration</span>
+                <h3>Water first, then everything else.</h3>
+                <p>Aim for around 6–8 glasses a day, more in hot weather or after exercise. Herbal tea, water-rich fruit and soups all count.</p>
+            </div>
+            <div class="tip-card">
+                <div class="tip-icon"><i class="fa-solid fa-seedling"></i></div>
+                <span class="tip-tag">Fiber</span>
+                <h3>Feed your gut kindly.</h3>
+                <p>Whole grains, legumes, vegetables and fruit bring fiber that keeps you fuller for longer and supports a healthy gut.</p>
+            </div>
+            <div class="tip-card">
+                <div class="tip-icon"><i class="fa-solid fa-dumbbell"></i></div>
+                <span class="tip-tag">Protein</span>
+                <h3>Spread protein across the day.</h3>
+                <p>Rather than one big portion at dinner, include some protein at each meal — yogurt, eggs, chicken, fish, beans or lentils.</p>
+            </div>
+            <div class="tip-card">
+                <div class="tip-icon"><i class="fa-solid fa-heart-pulse"></i></div>
+                <span class="tip-tag">Fats</span>
+                <h3>Choose fats that love you back.</h3>
+                <p>Olive oil, tahini, nuts, seeds and avocado are staples of the Mediterranean table — enjoy them in sensible portions.</p>
+            </div>
+            <div class="tip-card">
+                <div class="tip-icon"><i class="fa-solid fa-utensils"></i></div>
+                <span class="tip-tag">Mindful eating</span>
+                <h3>Slow down, sit down.</h3>
+                <p>Eating without screens, chewing slowly, and enjoying the taste and company can help you notice when you're satisfied.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- MACRO PILLARS -->
+    <section class="container">
+        <div class="section-heading-tight">
+            <div>
+                <span class="section-label">The building blocks</span>
+                <h2>Macronutrients, simply explained.</h2>
+            </div>
+        </div>
+        <div class="macro-grid">
+            <div class="macro-pillar">
+                <div class="macro-value">4 kcal</div>
+                <div class="macro-name">per gram of protein</div>
+                <p>Builds and repairs muscles, keeps you full, supports immune health. Found in meat, fish, eggs, dairy, legumes and nuts.</p>
+            </div>
+            <div class="macro-pillar">
+                <div class="macro-value">4 kcal</div>
+                <div class="macro-name">per gram of carbs</div>
+                <p>Your body's preferred energy source. Whole grains, fruit and vegetables are the most nourishing choices.</p>
+            </div>
+            <div class="macro-pillar">
+                <div class="macro-value">9 kcal</div>
+                <div class="macro-name">per gram of fat</div>
+                <p>Helps absorb vitamins, supports hormones, keeps food satisfying. Choose unsaturated fats most often.</p>
+            </div>
+            <div class="macro-pillar">
+                <div class="macro-value">0 kcal</div>
+                <div class="macro-name">per gram of fiber</div>
+                <p>Not digested like other carbs, but essential for gut health, steady blood sugar and heart health.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- ARTICLE -->
+    <section class="container article-section">
+        <div class="article-grid">
+            <div class="article-body">
+                <span class="section-label">A longer read</span>
+                <h2>A gentle guide to eating well — the Middle Eastern way.</h2>
+                <p>For generations, the food traditions of the Levant, Egypt and the wider region have quietly delivered what modern nutrition science is only now catching up on: meals rich in vegetables, legumes, olive oil, herbs, whole grains and moderate portions of protein.</p>
+
+                <h3>1. Start with vegetables and herbs.</h3>
+                <p>Tabbouleh, fattoush, and simple tomato-and-cucumber salads are more than sides — they can be half the plate. Fresh parsley, mint, and cilantro add flavor and antioxidants.</p>
+
+                <h3>2. Make legumes a habit, not a substitute.</h3>
+                <p>Hummus, foul, lentils and chickpeas are gentle on the wallet, rich in fiber, and satisfying. Pair them with grains for a complete protein profile.</p>
+
+                <h3>3. Use olive oil thoughtfully.</h3>
+                <p>A drizzle of good olive oil is a pleasure. A little goes a long way — a tablespoon is roughly 119 kcal, so measuring helps when portions matter.</p>
+
+                <h3>4. Keep protein portions moderate and varied.</h3>
+                <p>Chicken, fish, eggs, yogurt and legumes rotate easily across a week. Aim for a palm-sized portion at most meals.</p>
+
+                <h3>5. Let grains be grains.</h3>
+                <p>Rice, bulgur, freekeh and whole-wheat bread are nourishing in sensible portions. Pair them with protein and fiber to slow digestion.</p>
+
+                <h3>6. Enjoy sweets and treats, mindfully.</h3>
+                <p>Baklava, knafeh and dates have a place. Enjoy them with intention and let the rest of the day's choices balance them out.</p>
+
+                <h3>7. Sit, share, and take your time.</h3>
+                <p>The social side of food — the mezze table, the shared pot — is part of what makes eating well sustainable. Food is connection as much as fuel.</p>
+
+                <p class="text-muted text-sm">These are general suggestions. Personal needs vary with age, activity, health conditions and goals. For anything specific, please consult a qualified professional.</p>
+            </div>
+            <aside class="article-sidebar">
+                <span class="section-label" style="color: var(--accent-green);">Want it tailored?</span>
+                <h3>Save this as a starting point.</h3>
+                <p>You can keep the tips that resonate, and get a plan built around your goals, cuisine and daily rhythm.</p>
+                <button type="button" class="btn btn-primary btn-sm"
+                        data-requires-login="true" data-action="save-nutrition-tips">
+                    Save these tips
+                </button>
+                <div style="margin-top: 10px;">
+                    <button type="button" class="btn btn-outline btn-sm"
+                            data-requires-login="true" data-action="personalised-plan">
+                        Get a personalised plan <i class="fa-solid fa-arrow-right"></i>
+                    </button>
+                </div>
+            </aside>
+        </div>
+    </section>
+
+    <!-- MYTH BUSTING -->
+    <section class="container">
+        <div class="section-heading-tight">
+            <div>
+                <span class="section-label">Friendly myth-busting</span>
+                <h2>Let's clear a few things up.</h2>
+            </div>
+        </div>
+        <div class="myth-list">
+            <div class="myth-card">
+                <span class="myth-label myth"><i class="fa-solid fa-circle-xmark"></i> Myth</span>
+                <h4>Carbs are the enemy.</h4>
+                <p>Carbs are your body's preferred energy source. The quality and portion matter — whole grains, fruit and vegetables bring valuable nutrients.</p>
+            </div>
+            <div class="myth-card">
+                <span class="myth-label fact"><i class="fa-solid fa-circle-check"></i> Fact</span>
+                <h4>Balance beats extremes.</h4>
+                <p>Long-term wellbeing comes from consistent, enjoyable patterns — not short-term restriction.</p>
+            </div>
+            <div class="myth-card">
+                <span class="myth-label myth"><i class="fa-solid fa-circle-xmark"></i> Myth</span>
+                <h4>You must eat every three hours.</h4>
+                <p>Meal timing is personal. Some thrive on three meals; others prefer smaller, more frequent meals. Hunger and fullness cues are good guides.</p>
+            </div>
+            <div class="myth-card">
+                <span class="myth-label fact"><i class="fa-solid fa-circle-check"></i> Fact</span>
+                <h4>Fiber is underrated.</h4>
+                <p>Most adults in the region get less fiber than the recommended 25–30 g per day. Legumes, whole grains and vegetables are easy wins.</p>
+            </div>
+            <div class="myth-card">
+                <span class="myth-label myth"><i class="fa-solid fa-circle-xmark"></i> Myth</span>
+                <h4>Snacking is always bad.</h4>
+                <p>A planned, balanced snack can help stabilize energy, especially if meals are spaced out or you're active.</p>
+            </div>
+            <div class="myth-card">
+                <span class="myth-label fact"><i class="fa-solid fa-circle-check"></i> Fact</span>
+                <h4>Hydration affects how you feel.</h4>
+                <p>Even mild dehydration can affect concentration, mood and digestion. Keeping a glass or bottle nearby is a simple habit that pays off.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- CTA -->
+    <section class="container">
+        <div class="nutrition-cta">
+            <div>
+                <h3>Turn advice into a plate you love.</h3>
+                <p>Pair these principles with our recipes, your Healthy Day log, and the meal planner. Small choices, consistently made, add up.</p>
+            </div>
+            <div class="flex gap-2" style="flex-wrap: wrap;">
+                <a href="recipes.html" class="btn btn-primary">Explore recipes <i class="fa-solid fa-arrow-right"></i></a>
+                <button type="button" class="btn btn-outline"
+                        data-requires-login="true" data-action="healthy-day">
+                    Open Healthy Day
+                </button>
+            </div>
+        </div>
+    </section>
+
+    <footer class="site-footer">
+        <div class="container">
+            <div class="footer-grid">
+                <div>
+                    <a href="index.html" class="logo" style="margin-bottom: 16px;">sahtein<span>.</span></a>
+                    <p class="text-muted text-sm">Good food brings us together. Discover, cook, and share with the world.</p>
+                </div>
+                <div>
+                    <h4>Explore</h4>
+                    <div class="footer-links">
+                        <a href="recipes.html">All recipes</a>
+                        <a href="healthy-day.html">Healthy Day</a>
+                        <a href="nutrition.html">Nutrition advice</a>
+                        <a href="ai-recipe.html">AI recipe assistant</a>
+                    </div>
+                </div>
+                <div>
+                    <h4>Your Space</h4>
+                    <div class="footer-links">
+                        <button type="button" data-requires-login="true" data-action="profile">Profile</button>
+                        <button type="button" data-requires-login="true" data-action="favorites">Saved recipes</button>
+                        <button type="button" data-requires-login="true" data-action="meal-planner">Meal planner</button>
+                        <a href="community.html">Community</a>
+                    </div>
+                </div>
+                <div>
+                    <h4 style="font-family: var(--font-serif); font-size: 1.2rem; text-transform: none; letter-spacing: 0;">Made with care, served with joy. <i class="fa-solid fa-star" style="color: var(--accent-orange);"></i></h4>
+                    <div class="footer-links" style="flex-direction: row; gap: 16px;">
+                        <span><i class="fa-brands fa-instagram"></i> Instagram</span> · <span><i class="fa-brands fa-facebook"></i> Facebook</span> · <span><i class="fa-brands fa-pinterest"></i> Pinterest</span>
+                    </div>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <span>© 2026 Sahtein. A recipe platform made for curious cooks.</span>
+                <a href="#">View our privacy policy <i class="fa-solid fa-arrow-right"></i></a>
+            </div>
+        </div>
+    </footer>
+
+    <script src="shared.js"></script>
+    <script src="auth-guard.js"></script>
+</body>
+</html>

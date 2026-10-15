@@ -1,0 +1,373 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sahtein Admin - Dashboard</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,700&family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --bg-cream: #FDFBF7; --bg-white: #FFFFFF; --text-main: #2C2C2C; --text-muted: #7A7A7A;
+            --accent-green: #2A4B3C; --accent-green-light: #E8F0EA; --accent-orange: #D96C4A;
+            --accent-orange-light: #FDF0EC; --border-color: #E6E2D8; --font-serif: 'Playfair Display', serif;
+            --font-sans: 'DM Sans', sans-serif; --radius-sm: 8px; --radius-md: 12px; --radius-lg: 20px;
+            --shadow-sm: 0 2px 8px rgba(0,0,0,0.04); --shadow-md: 0 8px 24px rgba(0,0,0,0.06);
+            --transition: all 0.3s ease;
+        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: var(--font-sans); background-color: var(--bg-cream); color: var(--text-main); line-height: 1.6; -webkit-font-smoothing: antialiased; }
+        a { text-decoration: none; color: inherit; }
+        ul { list-style: none; }
+        img { max-width: 100%; display: block; }
+        button { cursor: pointer; font-family: inherit; border: none; background: none; }
+        h1, h2, h3, h4 { font-family: var(--font-serif); font-weight: 600; line-height: 1.2; }
+        h1 { font-size: 2.2rem; letter-spacing: -0.5px; }
+        h2 { font-size: 1.8rem; }
+        h3 { font-size: 1.3rem; }
+        .section-label { font-size: 0.75rem; text-transform: uppercase; letter-spacing: 1.5px; color: var(--accent-orange); font-weight: 700; margin-bottom: 0.5rem; display: block; }
+        .text-muted { color: var(--text-muted); font-size: 0.9rem; }
+        .text-sm { font-size: 0.85rem; }
+        .btn { display: inline-flex; align-items: center; justify-content: center; gap: 8px; padding: 10px 20px; border-radius: 50px; font-weight: 500; font-size: 0.9rem; transition: var(--transition); }
+        .btn-primary { background-color: var(--accent-green); color: #fff; }
+        .btn-primary:hover { background-color: #1e382c; }
+        .btn-outline { border: 1px solid var(--border-color); background: #fff; color: var(--text-main); }
+        .btn-outline:hover { border-color: var(--accent-green); color: var(--accent-green); }
+        .btn-sm { padding: 6px 14px; font-size: 0.8rem; }
+        .input-field { width: 100%; padding: 10px 16px; border: 1px solid var(--border-color); border-radius: var(--radius-sm); font-family: inherit; font-size: 0.9rem; background: var(--bg-white); transition: var(--transition); }
+        .input-field:focus { outline: none; border-color: var(--accent-green); box-shadow: 0 0 0 3px var(--accent-green-light); }
+        .dashboard-layout { display: flex; min-height: 100vh; }
+        .flex-between { display: flex; justify-content: space-between; align-items: center; }
+        .flex-center { display: flex; justify-content: center; align-items: center; }
+        .gap-2 { gap: 8px; } .gap-4 { gap: 16px; }
+        .mt-2 { margin-top: 8px; } .mt-4 { margin-top: 16px; } .mb-2 { margin-bottom: 8px; } .mb-4 { margin-bottom: 16px; } .mb-6 { margin-bottom: 24px; }
+        .sidebar { width: 260px; background: var(--bg-white); border-right: 1px solid var(--border-color); padding: 24px 0; display: flex; flex-direction: column; flex-shrink: 0; position: sticky; top: 0; height: 100vh; }
+        .sidebar-logo { padding: 0 24px 24px; border-bottom: 1px solid var(--border-color); margin-bottom: 16px; }
+        .sidebar-logo a { font-family: var(--font-serif); font-size: 1.5rem; font-weight: 700; color: var(--accent-green); display: flex; align-items: center; gap: 8px; }
+        .sidebar-logo a span { color: var(--accent-orange); }
+        .sidebar-logo .admin-badge { font-size: 0.65rem; background: var(--accent-orange-light); color: var(--accent-orange); padding: 2px 8px; border-radius: 50px; font-family: var(--font-sans); margin-left: 8px; text-transform: uppercase; letter-spacing: 1px; }
+        .sidebar-menu { display: flex; flex-direction: column; gap: 4px; padding: 0 16px; flex: 1; }
+        .sidebar-menu a { display: flex; align-items: center; gap: 12px; padding: 12px 16px; border-radius: var(--radius-sm); font-size: 0.9rem; font-weight: 500; color: var(--text-muted); transition: var(--transition); }
+        .sidebar-menu a:hover { background: var(--bg-cream); color: var(--text-main); }
+        .sidebar-menu a.active { background: var(--accent-green-light); color: var(--accent-green); font-weight: 700; }
+        .sidebar-footer { padding: 16px 24px; border-top: 1px solid var(--border-color); margin-top: auto; }
+        .sidebar-footer a { display: flex; align-items: center; gap: 8px; font-size: 0.85rem; color: var(--accent-orange); font-weight: 500; transition: var(--transition); }
+        .sidebar-footer a:hover { text-decoration: underline; }
+        .main-content { flex: 1; padding: 32px 40px; background: var(--bg-cream); overflow-y: auto; }
+        .admin-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 32px; }
+        .admin-header h1 { font-size: 2rem; }
+        .stat-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 24px; margin-bottom: 32px; }
+        .stat-card { background: var(--bg-white); padding: 24px; border-radius: var(--radius-md); border: 1px solid var(--border-color); display: flex; flex-direction: column; gap: 8px; }
+        .stat-card .number { font-size: 2rem; font-weight: 700; font-family: var(--font-serif); color: var(--accent-green); }
+        .stat-card .label { font-size: 0.8rem; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.5px; }
+        .table-container { background: var(--bg-white); border-radius: var(--radius-md); border: 1px solid var(--border-color); overflow: hidden; margin-bottom: 32px; }
+        .table-header { padding: 20px 24px; border-bottom: 1px solid var(--border-color); display: flex; justify-content: space-between; align-items: center; }
+        table { width: 100%; border-collapse: collapse; text-align: left; }
+        th, td { padding: 16px 24px; border-bottom: 1px solid var(--border-color); font-size: 0.85rem; }
+        th { background: #FAFAFA; font-weight: 500; color: var(--text-muted); text-transform: uppercase; font-size: 0.7rem; letter-spacing: 0.5px; }
+        tr:last-child td { border-bottom: none; }
+        .status-badge { padding: 4px 12px; border-radius: 50px; font-size: 0.75rem; font-weight: 600; display: inline-block; }
+        .status-pending { background: #FFF3E0; color: #E65100; }
+        .status-active { background: #E8F5E9; color: #2E7D32; }
+        .status-suspended { background: #FFEBEE; color: #C62828; }
+        .review-grid { display: grid; grid-template-columns: 2fr 1fr; gap: 24px; margin-bottom: 32px; }
+        .review-card { background: var(--bg-white); padding: 24px; border-radius: var(--radius-md); border: 1px solid var(--border-color); }
+        .checklist-item { display: flex; align-items: center; gap: 8px; font-size: 0.85rem; margin-bottom: 8px; color: var(--text-muted); }
+        .checklist-item input { accent-color: var(--accent-green); }
+        .action-links button { font-size: 0.8rem; color: var(--text-muted); margin-right: 8px; transition: var(--transition); font-family: inherit; }
+        .action-links button:hover { color: var(--accent-green); }
+        .action-links button.delete:hover { color: #C62828; }
+        .dashboard-with-activity {
+            display: grid;
+            grid-template-columns: 1fr 340px;
+            gap: 24px;
+            align-items: start;
+            margin-bottom: 32px;
+        }
+        .activity-sidebar {
+            background: var(--bg-white);
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-md);
+            padding: 24px;
+            position: sticky;
+            top: 24px;
+        }
+        .activity-sidebar h3 {
+            font-size: 1.05rem;
+            margin-bottom: 16px;
+        }
+        .activity-item {
+            display: flex;
+            gap: 14px;
+            padding: 14px 0;
+            border-bottom: 1px solid var(--border-color);
+        }
+        .activity-item:last-child { border-bottom: none; }
+        .activity-icon {
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            background: var(--accent-green-light);
+            color: var(--accent-green);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+        }
+        .activity-item .activity-body {
+            flex: 1;
+            font-size: 0.88rem;
+            line-height: 1.5;
+        }
+        .activity-item .activity-body span {
+            display: block;
+            color: var(--text-muted);
+            font-size: 0.78rem;
+            margin-top: 2px;
+        }
+        @media (max-width: 1024px) {
+            .stat-grid { grid-template-columns: repeat(2, 1fr); }
+            .review-grid { grid-template-columns: 1fr; }
+            .dashboard-with-activity { grid-template-columns: 1fr; }
+            .activity-sidebar { position: static; }
+        }
+        @media (max-width: 768px) {
+            .dashboard-layout { flex-direction: column; }
+            .sidebar { width: 100%; height: auto; position: static; border-right: none; border-bottom: 1px solid var(--border-color); padding: 16px; }
+            .sidebar-menu { flex-direction: row; flex-wrap: wrap; justify-content: center; }
+            .main-content { padding: 20px; }
+            .stat-grid { grid-template-columns: 1fr; }
+            .admin-header { flex-direction: column; gap: 16px; align-items: flex-start; }
+            .table-container { overflow-x: auto; }
+            table { min-width: 600px; }
+        }
+    </style>
+</head>
+<body>
+    <div class="dashboard-layout">
+        <aside class="sidebar">
+            <div class="sidebar-logo">
+                <a href="index.html">sahtein<span>.</span> <span class="admin-badge">Admin</span></a>
+            </div>
+            <nav class="sidebar-menu">
+                <a href="admin-dashboard.html" class="active"><i class="fa-solid fa-chart-line"></i> Dashboard</a>
+                <a href="admin-recipes.html"><i class="fa-solid fa-utensils"></i> Recipe Management</a>
+                <a href="admin-ingredients.html"><i class="fa-solid fa-carrot"></i> Ingredient Management</a>
+                <a href="admin-users.html"><i class="fa-solid fa-users"></i> User Management</a>
+                <a href="admin-categories.html"><i class="fa-solid fa-folder"></i> Category Management</a>
+                <a href="admin-ai-recipes.html"><i class="fa-solid fa-wand-magic-sparkles"></i> AI Generated Recipes</a>
+				<a href="admin-profile.html"><i class="fa-solid fa-user-gear"></i> Your Profile</a>
+            </nav>
+            <!-- <div class="sidebar-footer">
+                <button type="button" class="sidebar-exit" data-action="exit-admin" style="display: flex; align-items: center; gap: 8px; font-size: 0.85rem; color: var(--accent-orange); font-weight: 500; transition: var(--transition);">
+                    <i class="fa-solid fa-right-from-bracket"></i> Exit Admin
+                </button>
+            </div> -->
+			<div class="sidebar-footer">
+                <button type="button" class="sidebar-exit" data-action="exit-admin" style="display: flex; align-items: center; gap: 8px; font-size: 0.85rem; color: var(--accent-orange); font-weight: 500; transition: var(--transition);">
+                    <i class="fa-solid fa-right-from-bracket"></i> Exit Admin
+                </button>
+				</div>
+        </aside>
+        <main class="main-content">
+            <div class="admin-header">
+                <div>
+                    <span class="section-label">Admin Workspace</span>
+                    <h1>Care for the Sahtein table.</h1>
+                    <p class="text-muted">Review recipes, keep conversations welcoming, and support the people behind them.</p>
+                </div>
+                <button type="button" class="btn btn-outline" data-action="export-activity">Export activity report</button>
+            </div>
+            <div class="stat-grid">
+                <div class="stat-card"><span class="number">3</span><span class="label">Pending Recipes</span></div>
+                <div class="stat-card"><span class="number">2</span><span class="label">Open Reports</span></div>
+                <div class="stat-card"><span class="number">2,418</span><span class="label">Registered Members</span></div>
+                <div class="stat-card"><span class="number">8</span><span class="label">Published Recipes</span></div>
+            </div>
+            <div class="table-container">
+                <div class="table-header">
+                    <h3 style="font-size: 1.1rem;">Good recipes deserve a careful review.</h3>
+                    <button type="button" class="btn btn-sm btn-outline" data-action="filter-pending">Pending review</button>
+                </div>
+                <table>
+                    <thead>
+                        <tr><th>Recipe / Submitted</th><th>Contributor</th><th>Status</th><th>Review Actions</th></tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><strong>Roasted Cauliflower & Tahini</strong><br><span class="text-muted text-sm">Oct 12 · Vegetarian · Contains sesame</span></td>
+                            <td>Leen Saleh</td>
+                            <td><span class="status-badge status-pending">Pending review</span></td>
+                            <td class="action-links">
+                                <button type="button" data-action="view-recipe">View recipe</button> ·
+                                <button type="button" data-action="approve-recipe">Approve</button> ·
+                                <button type="button" class="delete" data-action="reject-recipe">Reject</button>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td><strong>Lemon Lentil Soup</strong><br><span class="text-muted text-sm">Oct 12 · Plant-based · 290 kcal</span></td>
+                            <td>Maya Haddad</td>
+                            <td><span class="status-badge status-pending">Pending review</span></td>
+                            <td class="action-links">
+                                <button type="button" data-action="view-recipe">View recipe</button> ·
+                                <button type="button" data-action="approve-recipe">Approve</button> ·
+                                <button type="button" class="delete" data-action="reject-recipe">Reject</button>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td><strong>Herb Grilled Fish</strong><br><span class="text-muted text-sm">Oct 11 · High protein · Contains fish</span></td>
+                            <td>Rami Khalil</td>
+                            <td><span class="status-badge status-pending">Pending review</span></td>
+                            <td class="action-links">
+                                <button type="button" data-action="view-recipe">View recipe</button> ·
+                                <button type="button" data-action="approve-recipe">Approve</button> ·
+                                <button type="button" class="delete" data-action="reject-recipe">Reject</button>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <div class="dashboard-with-activity">
+                <div class="review-grid" style="grid-template-columns: 1fr; margin-bottom: 0;">
+                    <div class="review-card">
+                        <span class="section-label">Selected for review</span>
+                        <h3>Roasted Cauliflower & Tahini</h3>
+                        <p class="text-muted text-sm mb-4">Leen Saleh · Submitted October 12 · 2 servings · 30 minutes</p>
+                        <div class="mb-4">
+                            <label class="checklist-item"><input type="checkbox" checked> Ingredients and instructions are complete</label>
+                            <label class="checklist-item"><input type="checkbox" checked> Sesame allergen declared</label>
+                            <label class="checklist-item"><input type="checkbox"> Confirm estimated nutrition and image credit</label>
+                        </div>
+                        <div class="mb-4">
+                            <label style="font-size: 0.85rem; font-weight: 500; margin-bottom: 4px; display: block;">Review note / Rejection reason</label>
+                            <textarea class="input-field" rows="3" placeholder="Please include the source of your nutrition estimate."></textarea>
+                        </div>
+                        <div class="flex gap-2">
+                            <button type="button" class="btn btn-primary" data-action="approve-publish">Approve & publish</button>
+                            <button type="button" class="btn btn-outline" data-action="reject-with-reason">Reject with reason</button>
+                        </div>
+                    </div>
+                    <div class="review-card" style="background: var(--accent-green-light); border-color: transparent;">
+                        <span class="section-label">Review checklist</span>
+                        <h3 style="font-size: 1.2rem; margin-bottom: 12px;">Quality, clarity, and care.</h3>
+                        <p class="text-sm mb-4">Check ingredient quantities, safe preparation instructions, serving sizes and declared allergens. Review nutrition estimates and make sure photos belong to the contributor.</p>
+                        <p class="text-sm mb-4">Never publish unsupported health claims. Ask for clarification when a recipe needs more information.</p>
+                        <button type="button" class="btn btn-sm btn-outline" data-action="open-guidelines">
+                            Open moderation guidelines <i class="fa-solid fa-arrow-right"></i>
+                        </button>
+                    </div>
+                </div>
+
+                <aside class="activity-sidebar">
+                    <h3>Recent admin activity</h3>
+                    <div class="activity-item">
+                        <div class="activity-icon"><i class="fa-solid fa-check"></i></div>
+                        <div class="activity-body">
+                            Approved <strong>Fresh Tabbouleh</strong>
+                            <span>Today · 09:12</span>
+                        </div>
+                    </div>
+                    <div class="activity-item">
+                        <div class="activity-icon"><i class="fa-solid fa-xmark"></i></div>
+                        <div class="activity-body">
+                            Rejected <strong>Quick Lentil Soup</strong> (missing allergen info)
+                            <span>Yesterday · 16:40</span>
+                        </div>
+                    </div>
+                    <div class="activity-item">
+                        <div class="activity-icon"><i class="fa-solid fa-flag"></i></div>
+                        <div class="activity-body">
+                            Handled a report on <strong>"Weeknight meals"</strong>
+                            <span>Yesterday · 11:05</span>
+                        </div>
+                    </div>
+                    <div class="activity-item">
+                        <div class="activity-icon"><i class="fa-solid fa-folder-plus"></i></div>
+                        <div class="activity-body">
+                            Added new cuisine tag <strong>Yemeni</strong>
+                            <span>2 days ago</span>
+                        </div>
+                    </div>
+                </aside>
+            </div>
+            <div class="table-container">
+                <div class="table-header">
+                    <h3 style="font-size: 1.1rem;">Keep the conversation welcoming.</h3>
+                </div>
+                <table>
+                    <thead>
+                        <tr><th>Reported Content</th><th>Reason / Reports</th><th>Status</th><th>Moderation Actions</th></tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><strong>Unsolicited supplement promotion</strong><br><span class="text-muted text-sm">Rami Khalil · Oct 12</span></td>
+                            <td>Spam · 3 reports</td>
+                            <td><span class="status-badge status-pending">Open</span></td>
+                            <td class="action-links">
+                                <button type="button" data-action="view-post">View post</button> ·
+                                <button type="button" class="delete" data-action="remove-post">Remove</button> ·
+                                <button type="button" data-action="warn-user">Warn user</button>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td><strong>Reply in "Weeknight meals"</strong><br><span class="text-muted text-sm">Sami Darwish · Oct 12</span></td>
+                            <td>Harassment · 1 report</td>
+                            <td><span class="status-badge status-pending">Open</span></td>
+                            <td class="action-links">
+                                <button type="button" data-action="view-thread">View thread</button> ·
+                                <button type="button" class="delete" data-action="remove-post">Remove</button> ·
+                                <button type="button" data-action="dismiss-report">Dismiss</button>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </main>
+    </div>
+<script src="auth-guard.js"></script>
+<script>
+/* =========================================================================
+   Admin Dashboard — export button
+   Purely DOM/event: builds a small CSV from the page tables and downloads it.
+   ========================================================================= */
+(function () {
+    'use strict';
+
+    document.addEventListener('click', function (e) {
+        const btn = e.target.closest('[data-action="export-activity"]');
+        if (!btn) return;
+
+        e.preventDefault();
+
+        // Build CSV from all <table> rows on this page
+        const lines = [];
+        document.querySelectorAll('table').forEach(function (table) {
+            table.querySelectorAll('tr').forEach(function (row) {
+                const cells = Array.from(row.querySelectorAll('th, td')).map(function (cell) {
+                    // collapse whitespace, escape quotes
+                    const text = cell.innerText.replace(/\s+/g, ' ').trim();
+                    return '"' + text.replace(/"/g, '""') + '"';
+                });
+                if (cells.length) lines.push(cells.join(','));
+            });
+            lines.push(''); // blank line between tables
+        });
+
+        const csv = lines.join('\n');
+        const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
+        const url  = URL.createObjectURL(blob);
+
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = 'sahtein-activity-report.csv';
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+        URL.revokeObjectURL(url);
+    });
+})();
+</script>
+</body>
+</html>

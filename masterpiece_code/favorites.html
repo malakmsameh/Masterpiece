@@ -1,0 +1,278 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sahtein - Your Favorites</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,700&family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="shared.css">
+    <style>
+        /* =========================================================
+           Favorites-page-only styles
+           ========================================================= */
+
+        .page-header { padding: 32px 0 14px; }
+        .page-header h1 { font-size: 2.1rem; margin-bottom: 8px; }
+
+        /* Filter tabs */
+        .filter-tabs {
+            display: flex;
+            gap: 20px;
+            border-bottom: 1px solid var(--border-color);
+            margin-bottom: 22px;
+            overflow-x: auto;
+        }
+        .filter-tab {
+            padding-bottom: 10px;
+            font-weight: 500;
+            color: var(--text-muted);
+            cursor: pointer;
+            border-bottom: 2px solid transparent;
+            transition: var(--transition);
+            background: none;
+            font-family: inherit;
+            font-size: 0.88rem;
+            white-space: nowrap;
+        }
+        .filter-tab.active {
+            color: var(--accent-green);
+            border-bottom-color: var(--accent-green);
+        }
+        .filter-tab:hover { color: var(--accent-green); }
+
+        /* Grid */
+        .recipe-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 20px;
+            margin-bottom: 28px;
+        }
+
+        /* CTA banner */
+        .cta-banner {
+            background: var(--accent-green-light);
+            padding: 26px;
+            border-radius: var(--radius-lg);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 20px;
+        }
+        .cta-banner h3 {
+            color: var(--accent-green);
+            margin-bottom: 6px;
+            font-size: 1.15rem;
+        }
+
+        @media (max-width: 1024px) {
+            .recipe-grid { grid-template-columns: repeat(2, 1fr); }
+        }
+        @media (max-width: 768px) {
+            .recipe-grid { grid-template-columns: 1fr; }
+            .cta-banner { flex-direction: column; text-align: center; }
+            .page-header h1 { font-size: 1.8rem; }
+            .filter-tabs { gap: 16px; }
+        }
+    </style>
+</head>
+<body>
+    <div class="announcement">
+        <strong>GOOD FOOD, GOOD FEELING.</strong>
+        A little joy in every bite.
+        <a href="ai-recipe.html">Cook with what you have →</a>
+    </div>
+
+    <header class="site-header">
+        <div class="container header-inner">
+            <a href="index.html" class="logo">sahtein<span>.</span></a>
+            <nav class="nav-links">
+                <a href="index.html">Home</a>
+                <a href="recipes.html">Recipes</a>
+                <a href="healthy-day.html">Healthy Day</a>
+                <a href="meal-planner.html">Meal Planner</a>
+                <a href="community.html">Community</a>
+                <a href="nutrition.html">Nutrition</a>
+                <a href="ai-recipe.html">AI Recipe</a>
+            </nav>
+            <div class="header-actions">
+                <button type="button" class="icon-btn" title="Saved recipes"
+                        data-requires-login="true" data-action="favorites">
+                    <i class="fa-regular fa-heart"></i>
+                </button>
+                <button type="button" class="icon-btn" title="Your profile"
+                        data-requires-login="true" data-action="profile">
+                    <i class="fa-regular fa-user"></i>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <section class="container page-header">
+        <span class="section-label">The ones you love</span>
+        <h1>Your favorites.</h1>
+    </section>
+
+    <section class="container">
+        <div class="filter-tabs">
+            <button type="button" class="filter-tab active">All</button>
+            <button type="button" class="filter-tab">Middle Eastern</button>
+            <button type="button" class="filter-tab">Healthy</button>
+            <button type="button" class="filter-tab">AI Recipes</button>
+        </div>
+    </section>
+
+    <section class="container">
+        <div class="recipe-grid">
+
+            <!-- Card 1 -->
+            <a href="recipe-detail.html" class="recipe-card">
+                <div class="card-img-wrap">
+                    <img src="https://images.unsplash.com/photo-1593560708920-61dd98c46a4e?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80" alt="Classic Shakshuka" class="card-img">
+                    <button type="button" class="card-fav" title="Remove from favorites"
+                            data-requires-login="true" data-action="toggle-favorite"
+                            onclick="event.preventDefault(); event.stopPropagation();">
+                        <i class="fa-solid fa-heart"></i>
+                    </button>
+                    <div class="card-cta">
+                        <span>Go to recipe</span>
+                        <i class="fa-solid fa-arrow-right"></i>
+                    </div>
+                    <div class="card-badges">
+                        <span class="card-badge"><i class="fa-solid fa-fire"></i> 350 kcal</span>
+                        <span class="card-badge"><i class="fa-solid fa-dumbbell"></i> 16g protein</span>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <span class="card-tag">North African · Breakfast</span>
+                    <h3 class="card-title">Classic Shakshuka</h3>
+                    <p class="card-desc">Soft eggs nestled in a warmly spiced tomato and pepper sauce.</p>
+                    <div class="card-meta">
+                        <span><i class="fa-solid fa-star" style="color:#F5A623;"></i> 4.8</span>
+                        <span><i class="fa-regular fa-clock"></i> 30 min</span>
+                        <span>Easy</span>
+                    </div>
+                </div>
+            </a>
+
+            <!-- Card 2 -->
+            <a href="recipe-detail.html" class="recipe-card">
+                <div class="card-img-wrap">
+                    <img src="https://images.unsplash.com/photo-1544025162-d76694265947?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80" alt="Chicken Shawarma Bowl" class="card-img">
+                    <button type="button" class="card-fav" title="Remove from favorites"
+                            data-requires-login="true" data-action="toggle-favorite"
+                            onclick="event.preventDefault(); event.stopPropagation();">
+                        <i class="fa-solid fa-heart"></i>
+                    </button>
+                    <div class="card-cta">
+                        <span>Go to recipe</span>
+                        <i class="fa-solid fa-arrow-right"></i>
+                    </div>
+                    <div class="card-badges">
+                        <span class="card-badge"><i class="fa-solid fa-fire"></i> 450 kcal</span>
+                        <span class="card-badge"><i class="fa-solid fa-dumbbell"></i> 42g protein</span>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <span class="card-tag">High Protein · Middle Eastern</span>
+                    <h3 class="card-title">Chicken Shawarma Bowl</h3>
+                    <p class="card-desc">Tender, spiced chicken, fluffy rice and a generous helping of fresh vegetables.</p>
+                    <div class="card-meta">
+                        <span><i class="fa-solid fa-star" style="color:#F5A623;"></i> 4.9</span>
+                        <span><i class="fa-regular fa-clock"></i> 40 min</span>
+                        <span>Easy</span>
+                    </div>
+                </div>
+            </a>
+
+            <!-- Card 3 -->
+            <a href="recipe-detail.html" class="recipe-card">
+                <div class="card-img-wrap">
+                    <img src="https://images.unsplash.com/photo-1626200419199-391ae4be7a41?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80" alt="Fresh Tabbouleh" class="card-img">
+                    <button type="button" class="card-fav" title="Remove from favorites"
+                            data-requires-login="true" data-action="toggle-favorite"
+                            onclick="event.preventDefault(); event.stopPropagation();">
+                        <i class="fa-solid fa-heart"></i>
+                    </button>
+                    <div class="card-cta">
+                        <span>Go to recipe</span>
+                        <i class="fa-solid fa-arrow-right"></i>
+                    </div>
+                    <div class="card-badges">
+                        <span class="card-badge"><i class="fa-solid fa-fire"></i> 250 kcal</span>
+                        <span class="card-badge"><i class="fa-solid fa-dumbbell"></i> 6g protein</span>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <span class="card-tag">Light &amp; Fresh · Vegetarian</span>
+                    <h3 class="card-title">Fresh Tabbouleh</h3>
+                    <p class="card-desc">A refreshing parsley, tomato and bulgur salad, bright with lemon.</p>
+                    <div class="card-meta">
+                        <span><i class="fa-solid fa-star" style="color:#F5A623;"></i> 4.8</span>
+                        <span><i class="fa-regular fa-clock"></i> 20 min</span>
+                        <span>Easy</span>
+                    </div>
+                </div>
+            </a>
+
+        </div>
+    </section>
+
+    <section class="container mb-6">
+        <div class="cta-banner">
+            <div>
+                <h3>Give your favorites a place in your week.</h3>
+                <p class="text-muted">Start with a recipe you already love. Add it to your meal plan, and make dinner one less thing to think about.</p>
+            </div>
+            <button type="button" class="btn btn-primary"
+                    data-requires-login="true" data-action="meal-planner">
+                Open meal planner <i class="fa-solid fa-arrow-right"></i>
+            </button>
+        </div>
+    </section>
+
+    <footer class="site-footer">
+        <div class="container">
+            <div class="footer-grid">
+                <div>
+                    <a href="index.html" class="logo" style="margin-bottom: 16px;">sahtein<span>.</span></a>
+                    <p class="text-muted text-sm">Good food brings us together. Discover, cook, and share with the world.</p>
+                </div>
+                <div>
+                    <h4>Explore</h4>
+                    <div class="footer-links">
+                        <a href="recipes.html">All recipes</a>
+                        <a href="healthy-day.html">Healthy Day</a>
+                        <a href="nutrition.html">Nutrition advice</a>
+                        <a href="ai-recipe.html">AI recipe assistant</a>
+                    </div>
+                </div>
+                <div>
+                    <h4>Your Space</h4>
+                    <div class="footer-links">
+                        <button type="button" data-requires-login="true" data-action="profile">Profile</button>
+                        <button type="button" data-requires-login="true" data-action="favorites">Saved recipes</button>
+                        <button type="button" data-requires-login="true" data-action="meal-planner">Meal planner</button>
+                        <a href="community.html">Community</a>
+                    </div>
+                </div>
+                <div>
+                    <h4 style="font-family: var(--font-serif); font-size: 1.2rem; text-transform: none; letter-spacing: 0;">Made with care, served with joy. <i class="fa-solid fa-star" style="color: var(--accent-orange);"></i></h4>
+                    <div class="footer-links" style="flex-direction: row; gap: 16px;">
+                        <span><i class="fa-brands fa-instagram"></i> Instagram</span> · <span><i class="fa-brands fa-facebook"></i> Facebook</span> · <span><i class="fa-brands fa-pinterest"></i> Pinterest</span>
+                    </div>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <span>© 2026 Sahtein. A recipe platform made for curious cooks.</span>
+                <a href="#">View our privacy policy <i class="fa-solid fa-arrow-right"></i></a>
+            </div>
+        </div>
+    </footer>
+
+    <script src="shared.js"></script>
+    <script src="auth-guard.js"></script>
+</body>
+</html>

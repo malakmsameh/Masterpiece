@@ -1,0 +1,467 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sahtein - AI Recipe Assistant</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,700&family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="shared.css">
+    <style>
+        /* =========================================================
+           AI-recipe-page-only styles
+           ========================================================= */
+
+        /* ---------- Page header ---------- */
+        .page-header { padding: 32px 0 16px; }
+        .page-header h1 {
+            font-size: 2.1rem;
+            margin-bottom: 8px;
+        }
+        .page-header p { font-size: 0.92rem; }
+
+        /* ---------- Steps indicator ---------- */
+        .steps-indicator {
+            display: flex;
+            gap: 20px;
+            margin-bottom: 22px;
+            border-bottom: 1px solid var(--border-color);
+            padding-bottom: 12px;
+            flex-wrap: wrap;
+        }
+        .step-item {
+            font-size: 0.76rem;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            font-weight: 500;
+            display: inline-flex;
+            align-items: center;
+        }
+        .step-item.active {
+            color: var(--accent-green);
+            font-weight: 700;
+        }
+        .step-item span {
+            background: var(--border-color);
+            color: var(--text-main);
+            width: 18px;
+            height: 18px;
+            border-radius: 50%;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.65rem;
+            margin-right: 8px;
+        }
+        .step-item.active span {
+            background: var(--accent-green);
+            color: #fff;
+        }
+
+        /* ---------- Two-column layout ---------- */
+        .ai-layout {
+            display: grid;
+            grid-template-columns: 2fr 1fr;
+            gap: 24px;
+            margin-bottom: 24px;
+            align-items: start;
+        }
+
+        /* ---------- Ingredient builder ---------- */
+        .ingredient-builder {
+            background: var(--bg-white);
+            padding: 22px;
+            border-radius: var(--radius-md);
+            border: 1px solid var(--border-color);
+        }
+        .ingredient-builder h3 {
+            font-size: 1.15rem;
+            margin-bottom: 6px;
+        }
+        .ingredient-row {
+            display: grid;
+            grid-template-columns: 2fr 1fr 1fr auto;
+            gap: 8px;
+            margin-bottom: 8px;
+            align-items: center;
+        }
+        .ingredient-row input,
+        .ingredient-row select {
+            width: 100%;
+            padding: 9px 11px;
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-sm);
+            font-family: inherit;
+            font-size: 0.85rem;
+            background: var(--bg-cream);
+            transition: var(--transition);
+        }
+        .ingredient-row input:focus,
+        .ingredient-row select:focus {
+            outline: none;
+            border-color: var(--accent-green);
+            box-shadow: 0 0 0 3px var(--accent-green-light);
+        }
+        .ingredient-row button {
+            color: var(--text-muted);
+            font-size: 1.1rem;
+            padding: 8px;
+            transition: var(--transition);
+        }
+        .ingredient-row button:hover { color: var(--accent-orange); }
+
+        .add-ingredient-btn {
+            width: 100%;
+            padding: 10px;
+            border: 1px dashed var(--border-color);
+            border-radius: var(--radius-sm);
+            color: var(--text-muted);
+            background: transparent;
+            transition: var(--transition);
+            margin-top: 6px;
+            font-family: inherit;
+            font-size: 0.85rem;
+            cursor: pointer;
+        }
+        .add-ingredient-btn:hover {
+            border-color: var(--accent-green);
+            color: var(--accent-green);
+        }
+
+        /* ---------- How it works sidebar ---------- */
+        .how-it-works {
+            background: var(--accent-green-light);
+            padding: 22px;
+            border-radius: var(--radius-md);
+        }
+        .how-it-works h3 {
+            color: var(--accent-green);
+            margin-bottom: 12px;
+            font-size: 1.15rem;
+        }
+        .how-step {
+            display: flex;
+            gap: 12px;
+            margin-bottom: 12px;
+            font-size: 0.85rem;
+            align-items: flex-start;
+        }
+        .how-step span {
+            background: var(--accent-green);
+            color: #fff;
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.68rem;
+            flex-shrink: 0;
+        }
+
+        /* ---------- Generated result ---------- */
+        .generated-result {
+            background: var(--bg-white);
+            padding: 22px;
+            border-radius: var(--radius-md);
+            border: 1px solid var(--border-color);
+            margin-top: 20px;
+        }
+        .generated-result h3 {
+            font-size: 1.15rem;
+            margin-bottom: 6px;
+        }
+        .generated-result .meta {
+            display: flex;
+            gap: 14px;
+            flex-wrap: wrap;
+            font-size: 0.78rem;
+            color: var(--text-muted);
+            margin-bottom: 14px;
+        }
+        .generated-result ol {
+            padding-left: 20px;
+        }
+        .generated-result li {
+            margin-bottom: 8px;
+            font-size: 0.88rem;
+        }
+
+        /* ---------- Responsive ---------- */
+        @media (max-width: 1024px) {
+            .ai-layout { grid-template-columns: 1fr; }
+            .ingredient-row { grid-template-columns: 1fr 1fr; }
+        }
+        @media (max-width: 768px) {
+            .ingredient-row { grid-template-columns: 1fr; }
+            .steps-indicator {
+                flex-direction: column;
+                gap: 8px;
+            }
+            .page-header h1 { font-size: 1.8rem; }
+            .ingredient-builder,
+            .how-it-works,
+            .generated-result { padding: 22px; }
+        }
+    </style>
+</head>
+<body>
+    <!-- Announcement bar -->
+    <div class="announcement">
+        <strong>GOOD FOOD, GOOD FEELING.</strong>
+        A little joy in every bite.
+        <a href="ai-recipe.html">Cook with what you have →</a>
+    </div>
+
+    <header class="site-header">
+        <div class="container header-inner">
+            <a href="index.html" class="logo">sahtein<span>.</span></a>
+            <nav class="nav-links">
+                <a href="index.html">Home</a>
+                <a href="recipes.html">Recipes</a>
+                <a href="healthy-day.html">Healthy Day</a>
+                <a href="meal-planner.html">Meal Planner</a>
+                <a href="community.html">Community</a>
+                <a href="nutrition.html">Nutrition</a>
+                <a href="ai-recipe.html">AI Recipe</a>
+            </nav>
+            <div class="header-actions">
+                <button type="button" class="icon-btn" title="Sign in to save favorites"
+                        data-requires-login="true" data-action="favorites">
+                    <i class="fa-regular fa-heart"></i>
+                </button>
+                <button type="button" class="icon-btn" title="Sign in to view profile"
+                        data-requires-login="true" data-action="profile">
+                    <i class="fa-regular fa-user"></i>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <section class="container page-header">
+        <span class="section-label">Your kitchen, reimagined</span>
+        <h1>What's in your kitchen?</h1>
+        <p class="text-muted">Tell us what you have. We'll find something delicious you can make.</p>
+    </section>
+
+    <section class="container">
+        <div class="steps-indicator">
+            <div class="step-item active"><span>01</span> Your ingredients</div>
+            <div class="step-item"><span>02</span> Find a match</div>
+            <div class="step-item"><span>03</span> Create your own</div>
+        </div>
+    </section>
+
+    <section class="container">
+        <div class="ai-layout">
+            <div class="ingredient-builder">
+                <span class="section-label">Start with what you have</span>
+                <h3>Your ingredients</h3>
+                <p class="text-muted text-sm mb-6">Measurements are optional. Add as much or as little detail as you know.</p>
+
+                <div class="ingredient-row">
+                    <input type="text" value="Chicken" placeholder="Ingredient">
+                    <input type="text" value="500" placeholder="Quantity">
+                    <select><option>g</option><option>cups</option><option>tbsp</option></select>
+                    <button type="button" title="Remove"><i class="fa-solid fa-xmark"></i></button>
+                </div>
+                <div class="ingredient-row">
+                    <input type="text" value="Rice" placeholder="Ingredient">
+                    <input type="text" value="2" placeholder="Quantity">
+                    <select><option>cups</option><option>g</option><option>tbsp</option></select>
+                    <button type="button" title="Remove"><i class="fa-solid fa-xmark"></i></button>
+                </div>
+                <div class="ingredient-row">
+                    <input type="text" value="Tomato" placeholder="Ingredient">
+                    <input type="text" value="3" placeholder="Quantity">
+                    <select><option>whole</option><option>g</option><option>cups</option></select>
+                    <button type="button" title="Remove"><i class="fa-solid fa-xmark"></i></button>
+                </div>
+                <div class="ingredient-row">
+                    <input type="text" value="Onion" placeholder="Ingredient">
+                    <input type="text" value="1" placeholder="Quantity">
+                    <select><option>whole</option><option>g</option><option>cups</option></select>
+                    <button type="button" title="Remove"><i class="fa-solid fa-xmark"></i></button>
+                </div>
+                <div class="ingredient-row">
+                    <input type="text" value="Olive oil" placeholder="Ingredient">
+                    <input type="text" value="2" placeholder="Quantity">
+                    <select><option>tbsp</option><option>g</option><option>cups</option></select>
+                    <button type="button" title="Remove"><i class="fa-solid fa-xmark"></i></button>
+                </div>
+
+                <button type="button" class="add-ingredient-btn">+ Add another ingredient</button>
+
+                <div class="flex-between mt-4" style="flex-wrap: wrap; gap: 12px;">
+                    <span class="text-muted text-sm"><i class="fa-solid fa-lock"></i> Don't know the amount? Just leave it blank.</span>
+                    <button type="button" class="btn btn-primary"
+                            data-requires-login="true" data-action="generate-recipe">
+                        Find recipes <i class="fa-solid fa-arrow-right"></i>
+                    </button>
+                </div>
+            </div>
+
+            <div class="how-it-works">
+                <span class="section-label" style="color: var(--accent-green);">How it works</span>
+                <h3>Less waste. <em>More wow.</em></h3>
+                <p class="text-muted text-sm mb-6">We look at what you already have and find the closest recipes from our kitchen.</p>
+                <div class="how-step"><span>01</span> Add ingredients</div>
+                <div class="how-step"><span>02</span> See your top 3 matches</div>
+                <div class="how-step"><span>03</span> Create something new if you like</div>
+            </div>
+        </div>
+    </section>
+
+    <section class="container">
+        <div class="generated-result">
+            <span class="section-label">Create your own</span>
+            <h3>Turn a little inspiration into dinner.</h3>
+            <p class="text-muted text-sm mb-4">A one-pan chicken and tomato rice dish</p>
+            <div class="meta">
+                <span>Prep 10 min</span>
+                <span>Cook 30 min</span>
+                <span>Makes 2 servings</span>
+                <span>460 kcal per serving</span>
+            </div>
+            <ol>
+                <li>Dice the onion and tomatoes. Cut chicken into even pieces.</li>
+                <li>Warm olive oil, soften onion, then add chicken and spices.</li>
+                <li>Stir in rinsed rice, tomatoes and water. Cover and simmer until rice is tender.</li>
+                <li>Confirm chicken reaches 74°C / 165°F. Rest, fluff and serve with fresh herbs.</li>
+            </ol>
+            <div class="flex gap-2 mt-4" style="flex-wrap: wrap;">
+                <button type="button" class="btn btn-primary btn-sm"
+                        data-requires-login="true" data-action="save-draft">
+                    Edit &amp; save draft <i class="fa-solid fa-arrow-right"></i>
+                </button>
+                <button type="button" class="btn btn-outline btn-sm"
+                        data-requires-login="true" data-action="save-favorite">
+                    Save to favorites
+                </button>
+            </div>
+        </div>
+    </section>
+
+    <footer class="site-footer">
+        <div class="container">
+            <div class="footer-grid">
+                <div>
+                    <a href="index.html" class="logo" style="margin-bottom: 16px;">sahtein<span>.</span></a>
+                    <p class="text-muted text-sm">Good food brings us together. Discover, cook, and share with the world.</p>
+                </div>
+                <div>
+                    <h4>Explore</h4>
+                    <div class="footer-links">
+                        <a href="recipes.html">All recipes</a>
+                        <a href="healthy-day.html">Healthy Day</a>
+                        <a href="nutrition.html">Nutrition advice</a>
+                        <a href="ai-recipe.html">AI recipe assistant</a>
+                    </div>
+                </div>
+                <div>
+                    <h4>Your Space</h4>
+                    <div class="footer-links">
+                        <button type="button" data-requires-login="true" data-action="profile">Profile</button>
+                        <button type="button" data-requires-login="true" data-action="favorites">Saved recipes</button>
+                        <button type="button" data-requires-login="true" data-action="meal-planner">Meal planner</button>
+                        <a href="community.html">Community</a>
+                    </div>
+                </div>
+                <div>
+                    <h4 style="font-family: var(--font-serif); font-size: 1.2rem; text-transform: none; letter-spacing: 0;">Made with care, served with joy. <i class="fa-solid fa-star" style="color: var(--accent-orange);"></i></h4>
+                    <div class="footer-links" style="flex-direction: row; gap: 16px;">
+                        <span><i class="fa-brands fa-instagram"></i> Instagram</span> · <span><i class="fa-brands fa-facebook"></i> Facebook</span> · <span><i class="fa-brands fa-pinterest"></i> Pinterest</span>
+                    </div>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <span>© 2026 Sahtein. A recipe platform made for curious cooks.</span>
+                <a href="#">View our privacy policy <i class="fa-solid fa-arrow-right"></i></a>
+            </div>
+        </div>
+    </footer>
+
+    <script src="shared.js"></script>
+    <script src="auth-guard.js"></script>
+    <script>
+    (function () {
+        'use strict';
+
+        const builder = document.querySelector('.ingredient-builder');
+        if (!builder) return;
+
+        builder.addEventListener('click', function (e) {
+            const removeBtn = e.target.closest('.ingredient-row button[title="Remove"]');
+            if (!removeBtn) return;
+
+            const row = removeBtn.closest('.ingredient-row');
+            if (!row) return;
+
+            row.style.transition = 'opacity 0.2s ease, transform 0.2s ease';
+            row.style.opacity = '0';
+            row.style.transform = 'translateX(-8px)';
+            setTimeout(function () { row.remove(); }, 200);
+        });
+
+        const addBtn = builder.querySelector('.add-ingredient-btn');
+        if (addBtn) {
+            addBtn.addEventListener('click', function () {
+                const row = document.createElement('div');
+                row.className = 'ingredient-row';
+                row.innerHTML =
+                    '<input type="text" placeholder="Ingredient">' +
+                    '<input type="text" placeholder="Quantity">' +
+                    '<select>' +
+                        '<option>g</option>' +
+                        '<option>cups</option>' +
+                        '<option>tbsp</option>' +
+                        '<option>whole</option>' +
+                    '</select>' +
+                    '<button type="button" title="Remove"><i class="fa-solid fa-xmark"></i></button>';
+                builder.insertBefore(row, addBtn);
+                row.querySelector('input').focus();
+            });
+        }
+
+        const findBtn = builder.querySelector('[data-action="generate-recipe"]');
+        if (findBtn) {
+            findBtn.addEventListener('click', function () {
+                const rows = builder.querySelectorAll('.ingredient-row');
+                const ingredients = [];
+
+                rows.forEach(function (row) {
+                    const inputs = row.querySelectorAll('input[type="text"]');
+                    const name = (inputs[0] ? inputs[0].value : '').trim();
+                    const qty = (inputs[1] ? inputs[1].value : '').trim();
+                    const unit = (row.querySelector('select') || {}).value || '';
+                    if (name) ingredients.push({ name: name, qty: qty, unit: unit.trim() });
+                });
+
+                if (ingredients.length === 0) {
+                    if (window.showToast) window.showToast('Add at least one ingredient first.', true);
+                    return;
+                }
+
+                const result = document.querySelector('.generated-result');
+                if (result) {
+                    result.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                    result.style.transition = 'box-shadow 0.5s ease';
+                    result.style.boxShadow = '0 0 0 3px var(--accent-green-light)';
+                    setTimeout(function () { result.style.boxShadow = ''; }, 1200);
+                }
+
+                if (window.showToast) {
+                    window.showToast(
+                        'Found 3 recipes you can make with ' + ingredients.length +
+                        ' ingredient' + (ingredients.length > 1 ? 's' : '') + '.'
+                    );
+                }
+            });
+        }
+    })();
+    </script>
+</body>
+</html>
