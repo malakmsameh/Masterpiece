@@ -1,6 +1,6 @@
 # 🥘 Sahtein
 
-**Live Demo:** [INSERT_LIVE_URL_HERE](INSERT_LIVE_URL_HERE)
+**Live Demo:** [INSERT_LIVE_URL_HERE](https://malakmsameh.github.io/Masterpiece/)
 
 Sahtein is a modern, responsive web application designed for food lovers. It combines Middle Eastern culinary traditions with modern health tracking, allowing users to discover recipes, plan meals, and monitor their daily wellness.
 
