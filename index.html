@@ -8,649 +8,34 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,700&family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link rel="stylesheet" href="shared.css">
-    <style>
-        /* =========================================================
-           Home-page-only styles
-           ========================================================= */
-
-        /* ---------- HERO ---------- */
-        .hero {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 60px;
-            align-items: center;
-            padding: 48px 0 60px;
-        }
-        .hero-text { max-width: 520px; }
-
-        .hero-text .eyebrow {
-            display: inline-flex;
-            align-items: center;
-            gap: 12px;
-            font-size: 0.72rem;
-            letter-spacing: 2px;
-            font-weight: 700;
-            text-transform: uppercase;
-            color: var(--accent-orange);
-            margin-bottom: 28px;
-        }
-        .hero-text .eyebrow::before {
-            content: '';
-            width: 32px;
-            height: 1px;
-            background: var(--accent-orange);
-            display: inline-block;
-        }
-
-        .hero-text h1 {
-            font-family: var(--font-serif);
-            font-size: 3.4rem;
-            line-height: 1.05;
-            letter-spacing: -0.5px;
-            margin: 0 0 28px;
-            color: var(--accent-green);
-            font-weight: 700;
-        }
-        .hero-text h1 .line2 {
-            display: block;
-            color: var(--accent-orange);
-            font-style: italic;
-            font-weight: 500;
-            margin-top: 6px;
-        }
-
-        .hero-text .hero-lede {
-            font-size: 1rem;
-            color: var(--text-muted);
-            line-height: 1.7;
-            margin-bottom: 32px;
-            max-width: 460px;
-        }
-
-        .hero-actions {
-            display: flex;
-            gap: 12px;
-            align-items: center;
-            flex-wrap: wrap;
-            margin-bottom: 40px;
-        }
-        .hero-actions .btn {
-            padding: 14px 24px;
-            font-size: 0.9rem;
-            font-weight: 600;
-        }
-        .hero-actions .btn i { font-size: 0.85rem; }
-
-        /* Social proof row */
-        .hero-social { display: flex; align-items: center; gap: 14px; }
-        .hero-social .avatars { display: flex; align-items: center; }
-        .hero-social .avatars .av {
-            width: 34px;
-            height: 34px;
-            border-radius: 50%;
-            border: 2px solid var(--bg-cream);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 0.68rem;
-            font-weight: 700;
-            color: #fff;
-            margin-left: -10px;
-            letter-spacing: 0.3px;
-        }
-        .hero-social .avatars .av:first-child { margin-left: 0; }
-        .hero-social .av-1 { background: #C9A87C; }
-        .hero-social .av-2 { background: #8FA68A; }
-        .hero-social .av-3 { background: #D9A78F; }
-        .hero-social .stars {
-            color: var(--accent-orange);
-            font-size: 0.8rem;
-            letter-spacing: 2px;
-            line-height: 1;
-            margin-bottom: 4px;
-        }
-        .hero-social small {
-            display: block;
-            font-size: 0.72rem;
-            color: var(--text-muted);
-            margin-top: 5px;
-        }
-
-        /* Image side */
-        .hero-image-wrap {
-            position: relative;
-            padding-left: 32px;
-            padding-bottom: 32px;
-        }
-        .hero-image {
-            width: 100%;
-            height: 480px;
-            max-height: 60vh;
-            overflow: hidden;
-            background: #2a2a2a;
-            border-radius: 0;
-        }
-        .hero-image img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-            object-position: center;
-            display: block;
-        }
-        .hero-badge {
-            position: absolute;
-            top: 28px;
-            right: 28px;
-            width: 108px;
-            height: 108px;
-            border-radius: 50%;
-            background: #F5EFD8;
-            border: 1px dashed #C9A961;
-            color: #8B6F2C;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            text-align: center;
-            font-family: var(--font-sans);
-            font-size: 0.62rem;
-            font-weight: 700;
-            letter-spacing: 1.4px;
-            text-transform: uppercase;
-            line-height: 1.35;
-            padding: 8px;
-        }
-        .hero-badge .badge-star {
-            font-size: 0.8rem;
-            color: #C9A961;
-            margin: 2px 0;
-            line-height: 1;
-        }
-        .hero-overlay-card {
-            position: absolute;
-            left: 0;
-            bottom: 0;
-            background: var(--bg-white);
-            border-radius: 10px;
-            padding: 16px 20px 16px 16px;
-            display: flex;
-            align-items: center;
-            gap: 14px;
-            box-shadow: 0 8px 28px rgba(0,0,0,0.08);
-            max-width: 320px;
-        }
-        .hero-overlay-card .overlay-icon {
-            width: 44px;
-            height: 44px;
-            border-radius: 50%;
-            background: var(--accent-green-light);
-            color: var(--accent-green);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            flex-shrink: 0;
-            font-size: 1rem;
-        }
-        .hero-overlay-card strong {
-            display: block;
-            font-family: var(--font-sans);
-            font-size: 0.9rem;
-            font-weight: 700;
-            color: var(--text-main);
-            margin-bottom: 3px;
-            line-height: 1.3;
-        }
-        .hero-overlay-card span {
-            font-size: 0.78rem;
-            color: var(--text-muted);
-            line-height: 1.3;
-        }
-
-        /* ---------- CRAVING STRIP ---------- */
-        .craving-bar-wrap {
-            border-top: 1px solid var(--border-color);
-            border-bottom: 1px solid var(--border-color);
-            margin-top: 8px;
-            padding: 24px 0;
-        }
-        .craving-bar {
-            display: flex;
-            align-items: center;
-            gap: 32px;
-            flex-wrap: wrap;
-        }
-        .craving-bar .craving-label {
-            font-size: 0.7rem;
-            text-transform: uppercase;
-            letter-spacing: 1.8px;
-            font-weight: 700;
-            color: var(--text-muted);
-            line-height: 1.5;
-            flex-shrink: 0;
-            max-width: 130px;
-        }
-        .craving-items {
-            display: flex;
-            align-items: center;
-            flex: 1;
-            min-width: 0;
-        }
-        .craving-item {
-            display: inline-flex;
-            align-items: center;
-            gap: 12px;
-            padding: 8px 28px;
-            font-size: 0.92rem;
-            font-weight: 500;
-            color: var(--text-main);
-            transition: var(--transition);
-            flex: 1;
-            justify-content: center;
-            white-space: nowrap;
-            background: none;
-            border: none;
-            font-family: inherit;
-            cursor: pointer;
-        }
-        .craving-item:hover { color: var(--accent-green); }
-        .craving-item .icon {
-            width: 34px;
-            height: 34px;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 0.85rem;
-            flex-shrink: 0;
-        }
-        .craving-item .icon.icon-green {
-            background: var(--accent-green-light);
-            color: var(--accent-green);
-        }
-        .craving-item .icon.icon-orange {
-            background: var(--accent-orange-light);
-            color: var(--accent-orange);
-        }
-        .craving-item .arrow {
-            color: var(--text-muted);
-            font-size: 0.75rem;
-            margin-left: 2px;
-            transition: var(--transition);
-        }
-        .craving-item:hover .arrow {
-            color: var(--accent-green);
-            transform: translateX(3px);
-        }
-        .craving-divider {
-            width: 1px;
-            height: 22px;
-            background: var(--border-color);
-            flex-shrink: 0;
-        }
-
-        /* Sections */
-        .section-padding { padding: 60px 0; }
-        .section-heading {
-            display: flex;
-            justify-content: space-between;
-            align-items: flex-end;
-            gap: 24px;
-            margin-bottom: 40px;
-            flex-wrap: wrap;
-        }
-        .section-heading h2 { font-size: 2.8rem; }
-        .section-heading h2 em {
-            color: var(--accent-orange);
-            font-style: italic;
-            font-family: var(--font-serif);
-        }
-        .section-heading p { color: var(--text-muted); font-size: 1rem; margin-top: 8px; }
-        .explore-link {
-            display: inline-flex;
-            align-items: center;
-            gap: 10px;
-            font-size: 0.85rem;
-            font-weight: 700;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            border-bottom: 1px solid var(--text-main);
-            padding-bottom: 4px;
-        }
-        .explore-link:hover { color: var(--accent-orange); border-color: var(--accent-orange); }
-
-        /* Grid */
-        .grid-4 {
-            display: grid;
-            grid-template-columns: repeat(4, 1fr);
-            gap: 24px;
-        }
-
-        /* Today's Advice */
-        .todays-advice {
-            background: var(--bg-white);
-            border-top: 1px solid var(--border-color);
-            border-bottom: 1px solid var(--border-color);
-            padding: 60px 0;
-        }
-        .advice-grid {
-            display: grid;
-            grid-template-columns: 1fr 1.2fr;
-            gap: 48px;
-            align-items: center;
-        }
-        .advice-illustration {
-            background: var(--accent-green-light);
-            border-radius: var(--radius-lg);
-            padding: 40px 28px;
-            text-align: center;
-        }
-        .advice-illustration .advice-icon {
-            width: 64px;
-            height: 64px;
-            border-radius: 50%;
-            background: var(--accent-green);
-            color: #fff;
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 1.4rem;
-            margin-bottom: 18px;
-        }
-        .advice-illustration .quote {
-            font-family: var(--font-serif);
-            font-size: 1.25rem;
-            font-style: italic;
-            color: var(--accent-green);
-            line-height: 1.4;
-        }
-        .advice-text h2 { font-size: 2.4rem; margin-bottom: 14px; }
-        .advice-text h2 em {
-            color: var(--accent-orange);
-            font-style: italic;
-            font-family: var(--font-serif);
-        }
-        .advice-text p { font-size: 1rem; color: var(--text-muted); margin-bottom: 18px; }
-        .advice-points {
-            display: flex;
-            flex-direction: column;
-            gap: 10px;
-            margin: 20px 0 24px;
-        }
-        .advice-point {
-            display: flex;
-            align-items: flex-start;
-            gap: 12px;
-            font-size: 0.92rem;
-        }
-        .advice-point .check {
-            width: 22px;
-            height: 22px;
-            border-radius: 50%;
-            background: var(--accent-green-light);
-            color: var(--accent-green);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 0.7rem;
-            flex-shrink: 0;
-            margin-top: 2px;
-        }
-
-        /* AI promo */
-        .ai-promo-wrap { padding: 48px 0; }
-        .ai-promo {
-            background: var(--accent-green);
-            color: #fff;
-            border-radius: var(--radius-lg);
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            overflow: hidden;
-            max-height: 420px;
-        }
-        .ai-promo-image img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-            display: block;
-        }
-        .ai-promo-text {
-            padding: 40px 44px;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-        }
-        .ai-promo-text .section-label {
-            color: rgba(255,255,255,0.7);
-            margin-bottom: 6px;
-        }
-        .ai-promo-text h2 {
-            font-size: 2rem;
-            margin-bottom: 14px;
-            line-height: 1.1;
-        }
-        .ai-promo-text h2 em {
-            color: var(--accent-orange);
-            font-style: italic;
-            font-family: var(--font-serif);
-        }
-        .ai-promo-text p {
-            opacity: 0.85;
-            margin-bottom: 18px;
-            max-width: 440px;
-            font-size: 0.92rem;
-        }
-        .ai-promo-steps {
-            display: flex;
-            flex-direction: column;
-            gap: 8px;
-            margin-bottom: 22px;
-        }
-        .ai-promo-step {
-            display: flex;
-            align-items: center;
-            gap: 14px;
-            font-size: 0.88rem;
-            padding-bottom: 8px;
-            border-bottom: 1px solid rgba(255,255,255,0.15);
-        }
-        .ai-promo-step:last-child { border-bottom: none; padding-bottom: 0; }
-        .ai-promo-step span {
-            font-family: var(--font-serif);
-            font-size: 0.8rem;
-            opacity: 0.7;
-            min-width: 24px;
-        }
-        .ai-promo-text .btn {
-            background: #fff;
-            color: var(--accent-green);
-            align-self: flex-start;
-            padding: 10px 20px;
-            font-size: 0.85rem;
-        }
-        .ai-promo-text .btn:hover { background: var(--accent-orange-light); }
-
-        /* Cuisines grid */
-        .cuisine-grid {
-            display: grid;
-            grid-template-columns: repeat(4, 1fr);
-            gap: 0;
-            border: 1px solid var(--border-color);
-            border-radius: var(--radius-md);
-            overflow: hidden;
-            background: var(--bg-white);
-        }
-        .cuisine-item {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 24px 28px;
-            border-right: 1px solid var(--border-color);
-            border-bottom: 1px solid var(--border-color);
-            font-family: var(--font-serif);
-            font-size: 1.2rem;
-            font-weight: 600;
-            transition: var(--transition);
-            position: relative;
-        }
-        .cuisine-item:nth-child(4n) { border-right: none; }
-        .cuisine-item:nth-last-child(-n+4) { border-bottom: none; }
-        .cuisine-item:hover { background: var(--accent-green-light); color: var(--accent-green); }
-        .cuisine-item .num {
-            position: absolute;
-            top: 12px;
-            left: 16px;
-            font-family: var(--font-sans);
-            font-size: 0.65rem;
-            color: var(--accent-orange);
-            letter-spacing: 1px;
-            font-weight: 700;
-        }
-        .cuisine-item .arrow {
-            font-size: 0.9rem;
-            color: var(--text-muted);
-            transition: var(--transition);
-        }
-        .cuisine-item:hover .arrow { color: var(--accent-green); transform: translateX(4px); }
-
-        /* Healthy banner */
-        .healthy-banner {
-            background: var(--accent-green-light);
-            border-radius: var(--radius-lg);
-            padding: 44px;
-        }
-        .healthy-banner h2 {
-            font-size: 2.4rem;
-            color: var(--accent-green);
-            margin-bottom: 10px;
-        }
-        .healthy-banner h2 em {
-            color: var(--accent-orange);
-            font-style: italic;
-            font-family: var(--font-serif);
-        }
-        .healthy-banner p {
-            color: var(--text-muted);
-            max-width: 520px;
-            margin-bottom: 20px;
-            font-size: 0.95rem;
-        }
-        .healthy-recipe-grid {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 20px;
-            margin-top: 28px;
-        }
-        .healthy-card {
-            background: var(--bg-white);
-            border-radius: var(--radius-md);
-            border: 1px solid var(--border-color);
-            overflow: hidden;
-            position: relative;
-            transition: var(--transition);
-        }
-        .healthy-card:hover { transform: translateY(-4px); box-shadow: var(--shadow-md); }
-        .healthy-card .kcal-badge {
-            position: absolute;
-            top: 12px;
-            left: 12px;
-            background: rgba(255,255,255,0.95);
-            color: var(--text-main);
-            font-size: 0.72rem;
-            font-weight: 600;
-            padding: 5px 10px;
-            border-radius: 50px;
-            display: inline-flex;
-            align-items: center;
-            gap: 6px;
-            z-index: 2;
-        }
-        .healthy-card img { width: 100%; height: 170px; object-fit: cover; }
-        .healthy-card .healthy-body { padding: 18px; }
-        .healthy-card .card-tag {
-            font-size: 0.68rem;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            font-weight: 700;
-            color: var(--accent-orange);
-            margin-bottom: 6px;
-            display: block;
-        }
-        .healthy-card h3 { font-size: 1.1rem; margin-bottom: 6px; }
-        .healthy-card p { font-size: 0.82rem; color: var(--text-muted); margin-bottom: 12px; }
-        .healthy-card .card-meta {
-            display: flex;
-            gap: 14px;
-            font-size: 0.78rem;
-            color: var(--text-muted);
-            border-top: 1px solid var(--border-color);
-            padding-top: 10px;
-        }
-
-        /* ---------- RESPONSIVE ---------- */
-        @media (max-width: 1100px) {
-            .hero { grid-template-columns: 1fr; gap: 40px; padding: 40px 0 60px; }
-            .hero-text { max-width: 100%; }
-            .hero-image { height: 360px; max-height: 50vh; }
-            .hero-image-wrap { padding-left: 0; padding-bottom: 0; }
-            .hero-overlay-card { position: static; margin-top: 20px; max-width: 100%; }
-        }
-        @media (max-width: 1024px) {
-            .hero-text h1 { font-size: 3rem; }
-            .grid-4 { grid-template-columns: repeat(2, 1fr); }
-            .cuisine-grid { grid-template-columns: repeat(2, 1fr); }
-            .cuisine-item:nth-child(4n) { border-right: 1px solid var(--border-color); }
-            .cuisine-item:nth-child(2n) { border-right: none; }
-            .cuisine-item:nth-last-child(-n+4) { border-bottom: 1px solid var(--border-color); }
-            .cuisine-item:nth-last-child(-n+2) { border-bottom: none; }
-            .advice-grid { grid-template-columns: 1fr; }
-            .ai-promo { grid-template-columns: 1fr; max-height: none; }
-            .ai-promo-text { padding: 32px 28px; }
-            .ai-promo-text h2 { font-size: 1.7rem; }
-            .healthy-recipe-grid { grid-template-columns: repeat(2, 1fr); }
-            .healthy-banner { padding: 32px; }
-            .craving-items { flex-wrap: wrap; }
-            .craving-item { flex: 1 0 45%; padding: 8px 12px; }
-            .craving-divider { display: none; }
-        }
-        @media (max-width: 768px) {
-            .grid-4, .healthy-recipe-grid, .cuisine-grid { grid-template-columns: 1fr; }
-            .cuisine-item { border-right: none !important; }
-            .cuisine-item:not(:last-child) { border-bottom: 1px solid var(--border-color) !important; }
-            .hero-text h1 { font-size: 2.4rem; }
-            .section-heading h2 { font-size: 2.2rem; }
-            .ai-promo-text h2 { font-size: 1.6rem; }
-            .healthy-banner h2 { font-size: 1.9rem; }
-        }
-        @media (max-width: 640px) {
-            .hero-text h1 { font-size: 2.2rem; }
-            .hero-actions { margin-bottom: 32px; }
-            .hero-actions .btn { width: 100%; justify-content: center; }
-            .craving-bar { flex-direction: column; align-items: flex-start; gap: 16px; }
-            .craving-item { flex: 1 0 100%; justify-content: flex-start; }
-        }
-    </style>
+    
+    <!-- Fixed CSS paths -->
+    <link rel="stylesheet" href="css/shared.css">
+    <link rel="stylesheet" href="css/index.css">
 </head>
 <body>
     <!-- Announcement bar -->
     <div class="announcement">
         <strong>GOOD FOOD, GOOD FEELING.</strong>
         A little joy in every bite.
-        <a href="ai-recipe.html">Cook with what you have →</a>
+        <!-- Fixed path to pages/ -->
+        <a href="pages/ai-recipe.html">Cook with what you have →</a>
     </div>
 
     <!-- Sticky header -->
     <header class="site-header">
         <div class="container header-inner">
+            <!-- Fixed path to root index.html -->
             <a href="index.html" class="logo">sahtein<span>.</span></a>
             <nav class="nav-links">
                 <a href="index.html" class="active">Home</a>
-                <a href="recipes.html">Recipes</a>
-                <a href="healthy-day.html">Healthy Day</a>
-                <a href="meal-planner.html">Meal Planner</a>
-                <a href="community.html">Community</a>
-                <a href="nutrition.html">Nutrition</a>
-                <a href="ai-recipe.html">AI Recipe</a>
+                <!-- Fixed paths to pages/ -->
+                <a href="pages/recipes.html">Recipes</a>
+                <a href="pages/healthy-day.html">Healthy Day</a>
+                <a href="pages/meal-planner.html">Meal Planner</a>
+                <a href="pages/community.html">Community</a>
+                <a href="pages/nutrition.html">Nutrition</a>
+                <a href="pages/ai-recipe.html">AI Recipe</a>
             </nav>
             <div class="header-actions">
                 <button type="button" class="icon-btn" title="Sign in to save favorites"
@@ -678,7 +63,7 @@
                 and make something wonderful with what's already in your kitchen.
             </p>
             <div class="hero-actions">
-                <a href="recipes.html" class="btn btn-primary">
+                <a href="pages/recipes.html" class="btn btn-primary">
                     Explore recipes <i class="fa-solid fa-arrow-right"></i>
                 </a>
                 <button type="button" class="btn btn-outline"
@@ -727,21 +112,21 @@
             <span class="craving-label">What are you<br>craving today?</span>
 
             <div class="craving-items">
-                <a href="recipes.html" class="craving-item">
+                <a href="pages/recipes.html" class="craving-item">
                     <span class="icon icon-green"><i class="fa-solid fa-utensils"></i></span>
                     All recipes
                     <span class="arrow"><i class="fa-solid fa-arrow-right"></i></span>
                 </a>
                 <span class="craving-divider"></span>
 
-                <a href="recipes.html" class="craving-item">
+                <a href="pages/recipes.html" class="craving-item">
                     <span class="icon icon-orange"><i class="fa-solid fa-clock"></i></span>
                     Quick &amp; easy
                     <span class="arrow"><i class="fa-solid fa-arrow-right"></i></span>
                 </a>
                 <span class="craving-divider"></span>
 
-                <a href="healthy-day.html" class="craving-item">
+                <a href="pages/healthy-day.html" class="craving-item">
                     <span class="icon icon-green"><i class="fa-solid fa-leaf"></i></span>
                     Healthy picks
                     <span class="arrow"><i class="fa-solid fa-arrow-right"></i></span>
@@ -766,12 +151,12 @@
                 <h2>Recipes to fall for<em>.</em></h2>
                 <p>Comforting classics and fresh favorites, made to be shared.</p>
             </div>
-            <a href="recipes.html" class="explore-link">Explore all recipes <i class="fa-solid fa-arrow-right"></i></a>
+            <a href="pages/recipes.html" class="explore-link">Explore all recipes <i class="fa-solid fa-arrow-right"></i></a>
         </div>
 
         <div class="grid-4">
-
-            <a href="recipe-detail.html" class="recipe-card">
+            <!-- 4 Recipe Cards (Paths updated) -->
+            <a href="pages/recipe-detail.html" class="recipe-card">
                 <div class="card-img-wrap">
                     <img src="https://images.unsplash.com/photo-1541518763669-27fef04b14ea?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80" alt="Chicken Maqluba" class="card-img">
                     <button type="button" class="card-fav" title="Sign in to save"
@@ -800,7 +185,7 @@
                 </div>
             </a>
 
-            <a href="recipe-detail.html" class="recipe-card">
+            <a href="pages/recipe-detail.html" class="recipe-card">
                 <div class="card-img-wrap">
                     <img src="https://images.unsplash.com/photo-1626200419199-391ae4be7a41?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80" alt="Herby Falafel Plate" class="card-img">
                     <button type="button" class="card-fav" title="Sign in to save"
@@ -829,7 +214,7 @@
                 </div>
             </a>
 
-            <a href="recipe-detail.html" class="recipe-card">
+            <a href="pages/recipe-detail.html" class="recipe-card">
                 <div class="card-img-wrap">
                     <img src="https://images.unsplash.com/photo-1593560708920-61dd98c46a4e?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80" alt="Classic Shakshuka" class="card-img">
                     <button type="button" class="card-fav" title="Sign in to save"
@@ -858,7 +243,7 @@
                 </div>
             </a>
 
-            <a href="recipe-detail.html" class="recipe-card">
+            <a href="pages/recipe-detail.html" class="recipe-card">
                 <div class="card-img-wrap">
                     <img src="https://images.unsplash.com/photo-1541518763669-27fef04b14ea?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80" alt="Silky Hummus & Pita" class="card-img">
                     <button type="button" class="card-fav" title="Sign in to save"
@@ -886,7 +271,6 @@
                     </div>
                 </div>
             </a>
-
         </div>
     </section>
 
@@ -915,7 +299,7 @@
                         <span>Pair it with protein and a whole grain to stay full for longer.</span>
                     </div>
                 </div>
-                <a href="nutrition.html" class="btn btn-primary">More nutrition advice <i class="fa-solid fa-arrow-right"></i></a>
+                <a href="pages/nutrition.html" class="btn btn-primary">More nutrition advice <i class="fa-solid fa-arrow-right"></i></a>
             </div>
         </div>
     </section>
@@ -950,20 +334,20 @@
                 <span class="section-label">A world of flavor</span>
                 <h2>Explore by cuisine<em>.</em></h2>
             </div>
-            <a href="recipes.html" class="explore-link">Browse all <i class="fa-solid fa-arrow-right"></i></a>
+            <a href="pages/recipes.html" class="explore-link">Browse all <i class="fa-solid fa-arrow-right"></i></a>
         </div>
         <div class="cuisine-grid">
-            <a href="recipes.html" class="cuisine-item"><span class="num">01</span> Jordanian <span class="arrow"><i class="fa-solid fa-arrow-right"></i></span></a>
-            <a href="recipes.html" class="cuisine-item"><span class="num">02</span> Palestinian <span class="arrow"><i class="fa-solid fa-arrow-right"></i></span></a>
-            <a href="recipes.html" class="cuisine-item"><span class="num">03</span> Lebanese <span class="arrow"><i class="fa-solid fa-arrow-right"></i></span></a>
-            <a href="recipes.html" class="cuisine-item"><span class="num">04</span> Syrian <span class="arrow"><i class="fa-solid fa-arrow-right"></i></span></a>
-            <a href="recipes.html" class="cuisine-item"><span class="num">05</span> Egyptian <span class="arrow"><i class="fa-solid fa-arrow-right"></i></span></a>
-            <a href="recipes.html" class="cuisine-item"><span class="num">06</span> Iraqi <span class="arrow"><i class="fa-solid fa-arrow-right"></i></span></a>
-            <a href="recipes.html" class="cuisine-item"><span class="num">07</span> Gulf <span class="arrow"><i class="fa-solid fa-arrow-right"></i></span></a>
-            <a href="recipes.html" class="cuisine-item"><span class="num">08</span> North African <span class="arrow"><i class="fa-solid fa-arrow-right"></i></span></a>
-            <a href="recipes.html" class="cuisine-item"><span class="num">09</span> Turkish <span class="arrow"><i class="fa-solid fa-arrow-right"></i></span></a>
-            <a href="recipes.html" class="cuisine-item"><span class="num">10</span> Mediterranean <span class="arrow"><i class="fa-solid fa-arrow-right"></i></span></a>
-            <a href="recipes.html" class="cuisine-item"><span class="num">11</span> International <span class="arrow"><i class="fa-solid fa-arrow-right"></i></span></a>
+            <a href="pages/recipes.html" class="cuisine-item"><span class="num">01</span> Jordanian <span class="arrow"><i class="fa-solid fa-arrow-right"></i></span></a>
+            <a href="pages/recipes.html" class="cuisine-item"><span class="num">02</span> Palestinian <span class="arrow"><i class="fa-solid fa-arrow-right"></i></span></a>
+            <a href="pages/recipes.html" class="cuisine-item"><span class="num">03</span> Lebanese <span class="arrow"><i class="fa-solid fa-arrow-right"></i></span></a>
+            <a href="pages/recipes.html" class="cuisine-item"><span class="num">04</span> Syrian <span class="arrow"><i class="fa-solid fa-arrow-right"></i></span></a>
+            <a href="pages/recipes.html" class="cuisine-item"><span class="num">05</span> Egyptian <span class="arrow"><i class="fa-solid fa-arrow-right"></i></span></a>
+            <a href="pages/recipes.html" class="cuisine-item"><span class="num">06</span> Iraqi <span class="arrow"><i class="fa-solid fa-arrow-right"></i></span></a>
+            <a href="pages/recipes.html" class="cuisine-item"><span class="num">07</span> Gulf <span class="arrow"><i class="fa-solid fa-arrow-right"></i></span></a>
+            <a href="pages/recipes.html" class="cuisine-item"><span class="num">08</span> North African <span class="arrow"><i class="fa-solid fa-arrow-right"></i></span></a>
+            <a href="pages/recipes.html" class="cuisine-item"><span class="num">09</span> Turkish <span class="arrow"><i class="fa-solid fa-arrow-right"></i></span></a>
+            <a href="pages/recipes.html" class="cuisine-item"><span class="num">10</span> Mediterranean <span class="arrow"><i class="fa-solid fa-arrow-right"></i></span></a>
+            <a href="pages/recipes.html" class="cuisine-item"><span class="num">11</span> International <span class="arrow"><i class="fa-solid fa-arrow-right"></i></span></a>
         </div>
     </section>
 
@@ -976,136 +360,94 @@
                     <h2>Healthy looks <em>delicious.</em></h2>
                     <p>Full of flavor, with the numbers that help you feel your best.</p>
                 </div>
-                <a href="healthy-day.html" class="explore-link">Your healthy day <i class="fa-solid fa-arrow-right"></i></a>
+                <a href="pages/healthy-day.html" class="explore-link">Your healthy day <i class="fa-solid fa-arrow-right"></i></a>
             </div>
 
             <div class="healthy-recipe-grid">
-                <!-- <a href="recipe-detail.html" class="healthy-card">
-                    <span class="kcal-badge"><i class="fa-solid fa-fire"></i> 480 kcal / serving</span>
-                    <img src="https://images.unsplash.com/photo-1544025162-d76694265947?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80" alt="Chicken Shawarma Bowl">
-                    <div class="healthy-body">
-                        <span class="card-tag">Middle Eastern · Dinner</span>
-                        <h3>Chicken Shawarma Bowl</h3>
-                        <p>A bright, nourishing bowl with spiced chicken, grains, and greens.</p>
+                <a href="pages/recipe-detail.html" class="recipe-card">
+                    <div class="card-img-wrap">
+                        <img src="https://images.unsplash.com/photo-1541518763669-27fef04b14ea?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80" alt="Chicken Maqluba" class="card-img">
+                        <button type="button" class="card-fav" title="Sign in to save"
+                                data-requires-login="true" data-action="toggle-favorite"
+                                onclick="event.preventDefault(); event.stopPropagation();">
+                            <i class="fa-regular fa-heart"></i>
+                        </button>
+                        <div class="card-cta">
+                            <span>Go to recipe</span>
+                            <i class="fa-solid fa-arrow-right"></i>
+                        </div>
+                        <div class="card-badges">
+                            <span class="card-badge"><i class="fa-solid fa-fire"></i> 520 kcal</span>
+                            <span class="card-badge"><i class="fa-solid fa-dumbbell"></i> 35g protein</span>
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        <span class="card-tag">Palestinian · Dinner</span>
+                        <h3 class="card-title">Chicken Maqluba</h3>
+                        <p class="card-desc">A fragrant, upside-down rice dish layered with tender chicken and vegetables.</p>
                         <div class="card-meta">
                             <span><i class="fa-solid fa-star" style="color:#F5A623;"></i> 4.9</span>
-                            <span><i class="fa-regular fa-clock"></i> 40 min</span>
-                            <span>42g protein</span>
+                            <span><i class="fa-regular fa-clock"></i> 65 min</span>
+                            <span>Intermediate</span>
                         </div>
                     </div>
-                </a> -->
-				<a href="recipe-detail.html" class="recipe-card">
-                <div class="card-img-wrap">
-                    <img src="https://images.unsplash.com/photo-1541518763669-27fef04b14ea?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80" alt="Chicken Maqluba" class="card-img">
-                    <button type="button" class="card-fav" title="Sign in to save"
-                            data-requires-login="true" data-action="toggle-favorite"
-                            onclick="event.preventDefault(); event.stopPropagation();">
-                        <i class="fa-regular fa-heart"></i>
-                    </button>
-                    <div class="card-cta">
-                        <span>Go to recipe</span>
-                        <i class="fa-solid fa-arrow-right"></i>
-                    </div>
-                    <div class="card-badges">
-                        <span class="card-badge"><i class="fa-solid fa-fire"></i> 520 kcal</span>
-                        <span class="card-badge"><i class="fa-solid fa-dumbbell"></i> 35g protein</span>
-                    </div>
-                </div>
-                <div class="card-body">
-                    <span class="card-tag">Palestinian · Dinner</span>
-                    <h3 class="card-title">Chicken Maqluba</h3>
-                    <p class="card-desc">A fragrant, upside-down rice dish layered with tender chicken and vegetables.</p>
-                    <div class="card-meta">
-                        <span><i class="fa-solid fa-star" style="color:#F5A623;"></i> 4.9</span>
-                        <span><i class="fa-regular fa-clock"></i> 65 min</span>
-                        <span>Intermediate</span>
-                    </div>
-                </div>
-            </a>
-                <!-- <a href="recipe-detail.html" class="healthy-card">
-                    <span class="kcal-badge"><i class="fa-solid fa-fire"></i> 210 kcal / serving</span>
-                    <img src="https://images.unsplash.com/photo-1626200419199-391ae4be7a41?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80" alt="Fresh Tabbouleh">
-                    <div class="healthy-body">
-                        <span class="card-tag">Lebanese · Lunch</span>
-                        <h3>Fresh Tabbouleh</h3>
-                        <p>A refreshing parsley-forward salad with lemon, tomatoes, and bulgur.</p>
-                        <div class="card-meta">
-                            <span><i class="fa-solid fa-star" style="color:#F5A623;"></i> 4.7</span>
-                            <span><i class="fa-regular fa-clock"></i> 20 min</span>
-                            <span>6g protein</span>
+                </a>
+                <a href="pages/recipe-detail.html" class="recipe-card">
+                    <div class="card-img-wrap">
+                        <img src="https://images.unsplash.com/photo-1541518763669-27fef04b14ea?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80" alt="Chicken Maqluba" class="card-img">
+                        <button type="button" class="card-fav" title="Sign in to save"
+                                data-requires-login="true" data-action="toggle-favorite"
+                                onclick="event.preventDefault(); event.stopPropagation();">
+                            <i class="fa-regular fa-heart"></i>
+                        </button>
+                        <div class="card-cta">
+                            <span>Go to recipe</span>
+                            <i class="fa-solid fa-arrow-right"></i>
+                        </div>
+                        <div class="card-badges">
+                            <span class="card-badge"><i class="fa-solid fa-fire"></i> 520 kcal</span>
+                            <span class="card-badge"><i class="fa-solid fa-dumbbell"></i> 35g protein</span>
                         </div>
                     </div>
-                </a> -->
-				<a href="recipe-detail.html" class="recipe-card">
-                <div class="card-img-wrap">
-                    <img src="https://images.unsplash.com/photo-1541518763669-27fef04b14ea?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80" alt="Chicken Maqluba" class="card-img">
-                    <button type="button" class="card-fav" title="Sign in to save"
-                            data-requires-login="true" data-action="toggle-favorite"
-                            onclick="event.preventDefault(); event.stopPropagation();">
-                        <i class="fa-regular fa-heart"></i>
-                    </button>
-                    <div class="card-cta">
-                        <span>Go to recipe</span>
-                        <i class="fa-solid fa-arrow-right"></i>
-                    </div>
-                    <div class="card-badges">
-                        <span class="card-badge"><i class="fa-solid fa-fire"></i> 520 kcal</span>
-                        <span class="card-badge"><i class="fa-solid fa-dumbbell"></i> 35g protein</span>
-                    </div>
-                </div>
-                <div class="card-body">
-                    <span class="card-tag">Palestinian · Dinner</span>
-                    <h3 class="card-title">Chicken Maqluba</h3>
-                    <p class="card-desc">A fragrant, upside-down rice dish layered with tender chicken and vegetables.</p>
-                    <div class="card-meta">
-                        <span><i class="fa-solid fa-star" style="color:#F5A623;"></i> 4.9</span>
-                        <span><i class="fa-regular fa-clock"></i> 65 min</span>
-                        <span>Intermediate</span>
-                    </div>
-                </div>
-            </a>
-                <!-- <a href="recipe-detail.html" class="healthy-card">
-                    <span class="kcal-badge"><i class="fa-solid fa-fire"></i> 310 kcal / serving</span>
-                    <img src="https://images.unsplash.com/photo-1593560708920-61dd98c46a4e?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80" alt="Classic Shakshuka">
-                    <div class="healthy-body">
-                        <span class="card-tag">North African · Breakfast</span>
-                        <h3>Classic Shakshuka</h3>
-                        <p>Soft eggs nestled in a warmly spiced tomato and pepper sauce.</p>
+                    <div class="card-body">
+                        <span class="card-tag">Palestinian · Dinner</span>
+                        <h3 class="card-title">Chicken Maqluba</h3>
+                        <p class="card-desc">A fragrant, upside-down rice dish layered with tender chicken and vegetables.</p>
                         <div class="card-meta">
                             <span><i class="fa-solid fa-star" style="color:#F5A623;"></i> 4.9</span>
-                            <span><i class="fa-regular fa-clock"></i> 30 min</span>
-                            <span>18g protein</span>
+                            <span><i class="fa-regular fa-clock"></i> 65 min</span>
+                            <span>Intermediate</span>
                         </div>
                     </div>
-                </a> -->
-				<a href="recipe-detail.html" class="recipe-card">
-                <div class="card-img-wrap">
-                    <img src="https://images.unsplash.com/photo-1541518763669-27fef04b14ea?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80" alt="Chicken Maqluba" class="card-img">
-                    <button type="button" class="card-fav" title="Sign in to save"
-                            data-requires-login="true" data-action="toggle-favorite"
-                            onclick="event.preventDefault(); event.stopPropagation();">
-                        <i class="fa-regular fa-heart"></i>
-                    </button>
-                    <div class="card-cta">
-                        <span>Go to recipe</span>
-                        <i class="fa-solid fa-arrow-right"></i>
+                </a>
+                <a href="pages/recipe-detail.html" class="recipe-card">
+                    <div class="card-img-wrap">
+                        <img src="https://images.unsplash.com/photo-1541518763669-27fef04b14ea?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80" alt="Chicken Maqluba" class="card-img">
+                        <button type="button" class="card-fav" title="Sign in to save"
+                                data-requires-login="true" data-action="toggle-favorite"
+                                onclick="event.preventDefault(); event.stopPropagation();">
+                            <i class="fa-regular fa-heart"></i>
+                        </button>
+                        <div class="card-cta">
+                            <span>Go to recipe</span>
+                            <i class="fa-solid fa-arrow-right"></i>
+                        </div>
+                        <div class="card-badges">
+                            <span class="card-badge"><i class="fa-solid fa-fire"></i> 520 kcal</span>
+                            <span class="card-badge"><i class="fa-solid fa-dumbbell"></i> 35g protein</span>
+                        </div>
                     </div>
-                    <div class="card-badges">
-                        <span class="card-badge"><i class="fa-solid fa-fire"></i> 520 kcal</span>
-                        <span class="card-badge"><i class="fa-solid fa-dumbbell"></i> 35g protein</span>
+                    <div class="card-body">
+                        <span class="card-tag">Palestinian · Dinner</span>
+                        <h3 class="card-title">Chicken Maqluba</h3>
+                        <p class="card-desc">A fragrant, upside-down rice dish layered with tender chicken and vegetables.</p>
+                        <div class="card-meta">
+                            <span><i class="fa-solid fa-star" style="color:#F5A623;"></i> 4.9</span>
+                            <span><i class="fa-regular fa-clock"></i> 65 min</span>
+                            <span>Intermediate</span>
+                        </div>
                     </div>
-                </div>
-                <div class="card-body">
-                    <span class="card-tag">Palestinian · Dinner</span>
-                    <h3 class="card-title">Chicken Maqluba</h3>
-                    <p class="card-desc">A fragrant, upside-down rice dish layered with tender chicken and vegetables.</p>
-                    <div class="card-meta">
-                        <span><i class="fa-solid fa-star" style="color:#F5A623;"></i> 4.9</span>
-                        <span><i class="fa-regular fa-clock"></i> 65 min</span>
-                        <span>Intermediate</span>
-                    </div>
-                </div>
-            </a>
+                </a>
             </div>
         </div>
     </section>
@@ -1121,10 +463,10 @@
                 <div>
                     <h4>Explore</h4>
                     <div class="footer-links">
-                        <a href="recipes.html">All recipes</a>
-                        <a href="healthy-day.html">Healthy Day</a>
-                        <a href="nutrition.html">Nutrition advice</a>
-                        <a href="ai-recipe.html">AI recipe assistant</a>
+                        <a href="pages/recipes.html">All recipes</a>
+                        <a href="pages/healthy-day.html">Healthy Day</a>
+                        <a href="pages/nutrition.html">Nutrition advice</a>
+                        <a href="pages/ai-recipe.html">AI recipe assistant</a>
                     </div>
                 </div>
                 <div>
@@ -1133,7 +475,7 @@
                         <button type="button" data-requires-login="true" data-action="profile">Profile</button>
                         <button type="button" data-requires-login="true" data-action="favorites">Saved recipes</button>
                         <button type="button" data-requires-login="true" data-action="meal-planner">Meal planner</button>
-                        <a href="community.html">Community</a>
+                        <a href="pages/community.html">Community</a>
                     </div>
                 </div>
                 <div>
@@ -1150,7 +492,8 @@
         </div>
     </footer>
 
-    <script src="shared.js"></script>
-    <script src="auth-guard.js"></script>
+    <!-- Fixed JS Paths -->
+    <script src="javascript/shared.js"></script>
+    <script src="javascript/auth-guard.js"></script>
 </body>
 </html>

@@ -8,190 +8,10 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,700&family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link rel="stylesheet" href="shared.css">
-    <style>
-        /* =========================================================
-           Healthy-day-page-only styles
-           ========================================================= */
-        .page-header { padding: 32px 0 14px; }
-        .page-header h1 { font-size: 2.1rem; margin-bottom: 8px; }
-        .page-header p { font-size: 0.92rem; }
-        .page-header-actions { display: flex; gap: 8px; flex-wrap: wrap; }
-
-        /* ---------- Summary grid ---------- */
-        .summary-grid {
-            display: grid;
-            grid-template-columns: 2fr 1fr;
-            gap: 16px;
-            margin-bottom: 22px;
-        }
-        .calorie-card {
-            background: var(--accent-green);
-            color: #fff;
-            padding: 22px;
-            border-radius: var(--radius-md);
-            display: flex;
-            flex-direction: column;
-            justify-content: space-between;
-        }
-        .calorie-card h3 { font-size: 1.35rem; margin-bottom: 10px; }
-        .calorie-stats {
-            display: flex;
-            justify-content: space-between;
-            gap: 12px;
-            margin-top: 14px;
-        }
-        .calorie-stats div { text-align: center; flex: 1; }
-        .calorie-stats strong {
-            display: block;
-            font-size: 1.2rem;
-            font-family: var(--font-serif);
-        }
-        .calorie-stats span { font-size: 0.72rem; opacity: 0.8; }
-
-        .macro-card {
-            background: var(--bg-white);
-            padding: 18px;
-            border-radius: var(--radius-md);
-            border: 1px solid var(--border-color);
-        }
-        .macro-card h3 { font-size: 1.05rem; margin-bottom: 12px; }
-        .macro-bar { margin-bottom: 10px; }
-        .macro-bar .flex-between { margin-bottom: 4px; font-size: 0.78rem; }
-        .bar-bg {
-            height: 6px;
-            background: #eee;
-            border-radius: 10px;
-            overflow: hidden;
-        }
-        .bar-fill { height: 100%; border-radius: 10px; }
-        .fill-protein { background: var(--accent-orange); }
-        .fill-carbs   { background: var(--accent-green); }
-        .fill-fat     { background: #E2B04A; }
-        .fill-fiber   { background: #8B5CF6; }
-
-        /* ---------- Quick habits row ---------- */
-        .quick-habits {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 16px;
-            margin-bottom: 22px;
-        }
-        .habit-card {
-            background: var(--bg-white);
-            border: 1px solid var(--border-color);
-            border-radius: var(--radius-md);
-            padding: 20px 22px;
-            display: flex;
-            align-items: center;
-            gap: 16px;
-            text-decoration: none;
-            color: inherit;
-            transition: var(--transition);
-        }
-        .habit-card:hover {
-            border-color: var(--accent-green);
-            transform: translateY(-2px);
-            box-shadow: var(--shadow-md);
-        }
-        .habit-icon {
-            width: 48px;
-            height: 48px;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 1.15rem;
-            flex-shrink: 0;
-        }
-        .habit-icon.water  { background: #E3F2FD; color: #1976D2; }
-        .habit-icon.fast   { background: var(--accent-orange-light); color: var(--accent-orange); }
-        .habit-body { flex: 1; }
-        .habit-body strong { display: block; font-size: 1rem; margin-bottom: 2px; }
-        .habit-body span {
-            font-size: 0.78rem;
-            color: var(--text-muted);
-        }
-        .habit-arrow {
-            color: var(--text-muted);
-            font-size: 0.9rem;
-            transition: var(--transition);
-        }
-        .habit-card:hover .habit-arrow { color: var(--accent-green); transform: translateX(3px); }
-
-        /* ---------- Meal log grid ---------- */
-        .meal-log-grid {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 16px;
-            margin-bottom: 22px;
-        }
-        .meal-card {
-            background: var(--bg-white);
-            padding: 18px;
-            border-radius: var(--radius-md);
-            border: 1px solid var(--border-color);
-        }
-        .meal-card h3 { font-size: 1.05rem; margin-bottom: 10px; }
-        .meal-item {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            padding: 8px 0;
-            border-bottom: 1px solid var(--border-color);
-        }
-        .meal-item:last-child { border-bottom: none; }
-        .meal-item img {
-            width: 40px;
-            height: 40px;
-            border-radius: 8px;
-            object-fit: cover;
-        }
-        .meal-item div { flex: 1; font-size: 0.85rem; }
-        .meal-item .kcal {
-            font-weight: 500;
-            font-size: 0.82rem;
-            color: var(--accent-green);
-        }
-
-        /* ---------- Nutritionist recommendations ---------- */
-        .nutritionist-grid {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 16px;
-            margin-bottom: 22px;
-        }
-        .nutritionist-card {
-            background: var(--accent-green-light);
-            padding: 18px;
-            border-radius: var(--radius-md);
-        }
-        .nutritionist-card h4 {
-            font-family: var(--font-sans);
-            font-size: 0.72rem;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-            color: var(--accent-green);
-            margin-bottom: 4px;
-        }
-        .nutritionist-card h3 { font-size: 1.05rem; margin-bottom: 6px; }
-        .nutritionist-card p {
-            font-size: 0.82rem;
-            color: var(--text-muted);
-            margin-bottom: 12px;
-        }
-
-        /* ---------- Responsive ---------- */
-        @media (max-width: 1024px) {
-            .summary-grid { grid-template-columns: 1fr; }
-            .meal-log-grid { grid-template-columns: 1fr; }
-            .nutritionist-grid { grid-template-columns: 1fr; }
-            .quick-habits { grid-template-columns: 1fr; }
-        }
-        @media (max-width: 768px) {
-            .page-header h1 { font-size: 1.8rem; }
-        }
-    </style>
+    
+    <!-- Linked CSS Files -->
+    <link rel="stylesheet" href="../css/shared.css">
+    <link rel="stylesheet" href="../css/healthy-day.css">
 </head>
 <body>
     <!-- Announcement bar -->
@@ -203,9 +23,9 @@
 
     <header class="site-header">
         <div class="container header-inner">
-            <a href="index.html" class="logo">sahtein<span>.</span></a>
+            <a href="../index.html" class="logo">sahtein<span>.</span></a>
             <nav class="nav-links">
-                <a href="index.html">Home</a>
+                <a href="../index.html">Home</a>
                 <a href="recipes.html">Recipes</a>
                 <a href="healthy-day.html">Healthy Day</a>
                 <a href="meal-planner.html">Meal Planner</a>
@@ -411,7 +231,7 @@
         <div class="container">
             <div class="footer-grid">
                 <div>
-                    <a href="index.html" class="logo" style="margin-bottom: 16px;">sahtein<span>.</span></a>
+                    <a href="../index.html" class="logo" style="margin-bottom: 16px;">sahtein<span>.</span></a>
                     <p class="text-muted text-sm">Good food brings us together. Discover, cook, and share with the world.</p>
                 </div>
                 <div>
@@ -446,7 +266,7 @@
         </div>
     </footer>
 
-    <script src="shared.js"></script>
-    <script src="auth-guard.js"></script>
+    <script src="../javascript/shared.js"></script>
+    <script src="../javascript/auth-guard.js"></script>
 </body>
 </html>

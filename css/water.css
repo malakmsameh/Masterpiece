@@ -1,0 +1,181 @@
+@import url('shared.css');
+
+/* =========================================================
+   Water-page-only styles
+   ========================================================= */
+
+.page-header { padding: 32px 0 14px; }
+.page-header h1 { font-size: 2.1rem; margin-bottom: 8px; }
+.page-header p { font-size: 0.92rem; }
+
+/* Hero card */
+.water-hero {
+    background: linear-gradient(135deg, #1976D2 0%, #0D47A1 100%);
+    color: #fff;
+    padding: 32px 36px;
+    border-radius: var(--radius-lg);
+    margin-bottom: 22px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 24px;
+    flex-wrap: wrap;
+}
+.water-hero .section-label { color: rgba(255,255,255,0.7); }
+.water-hero h2 {
+    font-size: 2rem;
+    margin-bottom: 8px;
+    color: #fff;
+}
+.water-hero p { opacity: 0.9; font-size: 0.92rem; max-width: 460px; }
+.water-hero-stats {
+    display: flex;
+    gap: 24px;
+}
+.water-hero-stats div { text-align: center; }
+.water-hero-stats strong {
+    display: block;
+    font-family: var(--font-serif);
+    font-size: 1.7rem;
+    line-height: 1.1;
+}
+.water-hero-stats span {
+    font-size: 0.72rem;
+    opacity: 0.85;
+}
+
+/* Main card */
+.water-card {
+    background: var(--bg-white);
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius-md);
+    padding: 28px 32px;
+    margin-bottom: 22px;
+}
+.water-card-head {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    gap: 16px;
+    flex-wrap: wrap;
+    margin-bottom: 20px;
+    padding-bottom: 16px;
+    border-bottom: 1px solid var(--border-color);
+}
+.water-card-head h3 { font-size: 1.25rem; }
+.water-card-head p {
+    color: var(--text-muted);
+    font-size: 0.85rem;
+    margin-top: 4px;
+}
+
+/* Dots grid */
+.water-dots-grid {
+    display: grid;
+    grid-template-columns: repeat(8, 1fr);
+    gap: 14px;
+    margin-bottom: 22px;
+}
+.water-dot-btn {
+    aspect-ratio: 1;
+    border-radius: 50%;
+    background: var(--bg-cream);
+    border: 2px solid var(--border-color);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: var(--transition);
+    font-size: 1.05rem;
+    color: var(--border-color);
+    position: relative;
+}
+.water-dot-btn:hover { border-color: #1976D2; }
+.water-dot-btn.filled {
+    background: linear-gradient(135deg, #64B5F6, #1976D2);
+    border-color: #1976D2;
+    color: #fff;
+}
+.water-dot-btn.filled i { color: #fff; }
+
+/* Progress bar */
+.water-progress {
+    margin-bottom: 22px;
+}
+.water-progress .flex-between {
+    font-size: 0.82rem;
+    margin-bottom: 6px;
+    color: var(--text-muted);
+}
+.water-bar {
+    height: 10px;
+    background: #eee;
+    border-radius: 10px;
+    overflow: hidden;
+}
+.water-bar-fill {
+    height: 100%;
+    background: linear-gradient(90deg, #64B5F6, #1976D2);
+    border-radius: 10px;
+    transition: width 0.4s ease;
+}
+
+/* Actions */
+.water-actions {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+}
+
+/* Week */
+.water-week {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    gap: 10px;
+}
+.water-day {
+    background: var(--bg-cream);
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius-sm);
+    padding: 12px 8px;
+    text-align: center;
+}
+.water-day .wd-name {
+    font-size: 0.68rem;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    color: var(--text-muted);
+    display: block;
+    margin-bottom: 6px;
+}
+.water-day .wd-glasses {
+    font-family: var(--font-serif);
+    font-size: 1.05rem;
+    font-weight: 700;
+    color: var(--text-main);
+    display: block;
+}
+.water-day .wd-status {
+    display: inline-block;
+    margin-top: 6px;
+    font-size: 0.62rem;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    font-weight: 700;
+    padding: 3px 8px;
+    border-radius: 50px;
+}
+.water-day.met    .wd-status { background: #E3F2FD; color: #0D47A1; }
+.water-day.missed .wd-status { background: #FFEBEE; color: #C62828; }
+.water-day.empty  .wd-status { background: var(--border-color); color: var(--text-muted); }
+.water-day.today  { border-color: #1976D2; }
+
+/* Responsive */
+@media (max-width: 1024px) {
+    .water-dots-grid { grid-template-columns: repeat(4, 1fr); }
+}
+@media (max-width: 640px) {
+    .water-week { grid-template-columns: repeat(4, 1fr); }
+    .water-hero { padding: 24px; }
+    .water-hero h2 { font-size: 1.6rem; }
+}

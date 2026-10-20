@@ -8,105 +8,16 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,700&family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <style>
-        :root {
-            --bg-cream: #FDFBF7; --bg-white: #FFFFFF; --text-main: #2C2C2C; --text-muted: #7A7A7A;
-            --accent-green: #2A4B3C; --accent-green-light: #E8F0EA; --accent-orange: #D96C4A;
-            --accent-orange-light: #FDF0EC; --border-color: #E6E2D8; --font-serif: 'Playfair Display', serif;
-            --font-sans: 'DM Sans', sans-serif; --radius-sm: 8px; --radius-md: 12px; --radius-lg: 20px;
-            --shadow-sm: 0 2px 8px rgba(0,0,0,0.04); --shadow-md: 0 8px 24px rgba(0,0,0,0.06);
-            --transition: all 0.3s ease;
-        }
-        * { margin: 0; padding: 0; box-sizing: border-box; }
-        body { font-family: var(--font-sans); background-color: var(--bg-cream); color: var(--text-main); line-height: 1.6; -webkit-font-smoothing: antialiased; }
-        a { text-decoration: none; color: inherit; }
-        ul { list-style: none; }
-        img { max-width: 100%; display: block; }
-        button { cursor: pointer; font-family: inherit; border: none; background: none; }
-        h1, h2, h3, h4 { font-family: var(--font-serif); font-weight: 600; line-height: 1.2; }
-        h1 { font-size: 2.2rem; letter-spacing: -0.5px; }
-        h2 { font-size: 1.8rem; }
-        h3 { font-size: 1.3rem; }
-        .section-label { font-size: 0.75rem; text-transform: uppercase; letter-spacing: 1.5px; color: var(--accent-orange); font-weight: 700; margin-bottom: 0.5rem; display: block; }
-        .text-muted { color: var(--text-muted); font-size: 0.9rem; }
-        .text-sm { font-size: 0.85rem; }
-        .btn { display: inline-flex; align-items: center; justify-content: center; gap: 8px; padding: 10px 20px; border-radius: 50px; font-weight: 500; font-size: 0.9rem; transition: var(--transition); }
-        .btn-primary { background-color: var(--accent-green); color: #fff; }
-        .btn-primary:hover { background-color: #1e382c; }
-        .btn-outline { border: 1px solid var(--border-color); background: #fff; color: var(--text-main); }
-        .btn-outline:hover { border-color: var(--accent-green); color: var(--accent-green); }
-        .btn-sm { padding: 6px 14px; font-size: 0.8rem; }
-        .btn-danger { background-color: #FFEBEE; color: #C62828; }
-        .btn-danger:hover { background-color: #FFCDD2; }
-        .input-field { width: 100%; padding: 10px 16px; border: 1px solid var(--border-color); border-radius: var(--radius-sm); font-family: inherit; font-size: 0.9rem; background: var(--bg-white); transition: var(--transition); }
-        .input-field:focus { outline: none; border-color: var(--accent-green); box-shadow: 0 0 0 3px var(--accent-green-light); }
-        .dashboard-layout { display: flex; min-height: 100vh; }
-        .flex-between { display: flex; justify-content: space-between; align-items: center; }
-        .flex-center { display: flex; justify-content: center; align-items: center; }
-        .gap-2 { gap: 8px; } .gap-4 { gap: 16px; }
-        .mt-2 { margin-top: 8px; } .mt-4 { margin-top: 16px; } .mb-2 { margin-bottom: 8px; } .mb-4 { margin-bottom: 16px; } .mb-6 { margin-bottom: 24px; }
-        .sidebar { width: 260px; background: var(--bg-white); border-right: 1px solid var(--border-color); padding: 24px 0; display: flex; flex-direction: column; flex-shrink: 0; position: sticky; top: 0; height: 100vh; }
-        .sidebar-logo { padding: 0 24px 24px; border-bottom: 1px solid var(--border-color); margin-bottom: 16px; }
-        .sidebar-logo a { font-family: var(--font-serif); font-size: 1.5rem; font-weight: 700; color: var(--accent-green); display: flex; align-items: center; gap: 8px; }
-        .sidebar-logo a span { color: var(--accent-orange); }
-        .sidebar-logo .admin-badge { font-size: 0.65rem; background: var(--accent-orange-light); color: var(--accent-orange); padding: 2px 8px; border-radius: 50px; font-family: var(--font-sans); margin-left: 8px; text-transform: uppercase; letter-spacing: 1px; }
-        .sidebar-menu { display: flex; flex-direction: column; gap: 4px; padding: 0 16px; flex: 1; }
-        .sidebar-menu a {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            padding: 12px 16px;
-            border-radius: var(--radius-sm);
-            font-size: 0.9rem;
-            font-weight: 500;
-            color: var(--text-muted);
-            transition: var(--transition);
-            white-space: nowrap; /* Prevents text from wrapping */
-        }
-        .sidebar-menu a:hover { background: var(--bg-cream); color: var(--text-main); }
-        .sidebar-menu a.active { background: var(--accent-green-light); color: var(--accent-green); font-weight: 700; }
-        .sidebar-footer { padding: 16px 24px; border-top: 1px solid var(--border-color); margin-top: auto; }
-        .sidebar-footer a { display: flex; align-items: center; gap: 8px; font-size: 0.85rem; color: var(--accent-orange); font-weight: 500; transition: var(--transition); }
-        .sidebar-footer a:hover { text-decoration: underline; }
-        .main-content { flex: 1; padding: 32px 40px; background: var(--bg-cream); overflow-y: auto; }
-        .admin-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 32px; }
-        .admin-header h1 { font-size: 2rem; }
-        .filter-bar { display: flex; gap: 16px; margin-bottom: 24px; background: var(--bg-white); padding: 20px; border-radius: var(--radius-md); border: 1px solid var(--border-color); }
-        .filter-bar .input-field { flex: 1; }
-        .filter-bar select { width: 200px; }
-        .table-container { background: var(--bg-white); border-radius: var(--radius-md); border: 1px solid var(--border-color); overflow: hidden; }
-        .table-header { padding: 20px 24px; border-bottom: 1px solid var(--border-color); display: flex; justify-content: space-between; align-items: center; }
-        table { width: 100%; border-collapse: collapse; text-align: left; }
-        th, td { padding: 16px 24px; border-bottom: 1px solid var(--border-color); font-size: 0.85rem; }
-        th { background: #FAFAFA; font-weight: 500; color: var(--text-muted); text-transform: uppercase; font-size: 0.7rem; letter-spacing: 0.5px; }
-        tr:last-child td { border-bottom: none; }
-        tr:hover { background: #FAFAFA; }
-        /* .action-links a { font-size: 0.8rem; color: var(--text-muted); margin-right: 8px; transition: var(--transition); }
-        .action-links a:hover { color: var(--accent-green); }
-        .action-links a.delete:hover { color: #C62828; } */
-		.action-links button { font-size: 0.8rem; color: var(--text-muted); margin-right: 8px; transition: var(--transition); font-family: inherit; cursor: pointer; background: none; border: none; padding: 0; }
-.action-links button:hover { color: var(--accent-green); }
-.action-links button.delete:hover { color: #C62828; }
-        @media (max-width: 1024px) {
-            .filter-bar { flex-wrap: wrap; }
-            .filter-bar select { width: 100%; }
-        }
-        @media (max-width: 768px) {
-            .dashboard-layout { flex-direction: column; }
-            .sidebar { width: 100%; height: auto; position: static; border-right: none; border-bottom: 1px solid var(--border-color); padding: 16px; }
-            .sidebar-menu { flex-direction: row; flex-wrap: wrap; justify-content: center; }
-            .main-content { padding: 20px; }
-            .admin-header { flex-direction: column; gap: 16px; align-items: flex-start; }
-            .table-container { overflow-x: auto; }
-            table { min-width: 700px; }
-        }
-    </style>
+
+    <!-- Linked CSS Files -->
+    <link rel="stylesheet" href="../css/shared.css">
+    <link rel="stylesheet" href="../css/admin-ingredients.css">
 </head>
 <body>
     <div class="dashboard-layout">
         <aside class="sidebar">
             <div class="sidebar-logo">
-                <a href="index.html">sahtein<span>.</span> <span class="admin-badge">Admin</span></a>
+                <a href="../index.html">sahtein<span>.</span> <span class="admin-badge">Admin</span></a>
             </div>
             <nav class="sidebar-menu">
                 <a href="admin-dashboard.html"><i class="fa-solid fa-chart-line"></i> Dashboard</a>
@@ -115,16 +26,13 @@
                 <a href="admin-users.html"><i class="fa-solid fa-users"></i> User Management</a>
                 <a href="admin-categories.html"><i class="fa-solid fa-folder"></i> Category Management</a>
                 <a href="admin-ai-recipes.html"><i class="fa-solid fa-wand-magic-sparkles"></i> AI Generated Recipes</a>
-				<a href="admin-profile.html"><i class="fa-solid fa-user-gear"></i> Your Profile</a>
+                <a href="admin-profile.html"><i class="fa-solid fa-user-gear"></i> Your Profile</a>
             </nav>
-            <!-- <div class="sidebar-footer">
-                <a href="index.html"><i class="fa-solid fa-right-from-bracket"></i> Exit Admin</a>
-            </div> -->
-			<div class="sidebar-footer">
-                <button type="button" class="sidebar-exit" data-action="exit-admin" style="display: flex; align-items: center; gap: 8px; font-size: 0.85rem; color: var(--accent-orange); font-weight: 500; transition: var(--transition);">
+            <div class="sidebar-footer">
+                <button type="button" class="sidebar-exit" data-action="exit-admin">
                     <i class="fa-solid fa-right-from-bracket"></i> Exit Admin
                 </button>
-				</div>
+            </div>
         </aside>
         <main class="main-content">
             <div class="admin-header">
@@ -133,46 +41,330 @@
                     <h1>Ingredient Management</h1>
                     <p class="text-muted">Manage the master list of ingredients and their nutritional data.</p>
                 </div>
-                <button class="btn btn-primary">+ Add New Ingredient</button>
+                <button type="button" class="btn btn-primary" data-action="add-ingredient">+ Add New Ingredient</button>
             </div>
             <div class="filter-bar">
-                <input type="text" class="input-field" placeholder="Search ingredients by name...">
-                <select class="input-field"><option>All Categories</option><option>Protein</option><option>Vegetable</option><option>Fruit</option><option>Dairy</option><option>Grain</option><option>Fat</option></select>
-                <button class="btn btn-primary">Filter</button>
+                <input type="text" id="ingredientSearch" class="input-field" placeholder="Search ingredients by name...">
+                <select id="ingredientCategoryFilter" class="input-field">
+                    <option value="">All Categories</option>
+                    <option>Protein</option>
+                    <option>Vegetable</option>
+                    <option>Fruit</option>
+                    <option>Dairy</option>
+                    <option>Grain</option>
+                    <option>Fat</option>
+                </select>
+                <button type="button" class="btn btn-primary" data-action="filter-ingredients">Filter</button>
             </div>
             <div class="table-container">
                 <div class="table-header">
-                    <h3 style="font-size: 1.1rem;">All Ingredients (6)</h3>
+                    <h3 style="font-size: 1.1rem;">All Ingredients (<span id="ingredientCount">6</span>)</h3>
                     <div class="flex gap-2">
-                        <button class="btn btn-sm btn-outline">Export CSV</button>
-                        <button class="btn btn-sm btn-outline">Bulk Actions</button>
+                        <button type="button" class="btn btn-sm btn-outline" data-action="export-ingredients">Export CSV</button>
+                        <button type="button" class="btn btn-sm btn-outline" data-action="bulk-ingredients">Bulk Actions</button>
                     </div>
                 </div>
-                <table>
+                <table id="ingredientsTable">
                     <thead>
-                        <tr><th>Ingredient Name</th><th>Category</th><th>Measurement Unit</th><th>Calories (per unit)</th><th>Protein (g)</th><th>Carbs (g)</th><th>Fat (g)</th><th>Actions</th></tr>
+                        <tr>
+                            <th>Ingredient Name</th>
+                            <th>Category</th>
+                            <th>Measurement Unit</th>
+                            <th>Calories (per unit)</th>
+                            <th>Protein (g)</th>
+                            <th>Carbs (g)</th>
+                            <th>Fat (g)</th>
+                            <th>Actions</th>
+                        </tr>
                     </thead>
-                    <!-- <tbody>
-                        <tr><td><strong>Chicken Breast</strong></td><td>Protein</td><td>100g</td><td>165 kcal</td><td>31g</td><td>0g</td><td>3.6g</td><td class="action-links"><a href="#">Edit</a><a href="#" class="delete">Delete</a></td></tr>
-                        <tr><td><strong>Olive Oil</strong></td><td>Fat</td><td>1 tbsp</td><td>119 kcal</td><td>0g</td><td>0g</td><td>13.5g</td><td class="action-links"><a href="#">Edit</a><a href="#" class="delete">Delete</a></td></tr>
-                        <tr><td><strong>Tomato</strong></td><td>Vegetable</td><td>1 medium</td><td>22 kcal</td><td>1.1g</td><td>4.8g</td><td>0.2g</td><td class="action-links"><a href="#">Edit</a><a href="#" class="delete">Delete</a></td></tr>
-                        <tr><td><strong>Onion</strong></td><td>Vegetable</td><td>1 medium</td><td>44 kcal</td><td>1.2g</td><td>10.3g</td><td>0.1g</td><td class="action-links"><a href="#">Edit</a><a href="#" class="delete">Delete</a></td></tr>
-                        <tr><td><strong>Rice (Basmati)</strong></td><td>Grain</td><td>100g</td><td>130 kcal</td><td>2.7g</td><td>28g</td><td>0.3g</td><td class="action-links"><a href="#">Edit</a><a href="#" class="delete">Delete</a></td></tr>
-                        <tr><td><strong>Tahini</strong></td><td>Fat</td><td>1 tbsp</td><td>89 kcal</td><td>2.6g</td><td>3.2g</td><td>8g</td><td class="action-links"><a href="#">Edit</a><a href="#" class="delete">Delete</a></td></tr>
-                    </tbody> -->
-					<tbody>
-    <tr><td><strong>Chicken Breast</strong></td><td>Protein</td><td>100g</td><td>165 kcal</td><td>31g</td><td>0g</td><td>3.6g</td><td class="action-links"><button type="button" data-action="edit-ingredient">Edit</button><button type="button" class="delete" data-action="delete-ingredient">Delete</button></td></tr>
-    <tr><td><strong>Olive Oil</strong></td><td>Fat</td><td>1 tbsp</td><td>119 kcal</td><td>0g</td><td>0g</td><td>13.5g</td><td class="action-links"><button type="button" data-action="edit-ingredient">Edit</button><button type="button" class="delete" data-action="delete-ingredient">Delete</button></td></tr>
-    <tr><td><strong>Tomato</strong></td><td>Vegetable</td><td>1 medium</td><td>22 kcal</td><td>1.1g</td><td>4.8g</td><td>0.2g</td><td class="action-links"><button type="button" data-action="edit-ingredient">Edit</button><button type="button" class="delete" data-action="delete-ingredient">Delete</button></td></tr>
-    <tr><td><strong>Onion</strong></td><td>Vegetable</td><td>1 medium</td><td>44 kcal</td><td>1.2g</td><td>10.3g</td><td>0.1g</td><td class="action-links"><button type="button" data-action="edit-ingredient">Edit</button><button type="button" class="delete" data-action="delete-ingredient">Delete</button></td></tr>
-    <tr><td><strong>Rice (Basmati)</strong></td><td>Grain</td><td>100g</td><td>130 kcal</td><td>2.7g</td><td>28g</td><td>0.3g</td><td class="action-links"><button type="button" data-action="edit-ingredient">Edit</button><button type="button" class="delete" data-action="delete-ingredient">Delete</button></td></tr>
-    <tr><td><strong>Tahini</strong></td><td>Fat</td><td>1 tbsp</td><td>89 kcal</td><td>2.6g</td><td>3.2g</td><td>8g</td><td class="action-links"><button type="button" data-action="edit-ingredient">Edit</button><button type="button" class="delete" data-action="delete-ingredient">Delete</button></td></tr>
-</tbody>
+                    <tbody>
+                        <tr data-ingredient="Chicken Breast" data-category="Protein">
+                            <td><strong>Chicken Breast</strong></td>
+                            <td>Protein</td>
+                            <td>100g</td>
+                            <td>165 kcal</td>
+                            <td>31g</td>
+                            <td>0g</td>
+                            <td>3.6g</td>
+                            <td class="action-links">
+                                <button type="button" data-action="edit-ingredient">Edit</button>
+                                <button type="button" class="delete" data-action="delete-ingredient">Delete</button>
+                            </td>
+                        </tr>
+                        <tr data-ingredient="Olive Oil" data-category="Fat">
+                            <td><strong>Olive Oil</strong></td>
+                            <td>Fat</td>
+                            <td>1 tbsp</td>
+                            <td>119 kcal</td>
+                            <td>0g</td>
+                            <td>0g</td>
+                            <td>13.5g</td>
+                            <td class="action-links">
+                                <button type="button" data-action="edit-ingredient">Edit</button>
+                                <button type="button" class="delete" data-action="delete-ingredient">Delete</button>
+                            </td>
+                        </tr>
+                        <tr data-ingredient="Tomato" data-category="Vegetable">
+                            <td><strong>Tomato</strong></td>
+                            <td>Vegetable</td>
+                            <td>1 medium</td>
+                            <td>22 kcal</td>
+                            <td>1.1g</td>
+                            <td>4.8g</td>
+                            <td>0.2g</td>
+                            <td class="action-links">
+                                <button type="button" data-action="edit-ingredient">Edit</button>
+                                <button type="button" class="delete" data-action="delete-ingredient">Delete</button>
+                            </td>
+                        </tr>
+                        <tr data-ingredient="Onion" data-category="Vegetable">
+                            <td><strong>Onion</strong></td>
+                            <td>Vegetable</td>
+                            <td>1 medium</td>
+                            <td>44 kcal</td>
+                            <td>1.2g</td>
+                            <td>10.3g</td>
+                            <td>0.1g</td>
+                            <td class="action-links">
+                                <button type="button" data-action="edit-ingredient">Edit</button>
+                                <button type="button" class="delete" data-action="delete-ingredient">Delete</button>
+                            </td>
+                        </tr>
+                        <tr data-ingredient="Rice (Basmati)" data-category="Grain">
+                            <td><strong>Rice (Basmati)</strong></td>
+                            <td>Grain</td>
+                            <td>100g</td>
+                            <td>130 kcal</td>
+                            <td>2.7g</td>
+                            <td>28g</td>
+                            <td>0.3g</td>
+                            <td class="action-links">
+                                <button type="button" data-action="edit-ingredient">Edit</button>
+                                <button type="button" class="delete" data-action="delete-ingredient">Delete</button>
+                            </td>
+                        </tr>
+                        <tr data-ingredient="Tahini" data-category="Fat">
+                            <td><strong>Tahini</strong></td>
+                            <td>Fat</td>
+                            <td>1 tbsp</td>
+                            <td>89 kcal</td>
+                            <td>2.6g</td>
+                            <td>3.2g</td>
+                            <td>8g</td>
+                            <td class="action-links">
+                                <button type="button" data-action="edit-ingredient">Edit</button>
+                                <button type="button" class="delete" data-action="delete-ingredient">Delete</button>
+                            </td>
+                        </tr>
+                    </tbody>
                 </table>
             </div>
         </main>
     </div>
-<script src="auth-guard.js"></script>
 
+    <script src="../javascript/shared.js"></script>
+    <script src="../javascript/auth-guard.js"></script>
+    <script>
+    (function () {
+        'use strict';
+
+        const $ = function (id) { return document.getElementById(id); };
+
+        function toast(msg, isError) {
+            if (window.showToast) window.showToast(msg, isError);
+            else alert(msg);
+        }
+
+        function escapeHtml(str) {
+            return String(str).replace(/[&<>"']/g, function (m) {
+                return ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' })[m];
+            });
+        }
+
+        function refreshCount() {
+            const n = document.querySelectorAll('#ingredientsTable tbody tr').length;
+            if ($('ingredientCount')) $('ingredientCount').textContent = String(n);
+        }
+
+        /* ---------- Build a row from a record ---------- */
+        function buildRow(rec) {
+            const tr = document.createElement('tr');
+            tr.setAttribute('data-ingredient', rec.name);
+            tr.setAttribute('data-category', rec.category);
+            tr.innerHTML =
+                '<td><strong>' + escapeHtml(rec.name) + '</strong></td>' +
+                '<td>' + escapeHtml(rec.category) + '</td>' +
+                '<td>' + escapeHtml(rec.unit) + '</td>' +
+                '<td>' + escapeHtml(rec.calories) + '</td>' +
+                '<td>' + escapeHtml(rec.protein) + '</td>' +
+                '<td>' + escapeHtml(rec.carbs) + '</td>' +
+                '<td>' + escapeHtml(rec.fat) + '</td>' +
+                '<td class="action-links">' +
+                    '<button type="button" data-action="edit-ingredient">Edit</button>' +
+                    '<button type="button" class="delete" data-action="delete-ingredient">Delete</button>' +
+                '</td>';
+            return tr;
+        }
+
+        /* ---------- Read a row into a record ---------- */
+        function readRow(row) {
+            const cells = row.querySelectorAll('td');
+            return {
+                name:     (cells[0].innerText || '').trim(),
+                category: (cells[1].innerText || '').trim(),
+                unit:     (cells[2].innerText || '').trim(),
+                calories: (cells[3].innerText || '').trim(),
+                protein:  (cells[4].innerText || '').trim(),
+                carbs:    (cells[5].innerText || '').trim(),
+                fat:      (cells[6].innerText || '').trim()
+            };
+        }
+
+        /* ---------- Add ---------- */
+        function addIngredient() {
+            const name = window.prompt('Ingredient name:', '');
+            if (!name) return;
+            const category = window.prompt('Category (Protein / Vegetable / Fruit / Dairy / Grain / Fat):', 'Vegetable');
+            if (category === null) return;
+            const unit = window.prompt('Measurement unit (e.g., 100g, 1 tbsp, 1 medium):', '100g');
+            if (unit === null) return;
+            const calories = window.prompt('Calories per unit (e.g., 165 kcal):', '0 kcal');
+            if (calories === null) return;
+            const protein = window.prompt('Protein (g):', '0g');
+            if (protein === null) return;
+            const carbs = window.prompt('Carbs (g):', '0g');
+            if (carbs === null) return;
+            const fat = window.prompt('Fat (g):', '0g');
+            if (fat === null) return;
+
+            const row = buildRow({
+                name: name.trim(),
+                category: (category.trim() || 'Vegetable'),
+                unit: (unit.trim() || '—'),
+                calories: (calories.trim() || '0 kcal'),
+                protein: (protein.trim() || '0g'),
+                carbs: (carbs.trim() || '0g'),
+                fat: (fat.trim() || '0g')
+            });
+
+            const tbody = document.querySelector('#ingredientsTable tbody');
+            tbody.insertBefore(row, tbody.firstChild);
+            refreshCount();
+            toast('Added "' + name.trim() + '".');
+        }
+
+        /* ---------- Edit ---------- */
+        function editIngredient(row) {
+            if (!row) return;
+            const rec = readRow(row);
+            const name = window.prompt('Ingredient name:', rec.name);
+            if (name === null) return;
+            const category = window.prompt('Category:', rec.category);
+            if (category === null) return;
+            const unit = window.prompt('Measurement unit:', rec.unit);
+            if (unit === null) return;
+            const calories = window.prompt('Calories per unit:', rec.calories);
+            if (calories === null) return;
+            const protein = window.prompt('Protein (g):', rec.protein);
+            if (protein === null) return;
+            const carbs = window.prompt('Carbs (g):', rec.carbs);
+            if (carbs === null) return;
+            const fat = window.prompt('Fat (g):', rec.fat);
+            if (fat === null) return;
+
+            row.setAttribute('data-ingredient', name.trim() || rec.name);
+            row.setAttribute('data-category', category.trim() || rec.category);
+            const cells = row.querySelectorAll('td');
+            cells[0].innerHTML = '<strong>' + escapeHtml(name.trim() || rec.name) + '</strong>';
+            cells[1].textContent = category.trim() || rec.category;
+            cells[2].textContent = unit.trim() || rec.unit;
+            cells[3].textContent = calories.trim() || rec.calories;
+            cells[4].textContent = protein.trim() || rec.protein;
+            cells[5].textContent = carbs.trim() || rec.carbs;
+            cells[6].textContent = fat.trim() || rec.fat;
+            toast('Updated "' + (name.trim() || rec.name) + '".');
+        }
+
+        /* ---------- Delete ---------- */
+        function deleteIngredient(row) {
+            if (!row) return;
+            const name = row.getAttribute('data-ingredient') || 'Ingredient';
+            if (!window.confirm('Delete "' + name + '"? This cannot be undone.')) return;
+            row.parentNode.removeChild(row);
+            refreshCount();
+            toast('Deleted "' + name + '".', true);
+        }
+
+        /* ---------- Filter ---------- */
+        function applyFilter() {
+            const q = ($('ingredientSearch') && $('ingredientSearch').value || '').trim().toLowerCase();
+            const cat = ($('ingredientCategoryFilter') && $('ingredientCategoryFilter').value) || '';
+
+            document.querySelectorAll('#ingredientsTable tbody tr').forEach(function (row) {
+                const name = (row.getAttribute('data-ingredient') || '').toLowerCase();
+                const rowCat = row.getAttribute('data-category') || '';
+                const matchQ = !q || name.indexOf(q) !== -1;
+                const matchC = !cat || rowCat === cat;
+                row.style.display = (matchQ && matchC) ? '' : 'none';
+            });
+            toast('Filter applied.');
+        }
+
+        /* ---------- Export ---------- */
+        function exportIngredients() {
+            const lines = [];
+            document.querySelectorAll('#ingredientsTable tr').forEach(function (row) {
+                const cells = Array.prototype.map.call(row.querySelectorAll('th, td'), function (cell) {
+                    const text = (cell.innerText || '').replace(/\s+/g, ' ').trim();
+                    return '"' + text.replace(/"/g, '""') + '"';
+                });
+                if (cells.length) lines.push(cells.join(','));
+            });
+            lines.push('"Exported at","' + new Date().toISOString() + '"');
+
+            const csv = lines.join('\n');
+            const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
+            const url  = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = 'sahtein-ingredients.csv';
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            URL.revokeObjectURL(url);
+            toast('Ingredients exported.');
+        }
+
+        function bulkIngredients() {
+            toast('Bulk actions are not available in the demo.');
+        }
+
+        /* ---------- Global click handler ---------- */
+        document.addEventListener('click', function (e) {
+            const btn = e.target.closest('[data-action]');
+            if (!btn) return;
+
+            const action = btn.dataset.action;
+            const row    = btn.closest('tr');
+
+            switch (action) {
+                case 'add-ingredient':     e.preventDefault(); addIngredient(); break;
+                case 'edit-ingredient':    e.preventDefault(); editIngredient(row); break;
+                case 'delete-ingredient':  e.preventDefault(); deleteIngredient(row); break;
+                case 'filter-ingredients': e.preventDefault(); applyFilter(); break;
+                case 'export-ingredients': e.preventDefault(); exportIngredients(); break;
+                case 'bulk-ingredients':   e.preventDefault(); bulkIngredients(); break;
+            }
+        });
+
+        if ($('ingredientSearch')) {
+            $('ingredientSearch').addEventListener('keydown', function (e) {
+                if (e.key === 'Enter') { e.preventDefault(); applyFilter(); }
+            });
+        }
+
+        refreshCount();
+    })();
+    </script>
 </body>
 </html>

@@ -8,262 +8,16 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,700&family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <style>
-        :root {
-            --bg-cream: #FDFBF7; --bg-white: #FFFFFF; --text-main: #2C2C2C; --text-muted: #7A7A7A;
-            --accent-green: #2A4B3C; --accent-green-light: #E8F0EA; --accent-orange: #D96C4A;
-            --accent-orange-light: #FDF0EC; --border-color: #E6E2D8; --font-serif: 'Playfair Display', serif;
-            --font-sans: 'DM Sans', sans-serif; --radius-sm: 8px; --radius-md: 12px; --radius-lg: 20px;
-            --shadow-sm: 0 2px 8px rgba(0,0,0,0.04); --shadow-md: 0 8px 24px rgba(0,0,0,0.06);
-            --transition: all 0.3s ease;
-        }
-        * { margin: 0; padding: 0; box-sizing: border-box; }
-        body { font-family: var(--font-sans); background-color: var(--bg-cream); color: var(--text-main); line-height: 1.6; -webkit-font-smoothing: antialiased; }
-        a { text-decoration: none; color: inherit; }
-        ul { list-style: none; }
-        img { max-width: 100%; display: block; }
-        button { cursor: pointer; font-family: inherit; border: none; background: none; }
-        h1, h2, h3, h4 { font-family: var(--font-serif); font-weight: 600; line-height: 1.2; }
-        h1 { font-size: 2.2rem; letter-spacing: -0.5px; }
-        h2 { font-size: 1.8rem; }
-        h3 { font-size: 1.3rem; }
-        .section-label { font-size: 0.75rem; text-transform: uppercase; letter-spacing: 1.5px; color: var(--accent-orange); font-weight: 700; margin-bottom: 0.5rem; display: block; }
-        .text-muted { color: var(--text-muted); font-size: 0.9rem; }
-        .text-sm { font-size: 0.85rem; }
-        .btn { display: inline-flex; align-items: center; justify-content: center; gap: 8px; padding: 10px 20px; border-radius: 50px; font-weight: 500; font-size: 0.9rem; transition: var(--transition); }
-        .btn-primary { background-color: var(--accent-green); color: #fff; }
-        .btn-primary:hover { background-color: #1e382c; }
-        .btn-outline { border: 1px solid var(--border-color); background: #fff; color: var(--text-main); }
-        .btn-outline:hover { border-color: var(--accent-green); color: var(--accent-green); }
-        .btn-sm { padding: 6px 14px; font-size: 0.8rem; }
-        .btn-danger { background-color: #FFEBEE; color: #C62828; }
-        .btn-danger:hover { background-color: #FFCDD2; }
-        .input-field { width: 100%; padding: 10px 16px; border: 1px solid var(--border-color); border-radius: var(--radius-sm); font-family: inherit; font-size: 0.9rem; background: var(--bg-white); transition: var(--transition); }
-        .input-field:focus { outline: none; border-color: var(--accent-green); box-shadow: 0 0 0 3px var(--accent-green-light); }
-        .dashboard-layout { display: flex; min-height: 100vh; }
-        .flex-between { display: flex; justify-content: space-between; align-items: center; }
-        .flex-center { display: flex; justify-content: center; align-items: center; }
-        .gap-2 { gap: 8px; } .gap-4 { gap: 16px; }
-        .mt-2 { margin-top: 8px; } .mt-4 { margin-top: 16px; } .mb-2 { margin-bottom: 8px; } .mb-4 { margin-bottom: 16px; } .mb-6 { margin-bottom: 24px; }
-        .sidebar { width: 260px; background: var(--bg-white); border-right: 1px solid var(--border-color); padding: 24px 0; display: flex; flex-direction: column; flex-shrink: 0; position: sticky; top: 0; height: 100vh; }
-        .sidebar-logo { padding: 0 24px 24px; border-bottom: 1px solid var(--border-color); margin-bottom: 16px; }
-        .sidebar-logo a { font-family: var(--font-serif); font-size: 1.5rem; font-weight: 700; color: var(--accent-green); display: flex; align-items: center; gap: 8px; }
-        .sidebar-logo a span { color: var(--accent-orange); }
-        .sidebar-logo .admin-badge { font-size: 0.65rem; background: var(--accent-orange-light); color: var(--accent-orange); padding: 2px 8px; border-radius: 50px; font-family: var(--font-sans); margin-left: 8px; text-transform: uppercase; letter-spacing: 1px; }
-        .sidebar-menu { display: flex; flex-direction: column; gap: 4px; padding: 0 16px; flex: 1; }
-        .sidebar-menu a { display: flex; align-items: center; gap: 12px; padding: 12px 16px; border-radius: var(--radius-sm); font-size: 0.9rem; font-weight: 500; color: var(--text-muted); transition: var(--transition); white-space: nowrap; }
-        .sidebar-menu a:hover { background: var(--bg-cream); color: var(--text-main); }
-        .sidebar-menu a.active { background: var(--accent-green-light); color: var(--accent-green); font-weight: 700; }
-        .sidebar-footer { padding: 16px 24px; border-top: 1px solid var(--border-color); margin-top: auto; }
-        .sidebar-exit { display: flex; align-items: center; gap: 8px; font-size: 0.85rem; color: var(--accent-orange); font-weight: 500; transition: var(--transition); }
-        .sidebar-exit:hover { text-decoration: underline; }
-        .main-content { flex: 1; padding: 32px 40px; background: var(--bg-cream); overflow-y: auto; }
 
-        .admin-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 32px; gap: 16px; flex-wrap: wrap; }
-        .admin-header h1 { font-size: 2rem; }
-        .admin-header-actions { display: flex; gap: 10px; align-items: center; flex-wrap: wrap; }
-
-        /* ---------- Edit admin profile card ---------- */
-        .admin-edit-card {
-            background: var(--bg-white);
-            border: 1px solid var(--border-color);
-            border-radius: var(--radius-md);
-            padding: 24px 28px;
-            margin-bottom: 24px;
-        }
-        .admin-edit-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: flex-end;
-            gap: 16px;
-            flex-wrap: wrap;
-            margin-bottom: 24px;
-            padding-bottom: 16px;
-            border-bottom: 1px solid var(--border-color);
-        }
-        .admin-edit-header h3 { font-size: 1.3rem; }
-        .admin-edit-actions { display: flex; gap: 8px; flex-wrap: wrap; }
-        .admin-edit-body {
-            display: grid;
-            grid-template-columns: 160px 1fr;
-            gap: 32px;
-            align-items: start;
-        }
-        .admin-avatar-column {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 6px;
-        }
-        .admin-avatar-preview {
-            width: 120px;
-            height: 120px;
-            border-radius: 50%;
-            background: var(--accent-orange);
-            color: #fff;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 2.4rem;
-            font-family: var(--font-serif);
-            font-weight: 700;
-            overflow: hidden;
-            margin-bottom: 10px;
-            border: 3px solid var(--bg-cream);
-            box-shadow: 0 4px 12px rgba(0,0,0,0.08);
-        }
-        .admin-avatar-preview img { width: 100%; height: 100%; object-fit: cover; }
-        .admin-fields { display: flex; flex-direction: column; gap: 14px; }
-        .admin-fields .input-group { margin-bottom: 0; }
-        .admin-fields label { display: flex; align-items: center; gap: 8px; font-size: 0.82rem; font-weight: 500; color: var(--text-main); margin-bottom: 6px; }
-        .locked-tag { font-size: 0.65rem; text-transform: uppercase; letter-spacing: 0.5px; font-weight: 600; color: var(--text-muted); background: var(--bg-cream); padding: 2px 8px; border-radius: 50px; }
-        .admin-fields input:disabled { background: var(--bg-cream); color: var(--text-muted); cursor: not-allowed; }
-        .admin-fields .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
-
-        /* ---------- Identity card ---------- */
-        .admin-hero-card {
-            background: var(--accent-green); color: #fff; padding: 32px; border-radius: var(--radius-md);
-            display: flex; flex-direction: column; justify-content: space-between;
-        }
-        .admin-hero-card h3 { font-size: 1.5rem; margin-bottom: 6px; }
-        .admin-hero-card .role-pill {
-            display: inline-block; background: rgba(255,255,255,0.15);
-            color: #fff; font-size: 0.7rem; font-weight: 600; letter-spacing: 1px;
-            text-transform: uppercase; padding: 4px 12px; border-radius: 50px;
-            margin-bottom: 12px;
-        }
-        .admin-hero-card .admin-stats {
-            display: flex; gap: 24px; margin-top: 24px;
-            border-top: 1px solid rgba(255,255,255,0.2); padding-top: 16px;
-        }
-        .admin-hero-card .admin-stats div strong { display: block; font-size: 1.4rem; }
-        .admin-hero-card .admin-stats div span { font-size: 0.78rem; opacity: 0.85; }
-
-        /* Two-column layout for profile cards */
-        .admin-profile-grid { display: grid; grid-template-columns: 1fr 1.4fr; gap: 24px; margin-bottom: 32px; }
-
-        .info-card {
-            background: var(--bg-white); padding: 28px; border-radius: var(--radius-md);
-            border: 1px solid var(--border-color);
-        }
-        .info-card h3 { margin-bottom: 20px; }
-        .info-row {
-            display: flex; justify-content: space-between; align-items: center;
-            padding: 12px 0; border-bottom: 1px solid var(--border-color);
-            font-size: 0.92rem;
-        }
-        .info-row:last-child { border-bottom: none; }
-        .info-row .info-value { font-weight: 500; color: var(--text-main); }
-
-        /* Modal */
-        .modal-overlay {
-            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(0,0,0,0.5); display: none; justify-content: center; align-items: center;
-            z-index: 1000; padding: 20px;
-        }
-        .modal-overlay.active { display: flex; }
-        .modal-content {
-            background: var(--bg-white); padding: 32px; border-radius: var(--radius-lg);
-            width: 100%; max-width: 480px; box-shadow: var(--shadow-md);
-        }
-        .modal-content h3 { margin-bottom: 8px; }
-        .modal-content p { color: var(--text-muted); font-size: 0.9rem; margin-bottom: 20px; }
-        .modal-content .input-group { margin-bottom: 20px; }
-        .modal-content .input-group label { display: block; font-size: 0.85rem; font-weight: 500; margin-bottom: 6px; }
-        .modal-actions { display: flex; gap: 12px; justify-content: flex-end; margin-top: 24px; }
-/* =========================================================
-   Change password modal — force consistent input styling
-   ========================================================= */
-.modal-content .input-field,
-.modal-content input[type="password"],
-.modal-content input[type="text"],
-.modal-content input[type="email"] {
-    width: 100%;
-    padding: 10px 16px;
-    border: 1px solid var(--border-color);
-    border-radius: var(--radius-sm);
-    font-family: inherit;
-    font-size: 0.9rem;
-    background: var(--bg-white);
-    color: var(--text-main);
-    transition: all 0.3s ease;
-    -webkit-appearance: none;
-    -moz-appearance: none;
-    appearance: none;
-    box-shadow: none;
-    outline: none;
-    line-height: 1.5;
-    box-sizing: border-box;
-}
-.modal-content .input-field:focus,
-.modal-content input[type="password"]:focus {
-    border-color: var(--accent-green);
-    box-shadow: 0 0 0 3px var(--accent-green-light);
-}
-
-/* Password checklist inside the modal (matches login page) */
-.modal-content .pw-checklist {
-    list-style: none;
-    padding: 0;
-    margin: 10px 0 0;
-    display: flex;
-    flex-direction: column;
-    gap: 5px;
-}
-.modal-content .pw-checklist li {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    font-size: 0.8rem;
-    color: var(--text-muted);
-    transition: color 0.25s ease;
-    line-height: 1.4;
-}
-.modal-content .pw-checklist li i {
-    font-size: 0.85rem;
-    color: #C9C4B8;
-    transition: color 0.25s ease;
-}
-.modal-content .pw-checklist li.ok { color: #2E7D32; }
-.modal-content .pw-checklist li.ok i { color: #2E7D32; }
-
-.modal-content .pw-match {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    font-size: 0.8rem;
-    color: var(--text-muted);
-    margin-top: 8px;
-    line-height: 1.4;
-    transition: color 0.25s ease;
-}
-.modal-content .pw-match i {
-    font-size: 0.85rem;
-    color: #C9C4B8;
-    transition: color 0.25s ease;
-}
-.modal-content .pw-match.ok { color: #2E7D32; }
-.modal-content .pw-match.ok i { color: #2E7D32; }
-        @media (max-width: 1024px) {
-            .admin-profile-grid { grid-template-columns: 1fr; }
-        }
-        @media (max-width: 768px) {
-            .dashboard-layout { flex-direction: column; }
-            .sidebar { width: 100%; height: auto; position: static; border-right: none; border-bottom: 1px solid var(--border-color); padding: 16px; }
-            .sidebar-menu { flex-direction: row; flex-wrap: wrap; justify-content: center; }
-            .main-content { padding: 20px; }
-            .admin-header { flex-direction: column; gap: 16px; align-items: flex-start; }
-            .admin-edit-body { grid-template-columns: 1fr; gap: 20px; }
-            .admin-fields .form-row { grid-template-columns: 1fr; }
-            .info-row { flex-direction: column; align-items: flex-start; gap: 6px; }
-        }
-    </style>
+    <!-- Linked CSS Files -->
+    <link rel="stylesheet" href="../css/shared.css">
+    <link rel="stylesheet" href="../css/admin-profile.css">
 </head>
 <body>
     <div class="dashboard-layout">
         <aside class="sidebar">
             <div class="sidebar-logo">
-                <a href="index.html">sahtein<span>.</span> <span class="admin-badge">Admin</span></a>
+                <a href="../index.html">sahtein<span>.</span> <span class="admin-badge">Admin</span></a>
             </div>
             <nav class="sidebar-menu">
                 <a href="admin-dashboard.html"><i class="fa-solid fa-chart-line"></i> Dashboard</a>
@@ -349,9 +103,8 @@
                             </div>
                             <div class="input-group">
                                 <label for="adminPhoneField">Phone number</label>
-                                <!-- <input type="tel" id="adminPhoneF=ield" class="input-field" placeholder="+962 7 0000 0000"> -->
-								 <input type="tel" id="adminPhoneField" class="input-field" placeholder="+962 7 0000 0000"
-       inputmode="tel" autocomplete="tel" maxlength="25">
+                                <input type="tel" id="adminPhoneField" class="input-field" placeholder="+962 7 0000 0000"
+                                       inputmode="tel" autocomplete="tel" maxlength="25">
                             </div>
                         </div>
                     </div>
@@ -360,50 +113,34 @@
 
             <!-- Change password modal -->
             <div class="modal-overlay" id="changePasswordModal">
-                <!-- <div class="modal-content">
+                <div class="modal-content">
                     <h3>Change password</h3>
-                    <p>Your password is stored locally for this demo only.</p>
+                    <p>Choose a new password. Requirements update as you type.</p>
+
                     <div class="input-group">
-                        <label for="newPassword">New password</label>
-                        <input type="password" id="newPassword" class="input-field" placeholder="••••••••">
+                        <label for="newPass">New password</label>
+                        <input type="password" id="newPass" class="input-field" placeholder="••••••••">
                     </div>
-                    <div class="input-group">
-                        <label for="confirmNewPassword">Confirm password</label>
-                        <input type="password" id="confirmNewPassword" class="input-field" placeholder="••••••••">
+                    <ul class="pw-checklist" id="modalPwChecklist">
+                        <li data-rule="length"><i class="fa-regular fa-circle-check"></i> Password must be at least 8 characters.</li>
+                        <li data-rule="number"><i class="fa-regular fa-circle-check"></i> Have at least 1 number.</li>
+                        <li data-rule="special"><i class="fa-regular fa-circle-check"></i> Contain at least 1 special character ((!@#$%&amp;))</li>
+                    </ul>
+
+                    <div class="input-group" style="margin-top: 16px;">
+                        <label for="confirmPass">Confirm password</label>
+                        <input type="password" id="confirmPass" class="input-field" placeholder="••••••••">
                     </div>
+                    <div class="pw-match" id="modalPwMatch">
+                        <i class="fa-regular fa-circle-check"></i>
+                        <span>Passwords match.</span>
+                    </div>
+
                     <div class="modal-actions">
                         <button type="button" class="btn btn-outline" id="cancelPassBtn">Cancel</button>
                         <button type="button" class="btn btn-primary" id="savePassBtn">Update password</button>
                     </div>
-                </div> -->
-				<div class="modal-content">
-    <h3>Change password</h3>
-    <p>Choose a new password. Requirements update as you type.</p>
-
-    <div class="input-group">
-        <label for="newPass">New password</label>
-        <input type="password" id="newPass" class="input-field" placeholder="••••••••">
-    </div>
-    <ul class="pw-checklist" id="modalPwChecklist">
-        <li data-rule="length"><i class="fa-regular fa-circle-check"></i> Password must be at least 8 characters.</li>
-        <li data-rule="number"><i class="fa-regular fa-circle-check"></i> Have at least 1 number.</li>
-        <li data-rule="special"><i class="fa-regular fa-circle-check"></i> Contain at least 1 special character ((!@#$%&amp;))</li>
-    </ul>
-
-    <div class="input-group" style="margin-top: 16px;">
-        <label for="confirmPass">Confirm password</label>
-        <input type="password" id="confirmPass" class="input-field" placeholder="••••••••">
-    </div>
-    <div class="pw-match" id="modalPwMatch">
-        <i class="fa-regular fa-circle-check"></i>
-        <span>Passwords match.</span>
-    </div>
-
-    <div class="modal-actions">
-        <button type="button" class="btn btn-outline" id="cancelPassBtn">Cancel</button>
-        <button type="button" class="btn btn-primary" id="savePassBtn">Update password</button>
-    </div>
-</div>
+                </div>
             </div>
 
             <div class="admin-profile-grid">
@@ -458,134 +195,246 @@
         </main>
     </div>
 
-    <script src="auth-guard.js"></script>
+    <!-- shared.js provides window.showToast and window.renderHeaderAvatars -->
+    <script src="../javascript/shared.js"></script>
+    <script src="../javascript/auth-guard.js"></script>
     <script>
-(function () {
-    'use strict';
+    (function () {
+        'use strict';
 
-    const KEY = 'sahtein_admin';
-    const $ = function (id) { return document.getElementById(id); };
+        const KEY = 'sahtein_admin';
+        const $ = function (id) { return document.getElementById(id); };
 
-    function toast(msg, isError) {
-        if (window.showToast) window.showToast(msg, isError);
-        else alert(msg);
-    }
-
-    function loadAdmin() {
-        try { return JSON.parse(localStorage.getItem(KEY)) || {}; }
-        catch (err) { return {}; }
-    }
-    function saveAdmin(admin) {
-        try { localStorage.setItem(KEY, JSON.stringify(admin)); } catch (err) {}
-    }
-    function getInitials(first, last) {
-        const a = (first || '?').charAt(0).toUpperCase();
-        const b = (last || '?').charAt(0).toUpperCase();
-        return (a + b).slice(0, 2);
-    }
-
-    let admin = loadAdmin();
-    if (!admin.firstName) {
-        admin = {
-            firstName: 'Sahtein',
-            lastName: 'Admin',
-            username: 'sahtein_admin',
-            email: 'admin@sahtein.com',
-            phone: '',
-            avatar: ''
-        };
-        saveAdmin(admin);
-    }
-
-    function render() {
-        $('adminFirstName').value = admin.firstName;
-        $('adminLastName').value  = admin.lastName;
-        $('adminUsernameField').value = '@' + admin.username;
-        $('adminEmailField').value = admin.email || '';
-        $('adminPhoneField').value = admin.phone || '';
-
-        const fullName = [admin.firstName, admin.lastName].filter(Boolean).join(' ');
-        $('adminHeroName').textContent  = fullName;
-        $('adminHeroEmail').textContent = admin.email || 'admin@sahtein.com';
-        $('adminDisplayName').textContent = fullName;
-        $('adminUsername').textContent = '@' + admin.username;
-        $('adminEmailText').textContent = admin.email || 'admin@sahtein.com';
-
-        const inits = getInitials(admin.firstName, admin.lastName);
-        const src = admin.avatar;
-        const preview = $('adminAvatarPreview');
-        const identity = $('adminIdentityAvatar');
-
-        if (preview) {
-            preview.innerHTML = src ? '<img src="' + src + '" alt="avatar">' : inits;
-        }
-        if (identity) {
-            identity.innerHTML = src ? '<img src="' + src + '" alt="avatar">' : inits;
+        function toast(msg, isError) {
+            if (window.showToast) window.showToast(msg, isError);
+            else alert(msg);
         }
 
-        if (window.renderHeaderAvatars) window.renderHeaderAvatars();
-    }
+        function loadAdmin() {
+            try { return JSON.parse(localStorage.getItem(KEY)) || {}; }
+            catch (err) { return {}; }
+        }
+        function saveAdmin(admin) {
+            try { localStorage.setItem(KEY, JSON.stringify(admin)); } catch (err) {}
+        }
+        function getInitials(first, last) {
+            const a = (first || '?').charAt(0).toUpperCase();
+            const b = (last || '?').charAt(0).toUpperCase();
+            return (a + b).slice(0, 2);
+        }
 
-    render();
+        let admin = loadAdmin();
+        if (!admin.firstName) {
+            admin = {
+                firstName: 'Sahtein',
+                lastName: 'Admin',
+                username: 'sahtein_admin',
+                email: 'admin@sahtein.com',
+                phone: '',
+                avatar: ''
+            };
+            saveAdmin(admin);
+        }
 
-    // Save profile
-    $('saveAdminProfileBtn').addEventListener('click', function () {
-        const email = $('adminEmailField').value.trim();
-        const phone = $('adminPhoneField').value.trim();
+        function render() {
+            $('adminFirstName').value = admin.firstName;
+            $('adminLastName').value  = admin.lastName;
+            $('adminUsernameField').value = '@' + admin.username;
+            $('adminEmailField').value = admin.email || '';
+            $('adminPhoneField').value = admin.phone || '';
 
-        if (!email) { toast('Email cannot be empty.', true); return; }
+            const fullName = [admin.firstName, admin.lastName].filter(Boolean).join(' ');
+            $('adminHeroName').textContent  = fullName;
+            $('adminHeroEmail').textContent = admin.email || 'admin@sahtein.com';
+            $('adminDisplayName').textContent = fullName;
+            $('adminUsername').textContent = '@' + admin.username;
+            $('adminEmailText').textContent = admin.email || 'admin@sahtein.com';
 
-        admin.email = email;
-        admin.phone = phone;
-        saveAdmin(admin);
+            const inits = getInitials(admin.firstName, admin.lastName);
+            const src = admin.avatar;
+            const preview = $('adminAvatarPreview');
+            const identity = $('adminIdentityAvatar');
+
+            if (preview) {
+                preview.innerHTML = src ? '<img src="' + src + '" alt="avatar">' : inits;
+            }
+            if (identity) {
+                identity.innerHTML = src ? '<img src="' + src + '" alt="avatar">' : inits;
+            }
+
+            if (window.renderHeaderAvatars) window.renderHeaderAvatars();
+        }
+
         render();
-        toast('Admin profile updated.');
-    });
 
-    // Avatar upload
-    $('adminAvatarInput').addEventListener('change', function (e) {
-        const file = e.target.files[0];
-        if (!file) return;
+        // ---------- Save profile ----------
+        $('saveAdminProfileBtn').addEventListener('click', function () {
+            const email = $('adminEmailField').value.trim();
+            const phone = $('adminPhoneField').value.trim();
 
-        if (file.size > 2 * 1024 * 1024) {
-            toast('Please choose an image under 2 MB.', true);
-            return;
-        }
+            if (!email) { toast('Email cannot be empty.', true); return; }
 
-        const reader = new FileReader();
-        reader.onload = function (evt) {
-            admin.avatar = evt.target.result;
+            admin.email = email;
+            admin.phone = phone;
             saveAdmin(admin);
             render();
-            toast('Profile photo updated.');
-        };
-        reader.readAsDataURL(file);
-    });
+            toast('Admin profile updated.');
+        });
 
-    // Password modal
-    const modal = $('changePasswordModal');
-    $('changePasswordBtn').addEventListener('click', function () {
-        modal.classList.add('active');
-    });
-    $('cancelPassBtn').addEventListener('click', function () {
-        modal.classList.remove('active');
-    });
-    modal.addEventListener('click', function (e) {
-        if (e.target === modal) modal.classList.remove('active');
-    });
-    $('savePassBtn').addEventListener('click', function () {
-        const p1 = $('newPassword').value;
-        const p2 = $('confirmNewPassword').value;
-        if (!p1 || p1.length < 6) { toast('Min 6 characters.', true); return; }
-        if (p1 !== p2) { toast("Passwords don't match.", true); return; }
-        admin.passwordUpdatedAt = new Date().toISOString();
-        saveAdmin(admin);
-        $('newPassword').value = '';
-        $('confirmNewPassword').value = '';
-        modal.classList.remove('active');
-        toast('Admin password updated.');
-    });
-})();
-</script>
+        // ---------- Avatar upload ----------
+        $('adminAvatarInput').addEventListener('change', function (e) {
+            const file = e.target.files[0];
+            if (!file) return;
+
+            if (file.size > 2 * 1024 * 1024) {
+                toast('Please choose an image under 2 MB.', true);
+                return;
+            }
+
+            const reader = new FileReader();
+            reader.onload = function (evt) {
+                admin.avatar = evt.target.result;
+                saveAdmin(admin);
+                render();
+                toast('Profile photo updated.');
+            };
+            reader.readAsDataURL(file);
+        });
+
+        // ---------- Password modal ----------
+        const modal = $('changePasswordModal');
+
+        // ---------- Live password validation rules ----------
+        const RULES = {
+            length:  function (v) { return v.length >= 8; },
+            number:  function (v) { return /\d/.test(v); },
+            special: function (v) { return /[!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]/.test(v); }
+        };
+
+        function validateModalPassword() {
+            const newPw  = $('newPass');
+            const confPw = $('confirmPass');
+            const list   = $('modalPwChecklist');
+            const match  = $('modalPwMatch');
+            if (!newPw || !confPw) return { ok: false, match: false };
+
+            const v = newPw.value;
+            let allOk = true;
+            if (list) {
+                list.querySelectorAll('li').forEach(function (li) {
+                    const rule = li.dataset.rule;
+                    const ok = RULES[rule] ? RULES[rule](v) : false;
+                    li.classList.toggle('ok', ok);
+                    if (!ok) allOk = false;
+                });
+            }
+
+            const matches = v.length > 0 && v === confPw.value;
+            if (match) match.classList.toggle('ok', matches);
+
+            newPw.classList.toggle('pw-valid', allOk && v.length > 0);
+            newPw.classList.toggle('pw-invalid', v.length > 0 && !allOk);
+            confPw.classList.toggle('pw-valid', matches);
+            confPw.classList.toggle('pw-invalid', confPw.value.length > 0 && !matches);
+
+            return { ok: allOk && v.length > 0, match: matches };
+        }
+
+        if ($('newPass'))     $('newPass').addEventListener('input', validateModalPassword);
+        if ($('confirmPass')) $('confirmPass').addEventListener('input', validateModalPassword);
+
+        function resetPasswordModal() {
+            if ($('newPass'))     $('newPass').value = '';
+            if ($('confirmPass')) $('confirmPass').value = '';
+            const list = $('modalPwChecklist');
+            if (list) {
+                list.querySelectorAll('li').forEach(function (li) { li.classList.remove('ok'); });
+            }
+            const match = $('modalPwMatch');
+            if (match) match.classList.remove('ok');
+            const newPw = $('newPass');
+            const confPw = $('confirmPass');
+            if (newPw)  newPw.classList.remove('pw-valid', 'pw-invalid');
+            if (confPw) confPw.classList.remove('pw-valid', 'pw-invalid');
+        }
+
+        $('changePasswordBtn').addEventListener('click', function () {
+            resetPasswordModal();
+            modal.classList.add('active');
+            setTimeout(function () { if ($('newPass')) $('newPass').focus(); }, 100);
+        });
+
+        $('cancelPassBtn').addEventListener('click', function () {
+            modal.classList.remove('active');
+        });
+
+        modal.addEventListener('click', function (e) {
+            if (e.target === modal) modal.classList.remove('active');
+        });
+
+        $('savePassBtn').addEventListener('click', function () {
+            const check = validateModalPassword();
+            if (!check.ok)    { toast('Password does not meet the requirements.', true); return; }
+            if (!check.match) { toast("Passwords don't match.", true); return; }
+
+            admin.passwordUpdatedAt = new Date().toISOString();
+            saveAdmin(admin);
+            resetPasswordModal();
+            modal.classList.remove('active');
+            toast('Admin password updated.');
+        });
+
+        // ---------- Export activity report (CSV) ----------
+        document.addEventListener('click', function (e) {
+            const btn = e.target.closest('[data-action="export-activity"]');
+            if (!btn) return;
+            e.preventDefault();
+
+            const lines = [];
+            document.querySelectorAll('table').forEach(function (table) {
+                table.querySelectorAll('tr').forEach(function (row) {
+                    const cells = Array.from(row.querySelectorAll('th, td')).map(function (cell) {
+                        const text = (cell.innerText || '').replace(/\s+/g, ' ').trim();
+                        return '"' + text.replace(/"/g, '""') + '"';
+                    });
+                    if (cells.length) lines.push(cells.join(','));
+                });
+                lines.push('');
+            });
+
+            if (lines.length === 0) {
+                const fullName = [admin.firstName, admin.lastName].filter(Boolean).join(' ');
+                lines.push('"Admin Activity Report"');
+                lines.push('"Name","' + fullName.replace(/"/g, '""') + '"');
+                lines.push('"Email","' + (admin.email || '').replace(/"/g, '""') + '"');
+                lines.push('"Phone","' + (admin.phone || '').replace(/"/g, '""') + '"');
+                lines.push('"Recipes reviewed","148"');
+                lines.push('"Reports handled","27"');
+                lines.push('"Generated at","' + new Date().toISOString() + '"');
+            }
+
+            const csv = lines.join('\n');
+            const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
+            const url  = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = 'sahtein-admin-activity.csv';
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            URL.revokeObjectURL(url);
+
+            toast('Activity report downloaded.');
+        });
+
+        // ---------- Exit admin (defensive: works even if auth-guard doesn't handle it) ----------
+        document.addEventListener('click', function (e) {
+            const btn = e.target.closest('[data-action="exit-admin"]');
+            if (!btn) return;
+            e.preventDefault();
+            window.location.href = '../index.html';
+        });
+    })();
+    </script>
 </body>
 </html>

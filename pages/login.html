@@ -8,147 +8,14 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,700&family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <style>
-        :root {
-            --bg-cream: #FDFBF7; --bg-white: #FFFFFF; --text-main: #2C2C2C; --text-muted: #7A7A7A;
-            --accent-green: #2A4B3C; --accent-green-light: #E8F0EA; --accent-orange: #D96C4A;
-            --accent-orange-light: #FDF0EC; --border-color: #E6E2D8;
-            --font-serif: 'Playfair Display', serif; --font-sans: 'DM Sans', sans-serif;
-            --radius-sm: 8px; --radius-md: 12px; --radius-lg: 20px;
-            --shadow-sm: 0 2px 8px rgba(0,0,0,0.04); --shadow-md: 0 8px 24px rgba(0,0,0,0.06);
-            --transition: all 0.3s ease;
-        }
-        * { margin: 0; padding: 0; box-sizing: border-box; }
-        body {
-            font-family: var(--font-sans); background-color: var(--bg-cream);
-            color: var(--text-main); line-height: 1.6; min-height: 100vh;
-            display: flex; align-items: center; justify-content: center; padding: 24px;
-        }
-        a { text-decoration: none; color: inherit; }
-        button { cursor: pointer; font-family: inherit; border: none; background: none; }
-
-        .auth-card {
-            background: var(--bg-white); border: 1px solid var(--border-color);
-            border-radius: var(--radius-lg); padding: 48px; width: 100%; max-width: 460px;
-            box-shadow: var(--shadow-md);
-        }
-        .auth-logo {
-            font-family: var(--font-serif); font-size: 2rem; font-weight: 700;
-            color: var(--accent-green); text-align: center; margin-bottom: 6px;
-        }
-        .auth-logo span { color: var(--accent-orange); }
-        .auth-subtitle {
-            text-align: center; color: var(--text-muted);
-            font-size: 0.9rem; margin-bottom: 28px;
-        }
-
-        /* Tabs */
-        .auth-tabs {
-            display: flex; gap: 4px; margin-bottom: 24px;
-            background: var(--bg-cream); padding: 4px; border-radius: 50px;
-        }
-        .auth-tab {
-            flex: 1; padding: 10px; text-align: center; border-radius: 50px;
-            font-size: 0.85rem; font-weight: 500; cursor: pointer;
-            color: var(--text-muted); transition: var(--transition);
-        }
-        .auth-tab.active {
-            background: var(--bg-white); color: var(--accent-green);
-            box-shadow: var(--shadow-sm);
-        }
-
-        /* Form */
-        .input-group { margin-bottom: 18px; }
-        .input-group label {
-            display: block; font-size: 0.85rem; font-weight: 500;
-            margin-bottom: 6px; color: var(--text-main);
-        }
-        .input-field {
-            width: 100%; padding: 12px 16px;
-            border: 1px solid var(--border-color); border-radius: var(--radius-sm);
-            font-family: inherit; font-size: 0.95rem; background: var(--bg-white);
-            transition: var(--transition);
-        }
-        .input-field:focus {
-            outline: none; border-color: var(--accent-green);
-            box-shadow: 0 0 0 3px var(--accent-green-light);
-        }
-
-        .form-row {
-            display: grid; grid-template-columns: 1fr 1fr; gap: 12px;
-        }
-
-        .btn-submit {
-            width: 100%; background: var(--accent-green); color: #fff;
-            border: none; padding: 14px; border-radius: 50px;
-            font-weight: 500; font-size: 0.95rem;
-            cursor: pointer; transition: var(--transition);
-            font-family: inherit; margin-top: 8px;
-        }
-        .btn-submit:hover { background: #1e382c; }
-
-        .form-helper {
-            text-align: center; font-size: 0.8rem;
-            color: var(--text-muted); margin-top: 16px;
-        }
-        .form-helper a { color: var(--accent-green); font-weight: 500; }
-
-        .auth-divider {
-            display: flex; align-items: center; gap: 12px;
-            color: var(--text-muted); font-size: 0.75rem;
-            margin: 20px 0; text-transform: uppercase; letter-spacing: 1px;
-        }
-        .auth-divider::before,
-        .auth-divider::after {
-            content: ''; flex: 1; height: 1px; background: var(--border-color);
-        }
-
-        /* Preferences section for sign up */
-        .pref-chips {
-            display: flex; flex-wrap: wrap; gap: 6px; margin-top: 6px;
-        }
-        .pref-chip {
-            display: inline-block; padding: 6px 12px;
-            border: 1px solid var(--border-color); border-radius: 50px;
-            font-size: 0.8rem; color: var(--text-muted); cursor: pointer;
-            transition: var(--transition); background: var(--bg-white);
-        }
-        .pref-chip:hover { border-color: var(--accent-green); color: var(--accent-green); }
-
-        /* Back link */
-        .back-link {
-            display: inline-flex; align-items: center; gap: 6px;
-            font-size: 0.85rem; color: var(--text-muted);
-            margin-bottom: 20px; transition: var(--transition);
-        }
-        .back-link:hover { color: var(--accent-green); }
-
-        /* Demo hint box */
-        .demo-box {
-            margin-top: 24px; padding: 14px 16px;
-            background: var(--accent-green-light); border-radius: var(--radius-md);
-            font-size: 0.78rem; color: var(--text-muted); text-align: center;
-        }
-        .demo-box strong { color: var(--accent-green); display: block; margin-bottom: 4px; }
-        .demo-box code {
-            background: var(--bg-white); padding: 2px 8px;
-            border-radius: 4px; color: var(--accent-green);
-            font-size: 0.78rem;
-        }
-
-        /* Two form sections */
-        .auth-form { display: none; }
-        .auth-form.active { display: block; }
-
-        @media (max-width: 500px) {
-            .auth-card { padding: 32px 24px; }
-            .form-row { grid-template-columns: 1fr; }
-        }
-    </style>
+    
+    <!-- Linked CSS Files -->
+    <link rel="stylesheet" href="../css/shared.css">
+    <link rel="stylesheet" href="../css/login.css">
 </head>
 <body>
     <div class="auth-card">
-        <a href="index.html" class="back-link">
+        <a href="../index.html" class="back-link">
             <i class="fa-solid fa-arrow-left"></i> Back to Sahtein
         </a>
 
@@ -162,7 +29,7 @@
         </div>
 
         <!-- SIGN IN FORM -->
-        <form class="auth-form active" id="signinForm" action="index.html" method="get">
+        <form class="auth-form active" id="signinForm" action="../index.html" method="get">
             <div class="input-group">
                 <label for="signin-email">Email address</label>
                 <input type="email" id="signin-email" class="input-field"
@@ -188,7 +55,7 @@
         </form>
 
         <!-- SIGN UP FORM -->
-        <!-- <form class="auth-form" id="signupForm" action="index.html" method="get">
+        <form class="auth-form" id="signupForm" action="../index.html" method="get">
             <div class="form-row">
                 <div class="input-group">
                     <label for="signup-firstname">First name</label>
@@ -225,7 +92,19 @@
                            placeholder="••••••••" required>
                 </div>
             </div>
-            <div class="input-group">
+
+            <!-- Password requirements checklist -->
+            <ul class="pw-checklist" id="pwChecklist">
+                <li data-rule="length"><i class="fa-regular fa-circle-check"></i> Password must be at least 8 characters.</li>
+                <li data-rule="number"><i class="fa-regular fa-circle-check"></i> Have at least 1 number.</li>
+                <li data-rule="special"><i class="fa-regular fa-circle-check"></i> Contain at least 1 special character ((!@#$%&))</li>
+            </ul>
+            <div class="pw-match" id="pwMatch">
+                <i class="fa-regular fa-circle-check"></i>
+                <span>Passwords match.</span>
+            </div>
+
+            <div class="input-group" style="margin-top: 18px;">
                 <label>Your goal</label>
                 <div class="pref-chips">
                     <span class="pref-chip">Weight loss</span>
@@ -239,126 +118,12 @@
             <p class="form-helper">
                 Already have an account? <a href="#" data-switch="signin">Sign in</a>
             </p>
-        </form> -->
-		<!-- <form class="auth-form" id="signupForm" action="index.html" method="get">
-    <div class="form-row">
-        <div class="input-group">
-            <label for="signup-firstname">First name</label>
-            <input type="text" id="signup-firstname" class="input-field"
-                   placeholder="First name" required>
-        </div>
-        <div class="input-group">
-            <label for="signup-lastname">Last name</label>
-            <input type="text" id="signup-lastname" class="input-field"
-                   placeholder="Last name" required>
-        </div>
+        </form>
     </div>
-    <div class="input-group">
-        <label for="signup-username">Username</label>
-        <input type="text" id="signup-username" class="input-field"
-               placeholder="e.g., lean_saleh" required
-               pattern="[a-zA-Z0-9_]{3,20}"
-               title="3–20 characters: letters, numbers, underscores only">
-    </div>
-    <div class="input-group">
-        <label for="signup-email">Email address</label>
-        <input type="email" id="signup-email" class="input-field"
-               placeholder="you@example.com" required>
-    </div>
-    <div class="form-row">
-        <div class="input-group">
-            <label for="signup-password">Password</label>
-            <input type="password" id="signup-password" class="input-field"
-                   placeholder="••••••••" required>
-        </div>
-        <div class="input-group">
-            <label for="signup-confirm">Confirm</label>
-            <input type="password" id="signup-confirm" class="input-field"
-                   placeholder="••••••••" required>
-        </div>
-    </div>
-    <div class="input-group">
-        <label>Your goal</label>
-        <div class="pref-chips">
-            <span class="pref-chip">Weight loss</span>
-            <span class="pref-chip">Maintain</span>
-            <span class="pref-chip">Build muscle</span>
-        </div>
-    </div>
-    <button type="submit" class="btn-submit">
-        <i class="fa-solid fa-user-plus"></i> Create account
-    </button>
-    <p class="form-helper">
-        Already have an account? <a href="#" data-switch="signin">Sign in</a>
-    </p>
-</form> -->
-<form class="auth-form" id="signupForm" action="index.html" method="get">
-    <div class="form-row">
-        <div class="input-group">
-            <label for="signup-firstname">First name</label>
-            <input type="text" id="signup-firstname" class="input-field"
-                   placeholder="First name" required>
-        </div>
-        <div class="input-group">
-            <label for="signup-lastname">Last name</label>
-            <input type="text" id="signup-lastname" class="input-field"
-                   placeholder="Last name" required>
-        </div>
-    </div>
-    <div class="input-group">
-        <label for="signup-username">Username</label>
-        <input type="text" id="signup-username" class="input-field"
-               placeholder="e.g., lean_saleh" required
-               pattern="[a-zA-Z0-9_]{3,20}"
-               title="3–20 characters: letters, numbers, underscores only">
-    </div>
-    <div class="input-group">
-        <label for="signup-email">Email address</label>
-        <input type="email" id="signup-email" class="input-field"
-               placeholder="you@example.com" required>
-    </div>
-    <div class="form-row">
-        <div class="input-group">
-            <label for="signup-password">Password</label>
-            <input type="password" id="signup-password" class="input-field"
-                   placeholder="••••••••" required>
-        </div>
-        <div class="input-group">
-            <label for="signup-confirm">Confirm</label>
-            <input type="password" id="signup-confirm" class="input-field"
-                   placeholder="••••••••" required>
-        </div>
-    </div>
+    
+    <script src="../javascript/auth-guard.js"></script>
+	 <script src="../javascript/shared.js"></script>
 
-    <!-- Password requirements checklist -->
-    <ul class="pw-checklist" id="pwChecklist">
-        <li data-rule="length"><i class="fa-regular fa-circle-check"></i> Password must be at least 8 characters.</li>
-        <li data-rule="number"><i class="fa-regular fa-circle-check"></i> Have at least 1 number.</li>
-        <li data-rule="special"><i class="fa-regular fa-circle-check"></i> Contain at least 1 special character ((!@#$%&))</li>
-    </ul>
-    <div class="pw-match" id="pwMatch">
-        <i class="fa-regular fa-circle-check"></i>
-        <span>Passwords match.</span>
-    </div>
-
-    <div class="input-group" style="margin-top: 18px;">
-        <label>Your goal</label>
-        <div class="pref-chips">
-            <span class="pref-chip">Weight loss</span>
-            <span class="pref-chip">Maintain</span>
-            <span class="pref-chip">Build muscle</span>
-        </div>
-    </div>
-    <button type="submit" class="btn-submit">
-        <i class="fa-solid fa-user-plus"></i> Create account
-    </button>
-    <p class="form-helper">
-        Already have an account? <a href="#" data-switch="signin">Sign in</a>
-    </p>
-</form>
-    </div>
-<script src="auth-guard.js"></script>
-<script src="login.js"></script>
-
+    <script src="../javascript/login.js"></script>
 </body>
 </html>

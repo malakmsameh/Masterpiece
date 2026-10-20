@@ -8,148 +8,16 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,700&family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <style>
-        :root {
-            --bg-cream: #FDFBF7; --bg-white: #FFFFFF; --text-main: #2C2C2C; --text-muted: #7A7A7A;
-            --accent-green: #2A4B3C; --accent-green-light: #E8F0EA; --accent-orange: #D96C4A;
-            --accent-orange-light: #FDF0EC; --border-color: #E6E2D8; --font-serif: 'Playfair Display', serif;
-            --font-sans: 'DM Sans', sans-serif; --radius-sm: 8px; --radius-md: 12px; --radius-lg: 20px;
-            --shadow-sm: 0 2px 8px rgba(0,0,0,0.04); --shadow-md: 0 8px 24px rgba(0,0,0,0.06);
-            --transition: all 0.3s ease;
-        }
-        * { margin: 0; padding: 0; box-sizing: border-box; }
-        body { font-family: var(--font-sans); background-color: var(--bg-cream); color: var(--text-main); line-height: 1.6; -webkit-font-smoothing: antialiased; }
-        a { text-decoration: none; color: inherit; }
-        ul { list-style: none; }
-        img { max-width: 100%; display: block; }
-        button { cursor: pointer; font-family: inherit; border: none; background: none; }
-        h1, h2, h3, h4 { font-family: var(--font-serif); font-weight: 600; line-height: 1.2; }
-        h1 { font-size: 2.2rem; letter-spacing: -0.5px; }
-        h2 { font-size: 1.8rem; }
-        h3 { font-size: 1.3rem; }
-        .section-label { font-size: 0.75rem; text-transform: uppercase; letter-spacing: 1.5px; color: var(--accent-orange); font-weight: 700; margin-bottom: 0.5rem; display: block; }
-        .text-muted { color: var(--text-muted); font-size: 0.9rem; }
-        .text-sm { font-size: 0.85rem; }
-        .btn { display: inline-flex; align-items: center; justify-content: center; gap: 8px; padding: 10px 20px; border-radius: 50px; font-weight: 500; font-size: 0.9rem; transition: var(--transition); }
-        .btn-primary { background-color: var(--accent-green); color: #fff; }
-        .btn-primary:hover { background-color: #1e382c; }
-        .btn-outline { border: 1px solid var(--border-color); background: #fff; color: var(--text-main); }
-        .btn-outline:hover { border-color: var(--accent-green); color: var(--accent-green); }
-        .btn-sm { padding: 6px 14px; font-size: 0.8rem; }
-        .input-field { width: 100%; padding: 10px 16px; border: 1px solid var(--border-color); border-radius: var(--radius-sm); font-family: inherit; font-size: 0.9rem; background: var(--bg-white); transition: var(--transition); }
-        .input-field:focus { outline: none; border-color: var(--accent-green); box-shadow: 0 0 0 3px var(--accent-green-light); }
-        .dashboard-layout { display: flex; min-height: 100vh; }
-        .flex-between { display: flex; justify-content: space-between; align-items: center; }
-        .flex-center { display: flex; justify-content: center; align-items: center; }
-        .gap-2 { gap: 8px; } .gap-4 { gap: 16px; }
-        .mt-2 { margin-top: 8px; } .mt-4 { margin-top: 16px; } .mb-2 { margin-bottom: 8px; } .mb-4 { margin-bottom: 16px; } .mb-6 { margin-bottom: 24px; }
-        .sidebar { width: 260px; background: var(--bg-white); border-right: 1px solid var(--border-color); padding: 24px 0; display: flex; flex-direction: column; flex-shrink: 0; position: sticky; top: 0; height: 100vh; }
-        .sidebar-logo { padding: 0 24px 24px; border-bottom: 1px solid var(--border-color); margin-bottom: 16px; }
-        .sidebar-logo a { font-family: var(--font-serif); font-size: 1.5rem; font-weight: 700; color: var(--accent-green); display: flex; align-items: center; gap: 8px; }
-        .sidebar-logo a span { color: var(--accent-orange); }
-        .sidebar-logo .admin-badge { font-size: 0.65rem; background: var(--accent-orange-light); color: var(--accent-orange); padding: 2px 8px; border-radius: 50px; font-family: var(--font-sans); margin-left: 8px; text-transform: uppercase; letter-spacing: 1px; }
-        .sidebar-menu { display: flex; flex-direction: column; gap: 4px; padding: 0 16px; flex: 1; }
-        .sidebar-menu a { display: flex; align-items: center; gap: 12px; padding: 12px 16px; border-radius: var(--radius-sm); font-size: 0.9rem; font-weight: 500; color: var(--text-muted); transition: var(--transition); }
-        .sidebar-menu a:hover { background: var(--bg-cream); color: var(--text-main); }
-        .sidebar-menu a.active { background: var(--accent-green-light); color: var(--accent-green); font-weight: 700; }
-        .sidebar-footer { padding: 16px 24px; border-top: 1px solid var(--border-color); margin-top: auto; }
-        .sidebar-footer a { display: flex; align-items: center; gap: 8px; font-size: 0.85rem; color: var(--accent-orange); font-weight: 500; transition: var(--transition); }
-        .sidebar-footer a:hover { text-decoration: underline; }
-        .main-content { flex: 1; padding: 32px 40px; background: var(--bg-cream); overflow-y: auto; }
-        .admin-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 32px; }
-        .admin-header h1 { font-size: 2rem; }
-        .stat-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 24px; margin-bottom: 32px; }
-        .stat-card { background: var(--bg-white); padding: 24px; border-radius: var(--radius-md); border: 1px solid var(--border-color); display: flex; flex-direction: column; gap: 8px; }
-        .stat-card .number { font-size: 2rem; font-weight: 700; font-family: var(--font-serif); color: var(--accent-green); }
-        .stat-card .label { font-size: 0.8rem; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.5px; }
-        .table-container { background: var(--bg-white); border-radius: var(--radius-md); border: 1px solid var(--border-color); overflow: hidden; margin-bottom: 32px; }
-        .table-header { padding: 20px 24px; border-bottom: 1px solid var(--border-color); display: flex; justify-content: space-between; align-items: center; }
-        table { width: 100%; border-collapse: collapse; text-align: left; }
-        th, td { padding: 16px 24px; border-bottom: 1px solid var(--border-color); font-size: 0.85rem; }
-        th { background: #FAFAFA; font-weight: 500; color: var(--text-muted); text-transform: uppercase; font-size: 0.7rem; letter-spacing: 0.5px; }
-        tr:last-child td { border-bottom: none; }
-        .status-badge { padding: 4px 12px; border-radius: 50px; font-size: 0.75rem; font-weight: 600; display: inline-block; }
-        .status-pending { background: #FFF3E0; color: #E65100; }
-        .status-active { background: #E8F5E9; color: #2E7D32; }
-        .status-suspended { background: #FFEBEE; color: #C62828; }
-        .review-grid { display: grid; grid-template-columns: 2fr 1fr; gap: 24px; margin-bottom: 32px; }
-        .review-card { background: var(--bg-white); padding: 24px; border-radius: var(--radius-md); border: 1px solid var(--border-color); }
-        .checklist-item { display: flex; align-items: center; gap: 8px; font-size: 0.85rem; margin-bottom: 8px; color: var(--text-muted); }
-        .checklist-item input { accent-color: var(--accent-green); }
-        .action-links button { font-size: 0.8rem; color: var(--text-muted); margin-right: 8px; transition: var(--transition); font-family: inherit; }
-        .action-links button:hover { color: var(--accent-green); }
-        .action-links button.delete:hover { color: #C62828; }
-        .dashboard-with-activity {
-            display: grid;
-            grid-template-columns: 1fr 340px;
-            gap: 24px;
-            align-items: start;
-            margin-bottom: 32px;
-        }
-        .activity-sidebar {
-            background: var(--bg-white);
-            border: 1px solid var(--border-color);
-            border-radius: var(--radius-md);
-            padding: 24px;
-            position: sticky;
-            top: 24px;
-        }
-        .activity-sidebar h3 {
-            font-size: 1.05rem;
-            margin-bottom: 16px;
-        }
-        .activity-item {
-            display: flex;
-            gap: 14px;
-            padding: 14px 0;
-            border-bottom: 1px solid var(--border-color);
-        }
-        .activity-item:last-child { border-bottom: none; }
-        .activity-icon {
-            width: 36px;
-            height: 36px;
-            border-radius: 50%;
-            background: var(--accent-green-light);
-            color: var(--accent-green);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            flex-shrink: 0;
-        }
-        .activity-item .activity-body {
-            flex: 1;
-            font-size: 0.88rem;
-            line-height: 1.5;
-        }
-        .activity-item .activity-body span {
-            display: block;
-            color: var(--text-muted);
-            font-size: 0.78rem;
-            margin-top: 2px;
-        }
-        @media (max-width: 1024px) {
-            .stat-grid { grid-template-columns: repeat(2, 1fr); }
-            .review-grid { grid-template-columns: 1fr; }
-            .dashboard-with-activity { grid-template-columns: 1fr; }
-            .activity-sidebar { position: static; }
-        }
-        @media (max-width: 768px) {
-            .dashboard-layout { flex-direction: column; }
-            .sidebar { width: 100%; height: auto; position: static; border-right: none; border-bottom: 1px solid var(--border-color); padding: 16px; }
-            .sidebar-menu { flex-direction: row; flex-wrap: wrap; justify-content: center; }
-            .main-content { padding: 20px; }
-            .stat-grid { grid-template-columns: 1fr; }
-            .admin-header { flex-direction: column; gap: 16px; align-items: flex-start; }
-            .table-container { overflow-x: auto; }
-            table { min-width: 600px; }
-        }
-    </style>
+
+    <!-- Linked CSS Files -->
+    <link rel="stylesheet" href="../css/shared.css">
+    <link rel="stylesheet" href="../css/admin-dashboard.css">
 </head>
 <body>
     <div class="dashboard-layout">
         <aside class="sidebar">
             <div class="sidebar-logo">
-                <a href="index.html">sahtein<span>.</span> <span class="admin-badge">Admin</span></a>
+                <a href="../index.html">sahtein<span>.</span> <span class="admin-badge">Admin</span></a>
             </div>
             <nav class="sidebar-menu">
                 <a href="admin-dashboard.html" class="active"><i class="fa-solid fa-chart-line"></i> Dashboard</a>
@@ -158,18 +26,13 @@
                 <a href="admin-users.html"><i class="fa-solid fa-users"></i> User Management</a>
                 <a href="admin-categories.html"><i class="fa-solid fa-folder"></i> Category Management</a>
                 <a href="admin-ai-recipes.html"><i class="fa-solid fa-wand-magic-sparkles"></i> AI Generated Recipes</a>
-				<a href="admin-profile.html"><i class="fa-solid fa-user-gear"></i> Your Profile</a>
+                <a href="admin-profile.html"><i class="fa-solid fa-user-gear"></i> Your Profile</a>
             </nav>
-            <!-- <div class="sidebar-footer">
-                <button type="button" class="sidebar-exit" data-action="exit-admin" style="display: flex; align-items: center; gap: 8px; font-size: 0.85rem; color: var(--accent-orange); font-weight: 500; transition: var(--transition);">
+            <div class="sidebar-footer">
+                <button type="button" class="sidebar-exit" data-action="exit-admin">
                     <i class="fa-solid fa-right-from-bracket"></i> Exit Admin
                 </button>
-            </div> -->
-			<div class="sidebar-footer">
-                <button type="button" class="sidebar-exit" data-action="exit-admin" style="display: flex; align-items: center; gap: 8px; font-size: 0.85rem; color: var(--accent-orange); font-weight: 500; transition: var(--transition);">
-                    <i class="fa-solid fa-right-from-bracket"></i> Exit Admin
-                </button>
-				</div>
+            </div>
         </aside>
         <main class="main-content">
             <div class="admin-header">
@@ -181,23 +44,23 @@
                 <button type="button" class="btn btn-outline" data-action="export-activity">Export activity report</button>
             </div>
             <div class="stat-grid">
-                <div class="stat-card"><span class="number">3</span><span class="label">Pending Recipes</span></div>
-                <div class="stat-card"><span class="number">2</span><span class="label">Open Reports</span></div>
+                <div class="stat-card"><span class="number" data-count="pending-recipes">3</span><span class="label">Pending Recipes</span></div>
+                <div class="stat-card"><span class="number" data-count="open-reports">2</span><span class="label">Open Reports</span></div>
                 <div class="stat-card"><span class="number">2,418</span><span class="label">Registered Members</span></div>
-                <div class="stat-card"><span class="number">8</span><span class="label">Published Recipes</span></div>
+                <div class="stat-card"><span class="number" data-count="published-recipes">8</span><span class="label">Published Recipes</span></div>
             </div>
             <div class="table-container">
                 <div class="table-header">
                     <h3 style="font-size: 1.1rem;">Good recipes deserve a careful review.</h3>
-                    <button type="button" class="btn btn-sm btn-outline" data-action="filter-pending">Pending review</button>
+                    <button type="button" class="btn btn-sm btn-outline" data-action="filter-pending" data-pending="false">Pending review</button>
                 </div>
-                <table>
+                <table id="recipesReviewTable">
                     <thead>
                         <tr><th>Recipe / Submitted</th><th>Contributor</th><th>Status</th><th>Review Actions</th></tr>
                     </thead>
                     <tbody>
-                        <tr>
-                            <td><strong>Roasted Cauliflower & Tahini</strong><br><span class="text-muted text-sm">Oct 12 · Vegetarian · Contains sesame</span></td>
+                        <tr data-recipe="Roasted Cauliflower & Tahini">
+                            <td><strong>Roasted Cauliflower &amp; Tahini</strong><br><span class="text-muted text-sm">Oct 12 · Vegetarian · Contains sesame</span></td>
                             <td>Leen Saleh</td>
                             <td><span class="status-badge status-pending">Pending review</span></td>
                             <td class="action-links">
@@ -206,7 +69,7 @@
                                 <button type="button" class="delete" data-action="reject-recipe">Reject</button>
                             </td>
                         </tr>
-                        <tr>
+                        <tr data-recipe="Lemon Lentil Soup">
                             <td><strong>Lemon Lentil Soup</strong><br><span class="text-muted text-sm">Oct 12 · Plant-based · 290 kcal</span></td>
                             <td>Maya Haddad</td>
                             <td><span class="status-badge status-pending">Pending review</span></td>
@@ -216,7 +79,7 @@
                                 <button type="button" class="delete" data-action="reject-recipe">Reject</button>
                             </td>
                         </tr>
-                        <tr>
+                        <tr data-recipe="Herb Grilled Fish">
                             <td><strong>Herb Grilled Fish</strong><br><span class="text-muted text-sm">Oct 11 · High protein · Contains fish</span></td>
                             <td>Rami Khalil</td>
                             <td><span class="status-badge status-pending">Pending review</span></td>
@@ -233,7 +96,7 @@
                 <div class="review-grid" style="grid-template-columns: 1fr; margin-bottom: 0;">
                     <div class="review-card">
                         <span class="section-label">Selected for review</span>
-                        <h3>Roasted Cauliflower & Tahini</h3>
+                        <h3>Roasted Cauliflower &amp; Tahini</h3>
                         <p class="text-muted text-sm mb-4">Leen Saleh · Submitted October 12 · 2 servings · 30 minutes</p>
                         <div class="mb-4">
                             <label class="checklist-item"><input type="checkbox" checked> Ingredients and instructions are complete</label>
@@ -242,10 +105,10 @@
                         </div>
                         <div class="mb-4">
                             <label style="font-size: 0.85rem; font-weight: 500; margin-bottom: 4px; display: block;">Review note / Rejection reason</label>
-                            <textarea class="input-field" rows="3" placeholder="Please include the source of your nutrition estimate."></textarea>
+                            <textarea class="input-field" id="reviewNote" rows="3" placeholder="Please include the source of your nutrition estimate."></textarea>
                         </div>
                         <div class="flex gap-2">
-                            <button type="button" class="btn btn-primary" data-action="approve-publish">Approve & publish</button>
+                            <button type="button" class="btn btn-primary" data-action="approve-publish">Approve &amp; publish</button>
                             <button type="button" class="btn btn-outline" data-action="reject-with-reason">Reject with reason</button>
                         </div>
                     </div>
@@ -296,7 +159,7 @@
                 <div class="table-header">
                     <h3 style="font-size: 1.1rem;">Keep the conversation welcoming.</h3>
                 </div>
-                <table>
+                <table id="moderationTable">
                     <thead>
                         <tr><th>Reported Content</th><th>Reason / Reports</th><th>Status</th><th>Moderation Actions</th></tr>
                     </thead>
@@ -326,48 +189,232 @@
             </div>
         </main>
     </div>
-<script src="auth-guard.js"></script>
-<script>
-/* =========================================================================
-   Admin Dashboard — export button
-   Purely DOM/event: builds a small CSV from the page tables and downloads it.
-   ========================================================================= */
-(function () {
-    'use strict';
 
-    document.addEventListener('click', function (e) {
-        const btn = e.target.closest('[data-action="export-activity"]');
-        if (!btn) return;
+    <script src="../javascript/shared.js"></script>
+    <script src="../javascript/auth-guard.js"></script>
+    <script>
+    (function () {
+        'use strict';
 
-        e.preventDefault();
+        const $ = function (id) { return document.getElementById(id); };
 
-        // Build CSV from all <table> rows on this page
-        const lines = [];
-        document.querySelectorAll('table').forEach(function (table) {
-            table.querySelectorAll('tr').forEach(function (row) {
-                const cells = Array.from(row.querySelectorAll('th, td')).map(function (cell) {
-                    // collapse whitespace, escape quotes
-                    const text = cell.innerText.replace(/\s+/g, ' ').trim();
-                    return '"' + text.replace(/"/g, '""') + '"';
-                });
-                if (cells.length) lines.push(cells.join(','));
+        function toast(msg, isError) {
+            if (window.showToast) window.showToast(msg, isError);
+            else alert(msg);
+        }
+
+        /* ---------- Recompute the two live counters ---------- */
+        function refreshCounters() {
+            const pendingRows = document.querySelectorAll('#recipesReviewTable tbody tr');
+            let pendingCount = 0;
+            pendingRows.forEach(function (row) {
+                const badge = row.querySelector('.status-badge');
+                if (badge && /pending/i.test(badge.textContent)) pendingCount++;
             });
-            lines.push(''); // blank line between tables
+            const pendingEl = document.querySelector('[data-count="pending-recipes"]');
+            if (pendingEl) pendingEl.textContent = String(pendingCount);
+
+            const openReports = document.querySelectorAll('#moderationTable tbody tr').length;
+            const openEl = document.querySelector('[data-count="open-reports"]');
+            if (openEl) openEl.textContent = String(openReports);
+        }
+
+        /* ---------- Update the status badge in a review row ---------- */
+        function setRowStatus(row, label, className) {
+            const cell = row.children[2];
+            if (!cell) return;
+            cell.innerHTML = '<span class="status-badge ' + className + '">' + label + '</span>';
+        }
+
+        /* ---------- Remove "review actions" from a decided row ---------- */
+        function freezeRow(row) {
+            const actions = row.querySelector('.action-links');
+            if (!actions) return;
+            actions.innerHTML = '<span class="text-muted text-sm">Reviewed</span>';
+        }
+
+        /* ---------- Approve / Reject from table rows ---------- */
+        function approveRecipe(row) {
+            if (!row) return;
+            const name = row.getAttribute('data-recipe') || 'Recipe';
+            setRowStatus(row, 'Published', 'status-active');
+            freezeRow(row);
+            toast('Approved "' + name + '".');
+            refreshCounters();
+        }
+
+        function rejectRecipe(row) {
+            if (!row) return;
+            const name = row.getAttribute('data-recipe') || 'Recipe';
+            setRowStatus(row, 'Rejected', 'status-suspended');
+            freezeRow(row);
+            toast('Rejected "' + name + '".', true);
+            refreshCounters();
+        }
+
+        function viewRecipe(row) {
+            if (!row) return;
+            const name = row.getAttribute('data-recipe') || 'Recipe';
+            const summary = Array.prototype.map.call(row.querySelectorAll('td'), function (td) {
+                return (td.innerText || '').replace(/\s+/g, ' ').trim();
+            }).join('\n');
+            // Use a simple alert so no extra modal markup is required
+            alert(name + '\n\n' + summary);
+        }
+
+        /* ---------- Review card: approve & publish / reject with reason ---------- */
+        function reviewCardRecipeName() {
+            const h3 = document.querySelector('.review-card h3');
+            return h3 ? h3.textContent.trim() : '';
+        }
+
+        function findRowByRecipeName(name) {
+            let found = null;
+            document.querySelectorAll('#recipesReviewTable tbody tr').forEach(function (row) {
+                if (row.getAttribute('data-recipe') === name) found = row;
+            });
+            return found;
+        }
+
+        function approveAndPublish() {
+            const name = reviewCardRecipeName();
+            const row  = findRowByRecipeName(name);
+            const note = $('reviewNote') ? $('reviewNote').value.trim() : '';
+            if (row) {
+                setRowStatus(row, 'Published', 'status-active');
+                freezeRow(row);
+            }
+            if ($('reviewNote')) $('reviewNote').value = '';
+            toast('Published "' + name + '".' + (note ? ' Note saved.' : ''));
+            refreshCounters();
+        }
+
+        function rejectWithReason() {
+            const name = reviewCardRecipeName();
+            const row  = findRowByRecipeName(name);
+            const note = $('reviewNote') ? $('reviewNote').value.trim() : '';
+            if (!note) {
+                toast('Please add a rejection reason first.', true);
+                if ($('reviewNote')) $('reviewNote').focus();
+                return;
+            }
+            if (row) {
+                setRowStatus(row, 'Rejected', 'status-suspended');
+                freezeRow(row);
+            }
+            if ($('reviewNote')) $('reviewNote').value = '';
+            toast('Rejected "' + name + '" with a reason.', true);
+            refreshCounters();
+        }
+
+        /* ---------- Pending-only filter ---------- */
+        function togglePendingFilter(btn) {
+            const pendingOnly = btn.getAttribute('data-pending') === 'true';
+            const nextState   = !pendingOnly;
+            btn.setAttribute('data-pending', nextState ? 'true' : 'false');
+
+            document.querySelectorAll('#recipesReviewTable tbody tr').forEach(function (row) {
+                const badge = row.querySelector('.status-badge');
+                const isPending = badge && /pending/i.test(badge.textContent);
+                row.style.display = (nextState && !isPending) ? 'none' : '';
+            });
+            toast(nextState ? 'Showing only pending recipes.' : 'Showing all recipes.');
+        }
+
+        /* ---------- Moderation actions ---------- */
+        function removeRow(row) {
+            if (row && row.parentNode) row.parentNode.removeChild(row);
+            refreshCounters();
+        }
+
+        function warnUser(row) {
+            if (!row) return;
+            toast('Warning sent to the contributor.');
+        }
+
+        function dismissReport(row) {
+            if (!row) return;
+            const cell = row.children[2];
+            if (cell) cell.innerHTML = '<span class="status-badge status-active">Dismissed</span>';
+            toast('Report dismissed.');
+            refreshCounters();
+        }
+
+        function showGuidelines() {
+            alert(
+                'Moderation guidelines\n' +
+                '• Verify ingredient quantities and safe preparation instructions.\n' +
+                '• Confirm allergens and nutrition estimates.\n' +
+                '• Reject unsupported health claims.\n' +
+                '• Ask for clarification when information is missing.'
+            );
+        }
+
+        /* ---------- CSV export ---------- */
+        function exportActivity() {
+            const lines = [];
+            const note  = $('reviewNote') ? $('reviewNote').value.trim() : '';
+
+            document.querySelectorAll('table').forEach(function (table) {
+                table.querySelectorAll('tr').forEach(function (row) {
+                    const cells = Array.prototype.map.call(
+                        row.querySelectorAll('th, td'),
+                        function (cell) {
+                            const text = (cell.innerText || '').replace(/\s+/g, ' ').trim();
+                            return '"' + text.replace(/"/g, '""') + '"';
+                        }
+                    );
+                    if (cells.length) lines.push(cells.join(','));
+                });
+                lines.push('');
+            });
+
+            if (note) {
+                lines.push('"Review note","' + note.replace(/"/g, '""') + '"');
+            }
+            lines.push('"Exported at","' + new Date().toISOString() + '"');
+
+            const csv = lines.join('\n');
+            const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
+            const url  = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = 'sahtein-activity-report.csv';
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            URL.revokeObjectURL(url);
+            toast('Activity report downloaded.');
+        }
+
+        /* ---------- Global click handler ---------- */
+        document.addEventListener('click', function (e) {
+            const btn = e.target.closest('[data-action]');
+            if (!btn) return;
+
+            const action = btn.dataset.action;
+            const row    = btn.closest('tr');
+
+            switch (action) {
+                case 'export-activity':       e.preventDefault(); exportActivity(); break;
+                case 'approve-recipe':        e.preventDefault(); approveRecipe(row); break;
+                case 'reject-recipe':         e.preventDefault(); rejectRecipe(row); break;
+                case 'view-recipe':           e.preventDefault(); viewRecipe(row); break;
+                case 'approve-publish':       e.preventDefault(); approveAndPublish(); break;
+                case 'reject-with-reason':    e.preventDefault(); rejectWithReason(); break;
+                case 'filter-pending':        e.preventDefault(); togglePendingFilter(btn); break;
+                case 'open-guidelines':       e.preventDefault(); showGuidelines(); break;
+                case 'view-post':             e.preventDefault(); viewRecipe(row); break;
+                case 'view-thread':           e.preventDefault(); viewRecipe(row); break;
+                case 'remove-post':           e.preventDefault(); removeRow(row); toast('Post removed.', true); break;
+                case 'warn-user':             e.preventDefault(); warnUser(row); break;
+                case 'dismiss-report':        e.preventDefault(); dismissReport(row); break;
+            }
         });
 
-        const csv = lines.join('\n');
-        const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
-        const url  = URL.createObjectURL(blob);
-
-        const a = document.createElement('a');
-        a.href = url;
-        a.download = 'sahtein-activity-report.csv';
-        document.body.appendChild(a);
-        a.click();
-        document.body.removeChild(a);
-        URL.revokeObjectURL(url);
-    });
-})();
-</script>
+        /* ---------- Initialize ---------- */
+        refreshCounters();
+    })();
+    </script>
 </body>
 </html>

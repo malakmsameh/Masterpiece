@@ -2,18 +2,26 @@
    Sahtein — auth-guard.js
    Loaded on every page (right before </body>).
 
-   What it does (buttons only):
+   What it does:
    1. Any element with data-requires-login="true" → if not logged in,
       redirect to login.html?return=<current page>.
-   2. If logged in and the button is a NAVIGATION action (favorites,
-      profile, meal-planner, ai-recipe, healthy-day, community, admin,
-      sign-out), redirect to the right page.
-
-   No other app logic. No toast. No data storage.
+   2. Handles sign-out, exit-admin, and NAVIGATION actions.
+   3. Works whether pages are at the site root OR inside /pages/.
    ========================================================================= */
 
 (function () {
     'use strict';
+
+    /* ---------- Where is the site root relative to this page? ---------- */
+    /* If we're inside /pages/, links to index.html need "../index.html".  */
+    /* If we're at the root, they need "index.html".                      */
+    function isInPagesFolder() {
+        return /\/pages\//.test(window.location.pathname);
+    }
+
+    function rootPrefix() {
+        return isInPagesFolder() ? '../' : '';
+    }
 
     /* ---------- Login flag ---------- */
     function isLoggedIn() {
@@ -25,12 +33,15 @@
     }
 
     /* ---------- Current page (for ?return=) ---------- */
+    /* Returns just the filename, e.g. "profile.html" or "index.html". */
     function currentPage() {
         const parts = window.location.pathname.split('/');
         return parts[parts.length - 1] || 'index.html';
     }
 
     /* ---------- Where each navigation action should go ---------- */
+    /* All sibling pages live next to auth-guard's callers (in /pages/),  */
+    /* so relative filenames are enough. index.html is one level up.     */
     const NAVIGATION = {
         'favorites':    'favorites.html',
         'profile':      'profile.html',
@@ -61,20 +72,19 @@
         if (action === 'sign-out') {
             event.preventDefault();
             try { localStorage.removeItem('sahtein_logged_in'); } catch (err) {}
-            window.location.href = 'index.html';
+            window.location.href = rootPrefix() + 'index.html';
             return;
         }
 
-        /* --- Navigation actions (only run if user is logged in for
-               those that required it; otherwise plain navigation) --- */
+        /* --- Exit admin (leaves admin workspace, back to home) --- */
+        if (action === 'exit-admin') {
+            event.preventDefault();
+            window.location.href = rootPrefix() + 'index.html';
+            return;
+        }
+
+        /* --- Navigation actions --- */
         if (NAVIGATION[action]) {
-            if (requires && !isLoggedIn()) {
-                // already handled above, but be safe:
-                event.preventDefault();
-                const returnTo = encodeURIComponent(currentPage());
-                window.location.href = 'login.html?return=' + returnTo;
-                return;
-            }
             event.preventDefault();
             window.location.href = NAVIGATION[action];
         }
