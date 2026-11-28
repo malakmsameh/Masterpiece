@@ -9,4 +9,19 @@ class UserSavedRecipe extends Model
 {
     /** @use HasFactory<\Database\Factories\UserSavedRecipeFactory> */
     use HasFactory;
+
+	protected $fillable = [
+		'user_id',
+		'recipe_id',
+	];
+
+	public function user()
+	{
+		return $this->belongsTo(User::class);
+	}
+	public function recipe()
+	{
+		return $this->belongsTo(Recipe::class);
+	}
+
 }

@@ -1,0 +1,275 @@
+@import url('shared.css');
+
+/* =========================================================
+   Nutrition-page-only styles
+   ========================================================= */
+
+/* ---------- Hero ---------- */
+.nutrition-hero {
+    background: linear-gradient(135deg, var(--accent-green) 0%, #1a2f25 100%);
+    color: #fff;
+    padding: 44px 40px;
+    border-radius: var(--radius-lg);
+    margin: 32px 0 32px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 32px;
+}
+.nutrition-hero h1 {
+    font-size: 2.2rem;
+    margin-bottom: 12px;
+    line-height: 1.1;
+}
+.nutrition-hero h1 em {
+    color: var(--accent-orange);
+    font-style: italic;
+}
+.nutrition-hero p {
+    opacity: 0.85;
+    max-width: 480px;
+    margin-bottom: 18px;
+    font-size: 0.92rem;
+}
+.nutrition-hero-badge {
+    background: rgba(255,255,255,0.1);
+    border: 1px solid rgba(255,255,255,0.2);
+    padding: 18px 24px;
+    border-radius: var(--radius-md);
+    text-align: center;
+    flex-shrink: 0;
+}
+.nutrition-hero-badge strong {
+    display: block;
+    font-size: 1.9rem;
+    font-family: var(--font-serif);
+    color: var(--accent-orange);
+}
+.nutrition-hero-badge span {
+    font-size: 0.72rem;
+    opacity: 0.8;
+}
+
+/* ---------- Tip cards grid ---------- */
+.tips-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 16px;
+    margin-bottom: 32px;
+}
+.tip-card {
+    background: var(--bg-white);
+    padding: 20px;
+    border-radius: var(--radius-md);
+    border: 1px solid var(--border-color);
+    transition: var(--transition);
+    display: flex;
+    flex-direction: column;
+}
+.tip-card:hover {
+    box-shadow: var(--shadow-md);
+    transform: translateY(-4px);
+}
+.tip-icon {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background: var(--accent-green-light);
+    color: var(--accent-green);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1rem;
+    margin-bottom: 12px;
+}
+.tip-card h3 {
+    font-size: 1rem;
+    margin-bottom: 6px;
+}
+.tip-card p {
+    font-size: 0.85rem;
+    color: var(--text-muted);
+    flex: 1;
+    margin-bottom: 12px;
+}
+.tip-card .tip-tag {
+    font-size: 0.62rem;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    font-weight: 700;
+    color: var(--accent-orange);
+    margin-bottom: 6px;
+    display: block;
+}
+
+/* ---------- Article / long-form section ---------- */
+.article-section { margin-bottom: 40px; }
+.article-grid {
+    display: grid;
+    grid-template-columns: 2fr 1fr;
+    gap: 28px;
+    align-items: start;
+}
+.article-body p { margin-bottom: 12px; font-size: 0.92rem; }
+.article-body h2 { font-size: 1.5rem; margin-bottom: 14px; margin-top: 4px; }
+.article-body h3 {
+    margin-bottom: 6px;
+    margin-top: 18px;
+    font-size: 1.05rem;
+}
+.article-sidebar {
+    background: var(--accent-green-light);
+    padding: 18px;
+    border-radius: var(--radius-md);
+    position: sticky;
+    top: 88px;
+}
+.article-sidebar h3 {
+    font-size: 0.98rem;
+    margin-bottom: 10px;
+    color: var(--accent-green);
+}
+.article-sidebar p {
+    font-size: 0.8rem;
+    color: var(--text-muted);
+    margin-bottom: 14px;
+}
+
+/* ---------- Macro pillar cards ---------- */
+.macro-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 14px;
+    margin-bottom: 32px;
+}
+.macro-pillar {
+    background: var(--bg-white);
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius-md);
+    padding: 18px;
+    text-align: center;
+}
+.macro-pillar .macro-value {
+    font-family: var(--font-serif);
+    font-size: 1.4rem;
+    color: var(--accent-green);
+    margin-bottom: 4px;
+}
+.macro-pillar .macro-name {
+    font-size: 0.7rem;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    color: var(--text-muted);
+    margin-bottom: 10px;
+}
+.macro-pillar p {
+    font-size: 0.78rem;
+    color: var(--text-muted);
+}
+
+/* ---------- Myth-busting list ---------- */
+.myth-list {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+    margin-bottom: 32px;
+}
+.myth-card {
+    background: var(--bg-white);
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius-md);
+    padding: 18px;
+}
+.myth-card .myth-label {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 0.68rem;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    font-weight: 700;
+    padding: 3px 9px;
+    border-radius: 50px;
+    margin-bottom: 10px;
+}
+.myth-label.myth { background: #FFEBEE; color: #C62828; }
+.myth-label.fact { background: #E8F5E9; color: #2E7D32; }
+.myth-card h4 {
+    font-size: 0.95rem;
+    margin-bottom: 6px;
+    font-family: var(--font-sans);
+    font-weight: 600;
+}
+.myth-card p { font-size: 0.82rem; color: var(--text-muted); }
+
+/* ---------- CTA banner ---------- */
+.nutrition-cta {
+    background: var(--accent-orange-light);
+    border: 1px solid var(--accent-orange);
+    border-radius: var(--radius-lg);
+    padding: 26px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 24px;
+    margin-bottom: 32px;
+}
+.nutrition-cta h3 {
+    color: var(--accent-orange);
+    margin-bottom: 6px;
+    font-size: 1.15rem;
+}
+.nutrition-cta p {
+    color: var(--text-muted);
+    font-size: 0.88rem;
+    max-width: 560px;
+}
+
+/* ---------- Disclaimer ---------- */
+.disclaimer {
+    background: var(--bg-white);
+    border: 1px solid var(--border-color);
+    border-left: 4px solid var(--accent-orange);
+    padding: 16px 20px;
+    border-radius: var(--radius-sm);
+    font-size: 0.82rem;
+    color: var(--text-muted);
+    margin-bottom: 28px;
+}
+.disclaimer strong { color: var(--text-main); }
+
+/* ---------- Section heading helpers (local, tighter) ---------- */
+.section-heading-tight {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    gap: 20px;
+    margin-bottom: 20px;
+    flex-wrap: wrap;
+}
+.section-heading-tight h2 { font-size: 1.5rem; }
+
+/* ---------- Responsive ---------- */
+@media (max-width: 1024px) {
+    .tips-grid { grid-template-columns: repeat(2, 1fr); }
+    .macro-grid { grid-template-columns: repeat(2, 1fr); }
+    .article-grid { grid-template-columns: 1fr; }
+    .article-sidebar { position: static; }
+    .nutrition-hero {
+        flex-direction: column;
+        text-align: center;
+        padding: 40px 32px;
+    }
+    .nutrition-hero h1 { font-size: 2.1rem; }
+}
+@media (max-width: 768px) {
+    .tips-grid,
+    .macro-grid,
+    .myth-list { grid-template-columns: 1fr; }
+    .nutrition-cta {
+        flex-direction: column;
+        text-align: center;
+    }
+    .nutrition-hero { padding: 32px 24px; }
+    .nutrition-hero h1 { font-size: 1.8rem; }
+}

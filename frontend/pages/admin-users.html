@@ -1,0 +1,319 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sahtein Admin - User Management</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,700&family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <!-- Linked CSS Files -->
+    <link rel="stylesheet" href="../css/shared.css">
+    <link rel="stylesheet" href="../css/admin-users.css">
+    <link rel="stylesheet" href="../css/admin-api.css">
+</head>
+<body>
+
+    <div class="dashboard-layout">
+        <!-- SIDEBAR -->
+        <aside class="sidebar">
+            <div class="sidebar-logo">
+                <a href="../index.html">sahtein<span>.</span> <span class="admin-badge">Admin</span></a>
+            </div>
+            <nav class="sidebar-menu">
+                <a href="admin-dashboard.html"><i class="fa-solid fa-chart-line"></i> Dashboard</a>
+                <a href="admin-recipes.html"><i class="fa-solid fa-utensils"></i> Recipe Management</a>
+                <a href="admin-ingredients.html"><i class="fa-solid fa-carrot"></i> Ingredient Management</a>
+                <a href="admin-users.html" class="active"><i class="fa-solid fa-users"></i> User Management</a>
+                <a href="admin-categories.html"><i class="fa-solid fa-folder"></i> Category Management</a>
+                <a href="admin-tags-allergies.html"><i class="fa-solid fa-tags"></i> Tags &amp; Allergies</a>
+                <a href="admin-ai-recipes.html"><i class="fa-solid fa-wand-magic-sparkles"></i> AI Generated Recipes</a>
+                <a href="admin-profile.html"><i class="fa-solid fa-user-gear"></i> Your Profile</a>
+            </nav>
+            <div class="sidebar-footer">
+                <button type="button" class="sidebar-exit" data-action="exit-admin" style="display: flex; align-items: center; gap: 8px; font-size: 0.85rem; color: var(--accent-orange); font-weight: 500; transition: var(--transition);">
+                    <i class="fa-solid fa-right-from-bracket"></i> Exit Admin
+                </button>
+            </div>
+        </aside>
+
+        <!-- MAIN CONTENT -->
+        <main class="main-content">
+            <!-- PAGE HEADER -->
+            <div class="admin-header">
+                <div>
+                    <span class="section-label">Admin Workspace</span>
+                    <h1>User Management</h1>
+                    <p class="text-muted">View, search, and manage all registered users on the platform.</p>
+                </div>
+                <button type="button" class="btn btn-outline" data-action="export-users">Export User List</button>
+            </div>
+
+            <!-- FILTER BAR -->
+            <div class="filter-bar">
+                <input type="text" id="userSearch" class="input-field" placeholder="Search users by name or email...">
+                <select id="userStatusFilter" class="input-field">
+                    <option value="">All Statuses</option>
+                    <option value="active">Active</option>
+                    <option value="warned">Warned</option>
+                    <option value="inactive">Inactive</option>
+                </select>
+                <button type="button" class="btn btn-primary" data-action="search-users">Search</button>
+            </div>
+
+            <!-- USER TABLE -->
+            <div class="table-container">
+                <div class="table-header">
+                    <h3 style="font-size: 1.1rem;">All Users (<span id="userCount">4</span>)</h3>
+                    <div class="flex gap-2">
+                        <button type="button" class="btn btn-sm btn-outline" data-action="export-users">Export CSV</button>
+                        <button type="button" class="btn btn-sm btn-outline" data-action="bulk-users">Bulk Actions</button>
+                    </div>
+                </div>
+                <table id="usersTable">
+                    <thead>
+                        <tr>
+                            <th>Member</th>
+                            <th>Role / Joined</th>
+                            <th>Account Status</th>
+                            <th>User Actions</th>
+                        </tr>
+                    </thead>
+
+                    <tbody>
+                        <tr data-user-name="Leen Saleh" data-user-email="leen.saleh@example.com" data-user-status="active">
+                            <td>
+                                <strong>Leen Saleh</strong><br>
+                                <span class="text-muted text-sm">leen.saleh@example.com</span>
+                            </td>
+                            <td>Member · Mar 2026</td>
+                            <td><span class="status-badge status-active">Active</span></td>
+                            <td class="action-links">
+                                <button type="button" data-action="view-user">View profile</button>
+                                <button type="button" data-action="message-user">Message</button>
+                                <button type="button" class="delete" data-action="suspend-user">Suspend</button>
+                            </td>
+                        </tr>
+                        <tr data-user-name="Maya Haddad" data-user-email="maya.haddad@example.com" data-user-status="active">
+                            <td>
+                                <strong>Maya Haddad</strong><br>
+                                <span class="text-muted text-sm">maya.haddad@example.com</span>
+                            </td>
+                            <td>Member · Apr 2026</td>
+                            <td><span class="status-badge status-active">Active</span></td>
+                            <td class="action-links">
+                                <button type="button" data-action="view-user">View profile</button>
+                                <button type="button" data-action="message-user">Message</button>
+                                <button type="button" class="delete" data-action="suspend-user">Suspend</button>
+                            </td>
+                        </tr>
+                        <tr data-user-name="Rami Khalil" data-user-email="rami.khalil@example.com" data-user-status="warned">
+                            <td>
+                                <strong>Rami Khalil</strong><br>
+                                <span class="text-muted text-sm">rami.khalil@example.com</span>
+                            </td>
+                            <td>Member · Sep 2026</td>
+                            <td><span class="status-badge status-pending">Warned</span></td>
+                            <td class="action-links">
+                                <button type="button" data-action="view-user">View profile</button>
+                                <button type="button" data-action="message-user">Message</button>
+                                <button type="button" class="delete" data-action="suspend-user">Suspend</button>
+                            </td>
+                        </tr>
+                        <tr data-user-name="Sami Darwish" data-user-email="sami.darwish@example.com" data-user-status="suspended">
+                            <td>
+                                <strong>Sami Darwish</strong><br>
+                                <span class="text-muted text-sm">sami.darwish@example.com</span>
+                            </td>
+                            <td>Member · Aug 2026</td>
+                            <td><span class="status-badge status-suspended">Suspended</span></td>
+                            <td class="action-links">
+                                <button type="button" data-action="view-user">View profile</button>
+                                <button type="button" data-action="restore-user">Restore</button>
+                                <button type="button" class="delete" data-action="delete-user">Delete</button>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </main>
+    </div>
+
+    <script src="../javascript/shared.js"></script>
+    <script src="../javascript/admin-api.js"></script>
+    <script src="../javascript/auth-guard.js"></script>
+    <script>
+    (function () {
+        'use strict';
+
+        const $ = function (id) { return document.getElementById(id); };
+
+        function toast(msg, isError) {
+            if (window.showToast) window.showToast(msg, isError);
+            else alert(msg);
+        }
+
+        /* ---------- Counters ---------- */
+        function refreshCount() {
+            const n = document.querySelectorAll('#usersTable tbody tr').length;
+            if ($('userCount')) $('userCount').textContent = String(n);
+        }
+
+        /* ---------- Status + actions per row ---------- */
+        function setStatus(row, status) {
+            row.setAttribute('data-user-status', status);
+            const cell = row.children[2];
+            if (!cell) return;
+            const map = {
+                active:    { cls: 'status-active',    label: 'Active' },
+                warned:    { cls: 'status-pending',   label: 'Warned' },
+                suspended: { cls: 'status-suspended', label: 'Suspended' }
+            };
+            const info = map[status];
+            if (!info) return;
+            cell.innerHTML = '<span class="status-badge ' + info.cls + '">' + info.label + '</span>';
+        }
+
+        function setActions(row, status) {
+            const cell = row.querySelector('.action-links');
+            if (!cell) return;
+
+            if (status === 'suspended') {
+                cell.innerHTML =
+                    '<button type="button" data-action="view-user">View profile</button>' +
+                    '<button type="button" data-action="restore-user">Restore</button>' +
+                    '<button type="button" class="delete" data-action="delete-user">Delete</button>';
+            } else {
+                cell.innerHTML =
+                    '<button type="button" data-action="view-user">View profile</button>' +
+                    '<button type="button" data-action="message-user">Message</button>' +
+                    '<button type="button" class="delete" data-action="suspend-user">Suspend</button>';
+            }
+        }
+
+        /* ---------- Row actions ---------- */
+        function viewUser(row) {
+            if (!row) return;
+            const name   = row.getAttribute('data-user-name') || 'User';
+            const email  = row.getAttribute('data-user-email') || '—';
+            const status = row.getAttribute('data-user-status') || 'active';
+            const joined = (row.children[1] && row.children[1].textContent.trim()) || '—';
+            alert('Member: ' + name + '\nEmail: ' + email + '\n' + joined + '\nStatus: ' + status);
+        }
+
+        function messageUser(row) {
+            if (!row) return;
+            const name = row.getAttribute('data-user-name') || 'User';
+            const msg = window.prompt('Send a message to ' + name + ':', '');
+            if (msg === null) return;
+            if (!msg.trim()) { toast('Message is empty.', true); return; }
+            toast('Message sent to ' + name + '.');
+        }
+
+        function suspendUser(row) {
+            if (!row) return;
+            const name = row.getAttribute('data-user-name') || 'User';
+            if (!window.confirm('Suspend ' + name + '? They will no longer be able to sign in.')) return;
+            setStatus(row, 'suspended');
+            setActions(row, 'suspended');
+            toast('Suspended ' + name + '.', true);
+        }
+
+        function restoreUser(row) {
+            if (!row) return;
+            const name = row.getAttribute('data-user-name') || 'User';
+            setStatus(row, 'active');
+            setActions(row, 'active');
+            toast('Restored ' + name + '.');
+        }
+
+        function deleteUser(row) {
+            if (!row) return;
+            const name = row.getAttribute('data-user-name') || 'User';
+            if (!window.confirm('Delete ' + name + '? This cannot be undone.')) return;
+            row.parentNode.removeChild(row);
+            refreshCount();
+            toast('Deleted ' + name + '.', true);
+        }
+
+        /* ---------- Search / filter ---------- */
+        function applySearch() {
+            const q = ($('userSearch') && $('userSearch').value || '').trim().toLowerCase();
+            const status = ($('userStatusFilter') && $('userStatusFilter').value) || '';
+
+            document.querySelectorAll('#usersTable tbody tr').forEach(function (row) {
+                const name   = (row.getAttribute('data-user-name') || '').toLowerCase();
+                const email  = (row.getAttribute('data-user-email') || '').toLowerCase();
+                const rowSt  = row.getAttribute('data-user-status') || '';
+                const matchQ = !q || name.indexOf(q) !== -1 || email.indexOf(q) !== -1;
+                const matchS = !status || rowSt === status;
+                row.style.display = (matchQ && matchS) ? '' : 'none';
+            });
+
+            toast('Filter applied.');
+        }
+
+        /* ---------- CSV export ---------- */
+        function exportUsers() {
+            const lines = [];
+            document.querySelectorAll('#usersTable tr').forEach(function (row) {
+                const cells = Array.prototype.map.call(row.querySelectorAll('th, td'), function (cell) {
+                    const text = (cell.innerText || '').replace(/\s+/g, ' ').trim();
+                    return '"' + text.replace(/"/g, '""') + '"';
+                });
+                if (cells.length) lines.push(cells.join(','));
+            });
+            lines.push('"Exported at","' + new Date().toISOString() + '"');
+
+            const csv = lines.join('\n');
+            const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
+            const url  = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = 'sahtein-users.csv';
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            URL.revokeObjectURL(url);
+            toast('User list exported.');
+        }
+
+        function bulkUsers() {
+            toast('Bulk actions are not available in the demo.');
+        }
+
+        /* ---------- Global click handler ---------- */
+        document.addEventListener('click', function (e) {
+            const btn = e.target.closest('[data-action]');
+            if (!btn) return;
+
+            const action = btn.dataset.action;
+            const row    = btn.closest('tr');
+
+            switch (action) {
+                case 'view-user':     e.preventDefault(); viewUser(row); break;
+                case 'message-user':  e.preventDefault(); messageUser(row); break;
+                case 'suspend-user':  e.preventDefault(); suspendUser(row); break;
+                case 'restore-user':  e.preventDefault(); restoreUser(row); break;
+                case 'delete-user':   e.preventDefault(); deleteUser(row); break;
+                case 'search-users':  e.preventDefault(); applySearch(); break;
+                case 'export-users':  e.preventDefault(); exportUsers(); break;
+                case 'bulk-users':    e.preventDefault(); bulkUsers(); break;
+            }
+        });
+
+        // Enter in the search box triggers search
+        if ($('userSearch')) {
+            $('userSearch').addEventListener('keydown', function (e) {
+                if (e.key === 'Enter') { e.preventDefault(); applySearch(); }
+            });
+        }
+
+        refreshCount();
+    })();
+    </script>
+<script src="../javascript/admin-connect.js"></script>
+</body>
+</html>

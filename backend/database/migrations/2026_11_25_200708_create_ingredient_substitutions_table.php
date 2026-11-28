@@ -13,7 +13,13 @@ return new class extends Migration
     {
         Schema::create('ingredient_substitutions', function (Blueprint $table) {
             $table->id();
+			$table->foreignId('ingredient_id')->constrained('ingredients')->cascadeOnDelete();
+			$table->foreignId('substitute_ingredient_id')->constrained('ingredients')->cascadeOnDelete();
+			$table->double('ratio')->default(1); // e.g., 1.0 = 1:1 replacement
+			$table->text('notes')->nullable();
+			$table->text('notes_ar')->nullable();
             $table->timestamps();
+			$table->unique(['ingredient_id', 'substitute_ingredient_id'], 'ingredient_substitutions_pair_unique');
         });
     }
 

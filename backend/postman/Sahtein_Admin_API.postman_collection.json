@@ -1,0 +1,60 @@
+{
+  "info": {
+    "_postman_id": "a84e520b-1f64-4f69-a601-82ce4761a90c",
+    "name": "Sahtein Admin API - Smoke Checks",
+    "description": "Run the collection from top to bottom. Login saves the Sanctum Bearer token for the protected requests. The final request logs out and revokes that token. Set adminEmail and adminPassword in the collection variables first.",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "variable": [
+    { "key": "baseUrl", "value": "http://127.0.0.1:8000/api", "type": "string" },
+    { "key": "adminEmail", "value": "", "type": "string" },
+    { "key": "adminPassword", "value": "", "type": "string" },
+    { "key": "token", "value": "", "type": "string" }
+  ],
+  "item": [
+    {
+      "name": "01 - Admin login (run first)",
+      "request": {
+        "method": "POST",
+        "header": [{ "key": "Accept", "value": "application/json" }, { "key": "Content-Type", "value": "application/json" }],
+        "body": { "mode": "raw", "raw": "{\n  \"email\": \"{{adminEmail}}\",\n  \"password\": \"{{adminPassword}}\"\n}", "options": { "raw": { "language": "json" } } },
+        "url": { "raw": "{{baseUrl}}/admin/login", "host": ["{{baseUrl}}"], "path": ["admin", "login"] }
+      },
+      "event": [{ "listen": "test", "script": { "type": "text/javascript", "exec": [
+        "pm.test('Login returns HTTP 200', function () { pm.response.to.have.status(200); });",
+        "const body = pm.response.json();",
+        "pm.test('Response contains a Bearer access token', function () { pm.expect(body.token_type).to.eql('Bearer'); pm.expect(body.access_token).to.be.a('string').and.not.empty; });",
+        "if (body.access_token) pm.collectionVariables.set('token', body.access_token);",
+        "if (body.admin && body.admin.id) pm.collectionVariables.set('adminId', String(body.admin.id));"
+      ] } }]
+    },
+    {
+      "name": "02 - Authenticated GET checks",
+      "item": [
+        { "name": "Current admin", "request": { "method": "GET", "header": [{ "key": "Accept", "value": "application/json" }, { "key": "Authorization", "value": "Bearer {{token}}" }], "url": { "raw": "{{baseUrl}}/admin/me", "host": ["{{baseUrl}}"], "path": ["admin", "me"] } }, "event": [{ "listen": "test", "script": { "type": "text/javascript", "exec": ["pm.test('HTTP 200', function () { pm.response.to.have.status(200); });", "pm.test('Admin profile is returned', function () { pm.expect(pm.response.json().admin).to.have.property('email'); });"] } }] },
+        { "name": "Dashboard summary", "request": { "method": "GET", "header": [{ "key": "Accept", "value": "application/json" }, { "key": "Authorization", "value": "Bearer {{token}}" }], "url": { "raw": "{{baseUrl}}/admin/dashboard", "host": ["{{baseUrl}}"], "path": ["admin", "dashboard"] } }, "event": [{ "listen": "test", "script": { "type": "text/javascript", "exec": ["pm.test('HTTP 200', function () { pm.response.to.have.status(200); });", "pm.test('Dashboard stats are returned', function () { pm.expect(pm.response.json().stats).to.have.property('recipes_count'); });"] } }] },
+        { "name": "Categories (10 per page)", "request": { "method": "GET", "header": [{ "key": "Accept", "value": "application/json" }, { "key": "Authorization", "value": "Bearer {{token}}" }], "url": { "raw": "{{baseUrl}}/admin/categories?page=1&search=", "host": ["{{baseUrl}}"], "path": ["admin", "categories"], "query": [{ "key": "page", "value": "1" }, { "key": "search", "value": "" }] } }, "event": [{ "listen": "test", "script": { "type": "text/javascript", "exec": ["pm.test('HTTP 200', function () { pm.response.to.have.status(200); });", "const body = pm.response.json();", "pm.test('Paginated response contains at most 10 rows', function () { pm.expect(body.data).to.be.an('array'); pm.expect(body.data.length).to.be.at.most(10); pm.expect(body).to.have.property('last_page'); });"] } }] },
+        { "name": "Ingredients (search example)", "request": { "method": "GET", "header": [{ "key": "Accept", "value": "application/json" }, { "key": "Authorization", "value": "Bearer {{token}}" }], "url": { "raw": "{{baseUrl}}/admin/ingredients?page=1&search=", "host": ["{{baseUrl}}"], "path": ["admin", "ingredients"], "query": [{ "key": "page", "value": "1" }, { "key": "search", "value": "" }] } }, "event": [{ "listen": "test", "script": { "type": "text/javascript", "exec": ["pm.test('HTTP 200', function () { pm.response.to.have.status(200); });", "const body = pm.response.json();", "pm.test('Paginated response contains at most 10 rows', function () { pm.expect(body.data).to.be.an('array'); pm.expect(body.data.length).to.be.at.most(10); });"] } }] },
+        { "name": "Recipes (filter example)", "request": { "method": "GET", "header": [{ "key": "Accept", "value": "application/json" }, { "key": "Authorization", "value": "Bearer {{token}}" }], "url": { "raw": "{{baseUrl}}/admin/recipes?page=1&status=draft", "host": ["{{baseUrl}}"], "path": ["admin", "recipes"], "query": [{ "key": "page", "value": "1" }, { "key": "status", "value": "draft" }] } }, "event": [{ "listen": "test", "script": { "type": "text/javascript", "exec": ["pm.test('HTTP 200', function () { pm.response.to.have.status(200); });", "const body = pm.response.json();", "pm.test('Paginated response contains at most 10 rows', function () { pm.expect(body.data).to.be.an('array'); pm.expect(body.data.length).to.be.at.most(10); });"] } }] },
+        { "name": "Users (status filter example)", "request": { "method": "GET", "header": [{ "key": "Accept", "value": "application/json" }, { "key": "Authorization", "value": "Bearer {{token}}" }], "url": { "raw": "{{baseUrl}}/admin/users?page=1&status=active&search=", "host": ["{{baseUrl}}"], "path": ["admin", "users"], "query": [{ "key": "page", "value": "1" }, { "key": "status", "value": "active" }, { "key": "search", "value": "" }] } }, "event": [{ "listen": "test", "script": { "type": "text/javascript", "exec": ["pm.test('HTTP 200', function () { pm.response.to.have.status(200); });", "const body = pm.response.json();", "pm.test('Paginated response contains at most 10 rows', function () { pm.expect(body.data).to.be.an('array'); pm.expect(body.data.length).to.be.at.most(10); });"] } }] },
+        { "name": "Tags", "request": { "method": "GET", "header": [{ "key": "Accept", "value": "application/json" }, { "key": "Authorization", "value": "Bearer {{token}}" }], "url": { "raw": "{{baseUrl}}/admin/tags?page=1", "host": ["{{baseUrl}}"], "path": ["admin", "tags"], "query": [{ "key": "page", "value": "1" }] } }, "event": [{ "listen": "test", "script": { "type": "text/javascript", "exec": ["pm.test('HTTP 200', function () { pm.response.to.have.status(200); });", "const body = pm.response.json();", "pm.test('Paginated response contains at most 10 rows', function () { pm.expect(body.data).to.be.an('array'); pm.expect(body.data.length).to.be.at.most(10); });"] } }] },
+        { "name": "Allergies", "request": { "method": "GET", "header": [{ "key": "Accept", "value": "application/json" }, { "key": "Authorization", "value": "Bearer {{token}}" }], "url": { "raw": "{{baseUrl}}/admin/allergies?page=1", "host": ["{{baseUrl}}"], "path": ["admin", "allergies"], "query": [{ "key": "page", "value": "1" }] } }, "event": [{ "listen": "test", "script": { "type": "text/javascript", "exec": ["pm.test('HTTP 200', function () { pm.response.to.have.status(200); });", "const body = pm.response.json();", "pm.test('Paginated response contains at most 10 rows', function () { pm.expect(body.data).to.be.an('array'); pm.expect(body.data.length).to.be.at.most(10); });"] } }] },
+        { "name": "Meal types", "request": { "method": "GET", "header": [{ "key": "Accept", "value": "application/json" }, { "key": "Authorization", "value": "Bearer {{token}}" }], "url": { "raw": "{{baseUrl}}/admin/meal-types?page=1", "host": ["{{baseUrl}}"], "path": ["admin", "meal-types"], "query": [{ "key": "page", "value": "1" }] } }, "event": [{ "listen": "test", "script": { "type": "text/javascript", "exec": ["pm.test('HTTP 200', function () { pm.response.to.have.status(200); });", "const body = pm.response.json();", "pm.test('Paginated response contains at most 10 rows', function () { pm.expect(body.data).to.be.an('array'); pm.expect(body.data.length).to.be.at.most(10); });"] } }] },
+        { "name": "Dietary preferences", "request": { "method": "GET", "header": [{ "key": "Accept", "value": "application/json" }, { "key": "Authorization", "value": "Bearer {{token}}" }], "url": { "raw": "{{baseUrl}}/admin/dietary-preferences?page=1", "host": ["{{baseUrl}}"], "path": ["admin", "dietary-preferences"], "query": [{ "key": "page", "value": "1" }] } }, "event": [{ "listen": "test", "script": { "type": "text/javascript", "exec": ["pm.test('HTTP 200', function () { pm.response.to.have.status(200); });", "const body = pm.response.json();", "pm.test('Paginated response contains at most 10 rows', function () { pm.expect(body.data).to.be.an('array'); pm.expect(body.data.length).to.be.at.most(10); });"] } }] },
+        { "name": "Public lookup lists", "request": { "method": "GET", "header": [{ "key": "Accept", "value": "application/json" }], "url": { "raw": "{{baseUrl}}/lookups", "host": ["{{baseUrl}}"], "path": ["lookups"] } }, "event": [{ "listen": "test", "script": { "type": "text/javascript", "exec": ["pm.test('HTTP 200', function () { pm.response.to.have.status(200); });", "const body = pm.response.json();", "pm.test('Lookup groups are arrays', function () { ['categories','ingredients','tags','allergies','dietary_preferences','meal_types'].forEach(function (key) { pm.expect(body[key], key).to.be.an('array'); }); });"] } }] }
+      ]
+    },
+    {
+      "name": "99 - Logout (run last)",
+      "request": {
+        "method": "POST",
+        "header": [{ "key": "Accept", "value": "application/json" }, { "key": "Authorization", "value": "Bearer {{token}}" }],
+        "url": { "raw": "{{baseUrl}}/admin/logout", "host": ["{{baseUrl}}"], "path": ["admin", "logout"] }
+      },
+      "event": [{ "listen": "test", "script": { "type": "text/javascript", "exec": [
+        "pm.test('Logout returns HTTP 200', function () { pm.response.to.have.status(200); });",
+        "pm.collectionVariables.unset('token');"
+      ] } }]
+    }
+  ]
+}

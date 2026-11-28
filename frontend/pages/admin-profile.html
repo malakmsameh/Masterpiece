@@ -1,0 +1,445 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sahtein Admin - Your Profile</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,700&family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <!-- Linked CSS Files -->
+    <link rel="stylesheet" href="../css/shared.css">
+    <link rel="stylesheet" href="../css/admin-profile.css">
+    <link rel="stylesheet" href="../css/admin-api.css">
+</head>
+<body>
+    <div class="dashboard-layout">
+        <aside class="sidebar">
+            <div class="sidebar-logo">
+                <a href="../index.html">sahtein<span>.</span> <span class="admin-badge">Admin</span></a>
+            </div>
+            <nav class="sidebar-menu">
+                <a href="admin-dashboard.html"><i class="fa-solid fa-chart-line"></i> Dashboard</a>
+                <a href="admin-recipes.html"><i class="fa-solid fa-utensils"></i> Recipe Management</a>
+                <a href="admin-ingredients.html"><i class="fa-solid fa-carrot"></i> Ingredient Management</a>
+                <a href="admin-users.html"><i class="fa-solid fa-users"></i> User Management</a>
+                <a href="admin-categories.html"><i class="fa-solid fa-folder"></i> Category Management</a>
+                <a href="admin-tags-allergies.html"><i class="fa-solid fa-tags"></i> Tags &amp; Allergies</a>
+                <a href="admin-ai-recipes.html"><i class="fa-solid fa-wand-magic-sparkles"></i> AI Generated Recipes</a>
+                <a href="admin-profile.html" class="active"><i class="fa-solid fa-user-gear"></i> Your Profile</a>
+            </nav>
+            <div class="sidebar-footer">
+                <button type="button" class="sidebar-exit" data-action="exit-admin">
+                    <i class="fa-solid fa-right-from-bracket"></i> Exit Admin
+                </button>
+            </div>
+        </aside>
+
+        <main class="main-content">
+            <div class="admin-header">
+                <div>
+                    <span class="section-label">Admin Workspace</span>
+                    <h1>Your admin profile</h1>
+                    <p class="text-muted">Manage your account, review your activity, and update your details.</p>
+                </div>
+                <div class="admin-header-actions">
+                    <button type="button" class="btn btn-outline" data-action="export-activity">
+                        <i class="fa-solid fa-download"></i> Export activity report
+                    </button>
+                    <button type="button" class="btn btn-primary" data-action="sign-out">
+                        <i class="fa-solid fa-right-from-bracket"></i> Sign out
+                    </button>
+                </div>
+            </div>
+
+            <!-- Edit profile card -->
+            <div class="admin-edit-card">
+                <div class="admin-edit-header">
+                    <div>
+                        <span class="section-label">Your details</span>
+                        <h3>Edit profile</h3>
+                    </div>
+                    <div class="admin-edit-actions">
+                        <button type="button" class="btn btn-outline btn-sm" id="changePasswordBtn">
+                            <i class="fa-solid fa-lock"></i> Change password
+                        </button>
+                        <button type="button" class="btn btn-primary btn-sm" id="saveAdminProfileBtn">
+                            <i class="fa-solid fa-check"></i> Save changes
+                        </button>
+                    </div>
+                </div>
+
+                <div class="admin-edit-body">
+                    <div class="admin-avatar-column">
+                        <div id="adminAvatarPreview" class="admin-avatar-preview">SA</div>
+                        <button type="button" class="btn btn-outline btn-sm" disabled>
+                            <i class="fa-solid fa-camera"></i> Photo upload unavailable
+                        </button>
+                        <input type="file" id="adminAvatarInput" accept="image/*" style="display: none;" disabled>
+                        <p class="text-muted text-sm" style="margin-top: 8px; text-align: center;">Admin photo storage is not in the current database.</p>
+                    </div>
+
+                    <div class="admin-fields">
+                        <input type="hidden" id="adminPhoneField" value="">
+                        <div class="form-row">
+                            <div class="input-group">
+                                <label for="adminFirstName">First name (English)</label>
+                                <input type="text" id="adminFirstName" class="input-field" autocomplete="given-name">
+                            </div>
+                            <div class="input-group">
+                                <label for="adminLastName">Last name (English)</label>
+                                <input type="text" id="adminLastName" class="input-field" autocomplete="family-name">
+                            </div>
+                        </div>
+
+                        <div class="input-group">
+                        <label>Username <span class="locked-tag">same as your display name</span></label>
+                        <input type="text" id="adminUsernameField" class="input-field" disabled>
+                        </div>
+
+                        <div class="form-row">
+                            <div class="input-group">
+                                <label for="adminEmailField">Email address</label>
+                                <input type="email" id="adminEmailField" class="input-field" placeholder="admin@sahtein.com">
+                            </div>
+                            <div class="input-group"><label>Phone number</label><p class="text-muted text-sm">Phone number is not stored in the admin account yet.</p></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Change password modal -->
+            <div class="modal-overlay" id="changePasswordModal">
+                <div class="modal-content">
+                    <h3>Change password</h3>
+                    <p>Choose a new password. Requirements update as you type.</p>
+
+                    <div class="input-group">
+                        <label for="currentPass">Current password</label>
+                        <input type="password" id="currentPass" class="input-field" autocomplete="current-password" required>
+                    </div>
+                    <div class="input-group">
+                        <label for="newPass">New password</label>
+                        <input type="password" id="newPass" class="input-field" placeholder="••••••••" autocomplete="new-password">
+                    </div>
+                    <ul class="pw-checklist" id="modalPwChecklist">
+                        <li data-rule="length"><i class="fa-regular fa-circle-check"></i> Password must be at least 8 characters.</li>
+                        <li data-rule="number"><i class="fa-regular fa-circle-check"></i> Have at least 1 number.</li>
+                        <li data-rule="special"><i class="fa-regular fa-circle-check"></i> Contain at least 1 special character ((!@#$%&amp;))</li>
+                    </ul>
+
+                    <div class="input-group" style="margin-top: 16px;">
+                        <label for="confirmPass">Confirm password</label>
+                        <input type="password" id="confirmPass" class="input-field" placeholder="••••••••" autocomplete="new-password">
+                    </div>
+                    <div class="pw-match" id="modalPwMatch">
+                        <i class="fa-regular fa-circle-check"></i>
+                        <span>Passwords match.</span>
+                    </div>
+
+                    <div class="modal-actions">
+                        <button type="button" class="btn btn-outline" id="cancelPassBtn">Cancel</button>
+                        <button type="button" class="btn btn-primary" id="savePassBtn">Update password</button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="admin-profile-grid">
+                <!-- Left: identity card -->
+                <div class="admin-hero-card">
+                    <div>
+                        <div class="admin-avatar-preview" id="adminIdentityAvatar" style="width: 72px; height: 72px; font-size: 1.7rem; margin-bottom: 16px;">SA</div>
+                        <span class="role-pill">Administrator</span>
+                        <h3 id="adminHeroName">Sahtein Admin</h3>
+                        <p class="text-sm" id="adminHeroEmail" style="opacity: 0.85;">admin@sahtein.com</p>
+                        <p class="text-sm" style="opacity: 0.7; margin-top: 8px;">Member since Jan 2026 · Amman, Jordan</p>
+                    </div>
+                    <div class="admin-stats">
+                        <div><strong>148</strong><span>Recipes reviewed</span></div>
+                        <div><strong>27</strong><span>Reports handled</span></div>
+                    </div>
+                </div>
+
+                <!-- Right: account details -->
+                <div class="info-card">
+                    <h3>Account details</h3>
+                    <div class="info-row">
+                        <span class="text-muted">Display name</span>
+                        <span class="info-value" id="adminDisplayName">Sahtein Admin</span>
+                    </div>
+                    <div class="info-row">
+                        <span class="text-muted">Username</span>
+                        <span class="info-value" id="adminUsername">@sahtein_admin</span>
+                    </div>
+                    <div class="info-row">
+                        <span class="text-muted">Email</span>
+                        <span class="info-value" id="adminEmailText">admin@sahtein.com</span>
+                    </div>
+                    <div class="info-row">
+                        <span class="text-muted">Role</span>
+                        <span class="info-value">Administrator</span>
+                    </div>
+                    <div class="info-row">
+                        <span class="text-muted">Two-factor authentication</span>
+                        <span class="info-value"><span style="background:#E8F5E9; color:#2E7D32; padding:4px 12px; border-radius:50px; font-size:0.75rem; font-weight:600;">Enabled</span></span>
+                    </div>
+                    <div class="info-row">
+                        <span class="text-muted">Last sign-in</span>
+                        <span class="info-value">October 14, 2026 · 09:24</span>
+                    </div>
+                    <div class="info-row">
+                        <span class="text-muted">Session location</span>
+                        <span class="info-value">Amman, Jordan</span>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- shared.js provides window.showToast and window.renderHeaderAvatars -->
+    <script src="../javascript/shared.js"></script>
+    <script src="../javascript/admin-api.js"></script>
+    <script src="../javascript/auth-guard.js"></script>
+    <script>
+    (function () {
+        'use strict';
+
+        const KEY = 'sahtein_admin';
+        const $ = function (id) { return document.getElementById(id); };
+
+        function toast(msg, isError) {
+            if (window.showToast) window.showToast(msg, isError);
+            else alert(msg);
+        }
+
+        function loadAdmin() {
+            try { return JSON.parse(localStorage.getItem(KEY)) || {}; }
+            catch (err) { return {}; }
+        }
+        function saveAdmin(admin) {
+            try { localStorage.setItem(KEY, JSON.stringify(admin)); } catch (err) {}
+        }
+        function getInitials(first, last) {
+            const a = (first || '?').charAt(0).toUpperCase();
+            const b = (last || '?').charAt(0).toUpperCase();
+            return (a + b).slice(0, 2);
+        }
+
+        let admin = loadAdmin();
+        if (!admin.firstName) {
+            admin = {
+                firstName: 'Sahtein',
+                lastName: 'Admin',
+                username: 'sahtein_admin',
+                email: 'admin@sahtein.com',
+                phone: '',
+                avatar: ''
+            };
+            saveAdmin(admin);
+        }
+
+        function render() {
+            $('adminFirstName').value = admin.firstName;
+            $('adminLastName').value  = admin.lastName;
+            $('adminUsernameField').value = '@' + admin.username;
+            $('adminEmailField').value = admin.email || '';
+            $('adminPhoneField').value = admin.phone || '';
+
+            const fullName = [admin.firstName, admin.lastName].filter(Boolean).join(' ');
+            $('adminHeroName').textContent  = fullName;
+            $('adminHeroEmail').textContent = admin.email || 'admin@sahtein.com';
+            $('adminDisplayName').textContent = fullName;
+            $('adminUsername').textContent = '@' + admin.username;
+            $('adminEmailText').textContent = admin.email || 'admin@sahtein.com';
+
+            const inits = getInitials(admin.firstName, admin.lastName);
+            const src = admin.avatar;
+            const preview = $('adminAvatarPreview');
+            const identity = $('adminIdentityAvatar');
+
+            if (preview) {
+                preview.innerHTML = src ? '<img src="' + src + '" alt="avatar">' : inits;
+            }
+            if (identity) {
+                identity.innerHTML = src ? '<img src="' + src + '" alt="avatar">' : inits;
+            }
+
+            if (window.renderHeaderAvatars) window.renderHeaderAvatars();
+        }
+
+        render();
+
+        // ---------- Save profile ----------
+        $('saveAdminProfileBtn').addEventListener('click', function () {
+            const email = $('adminEmailField').value.trim();
+            const phone = $('adminPhoneField').value.trim();
+
+            if (!email) { toast('Email cannot be empty.', true); return; }
+
+            admin.email = email;
+            admin.phone = phone;
+            saveAdmin(admin);
+            render();
+            toast('Admin profile updated.');
+        });
+
+        // ---------- Avatar upload ----------
+        $('adminAvatarInput').addEventListener('change', function (e) {
+            const file = e.target.files[0];
+            if (!file) return;
+
+            if (file.size > 2 * 1024 * 1024) {
+                toast('Please choose an image under 2 MB.', true);
+                return;
+            }
+
+            const reader = new FileReader();
+            reader.onload = function (evt) {
+                admin.avatar = evt.target.result;
+                saveAdmin(admin);
+                render();
+                toast('Profile photo updated.');
+            };
+            reader.readAsDataURL(file);
+        });
+
+        // ---------- Password modal ----------
+        const modal = $('changePasswordModal');
+
+        // ---------- Live password validation rules ----------
+        const RULES = {
+            length:  function (v) { return v.length >= 8; },
+            number:  function (v) { return /\d/.test(v); },
+            special: function (v) { return /[!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]/.test(v); }
+        };
+
+        function validateModalPassword() {
+            const newPw  = $('newPass');
+            const confPw = $('confirmPass');
+            const list   = $('modalPwChecklist');
+            const match  = $('modalPwMatch');
+            if (!newPw || !confPw) return { ok: false, match: false };
+
+            const v = newPw.value;
+            let allOk = true;
+            if (list) {
+                list.querySelectorAll('li').forEach(function (li) {
+                    const rule = li.dataset.rule;
+                    const ok = RULES[rule] ? RULES[rule](v) : false;
+                    li.classList.toggle('ok', ok);
+                    if (!ok) allOk = false;
+                });
+            }
+
+            const matches = v.length > 0 && v === confPw.value;
+            if (match) match.classList.toggle('ok', matches);
+
+            newPw.classList.toggle('pw-valid', allOk && v.length > 0);
+            newPw.classList.toggle('pw-invalid', v.length > 0 && !allOk);
+            confPw.classList.toggle('pw-valid', matches);
+            confPw.classList.toggle('pw-invalid', confPw.value.length > 0 && !matches);
+
+            return { ok: allOk && v.length > 0, match: matches };
+        }
+
+        if ($('newPass'))     $('newPass').addEventListener('input', validateModalPassword);
+        if ($('confirmPass')) $('confirmPass').addEventListener('input', validateModalPassword);
+
+        function resetPasswordModal() {
+            if ($('newPass'))     $('newPass').value = '';
+            if ($('confirmPass')) $('confirmPass').value = '';
+            const list = $('modalPwChecklist');
+            if (list) {
+                list.querySelectorAll('li').forEach(function (li) { li.classList.remove('ok'); });
+            }
+            const match = $('modalPwMatch');
+            if (match) match.classList.remove('ok');
+            const newPw = $('newPass');
+            const confPw = $('confirmPass');
+            if (newPw)  newPw.classList.remove('pw-valid', 'pw-invalid');
+            if (confPw) confPw.classList.remove('pw-valid', 'pw-invalid');
+        }
+
+        $('changePasswordBtn').addEventListener('click', function () {
+            resetPasswordModal();
+            modal.classList.add('active');
+            setTimeout(function () { if ($('newPass')) $('newPass').focus(); }, 100);
+        });
+
+        $('cancelPassBtn').addEventListener('click', function () {
+            modal.classList.remove('active');
+        });
+
+        modal.addEventListener('click', function (e) {
+            if (e.target === modal) modal.classList.remove('active');
+        });
+
+        $('savePassBtn').addEventListener('click', function () {
+            const check = validateModalPassword();
+            if (!check.ok)    { toast('Password does not meet the requirements.', true); return; }
+            if (!check.match) { toast("Passwords don't match.", true); return; }
+
+            admin.passwordUpdatedAt = new Date().toISOString();
+            saveAdmin(admin);
+            resetPasswordModal();
+            modal.classList.remove('active');
+            toast('Admin password updated.');
+        });
+
+        // ---------- Export activity report (CSV) ----------
+        document.addEventListener('click', function (e) {
+            const btn = e.target.closest('[data-action="export-activity"]');
+            if (!btn) return;
+            e.preventDefault();
+
+            const lines = [];
+            document.querySelectorAll('table').forEach(function (table) {
+                table.querySelectorAll('tr').forEach(function (row) {
+                    const cells = Array.from(row.querySelectorAll('th, td')).map(function (cell) {
+                        const text = (cell.innerText || '').replace(/\s+/g, ' ').trim();
+                        return '"' + text.replace(/"/g, '""') + '"';
+                    });
+                    if (cells.length) lines.push(cells.join(','));
+                });
+                lines.push('');
+            });
+
+            if (lines.length === 0) {
+                const fullName = [admin.firstName, admin.lastName].filter(Boolean).join(' ');
+                lines.push('"Admin Activity Report"');
+                lines.push('"Name","' + fullName.replace(/"/g, '""') + '"');
+                lines.push('"Email","' + (admin.email || '').replace(/"/g, '""') + '"');
+                lines.push('"Phone","' + (admin.phone || '').replace(/"/g, '""') + '"');
+                lines.push('"Recipes reviewed","148"');
+                lines.push('"Reports handled","27"');
+                lines.push('"Generated at","' + new Date().toISOString() + '"');
+            }
+
+            const csv = lines.join('\n');
+            const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
+            const url  = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = 'sahtein-admin-activity.csv';
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            URL.revokeObjectURL(url);
+
+            toast('Activity report downloaded.');
+        });
+
+        // ---------- Exit admin (defensive: works even if auth-guard doesn't handle it) ----------
+        document.addEventListener('click', function (e) {
+            const btn = e.target.closest('[data-action="exit-admin"]');
+            if (!btn) return;
+            e.preventDefault();
+            window.location.href = '../index.html';
+        });
+    })();
+    </script>
+<script src="../javascript/admin-connect.js"></script>
+</body>
+</html>

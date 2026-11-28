@@ -12,6 +12,7 @@ class UserProfile extends Model
 
 	protected $fillable = [
 		// user_id	BIGINT FK	References users
+			'user_id',
 			'height_cm',
 			'current_weight',
 			'target_weight',
@@ -30,4 +31,11 @@ class UserProfile extends Model
 			'daily_water_target' => 'integer',
 		];
 	}
+
+	public function user()
+	{
+		return $this->belongsTo(User::class);
+	}
+
+
 }

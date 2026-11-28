@@ -15,10 +15,11 @@ return new class extends Migration
             $table->id();
             $table->string('name');
             $table->string('email')->unique();
-			$table->string('phone');
-			$table->date('date_of_birth');
+			$table->string('phone')->nullable();
+			$table->date('date_of_birth')->nullable();
 			$table->enum('gender', ['female', 'male', 'prefer not to say'])->default('prefer not to say');
-			$table->string('profile_photo');
+			$table->boolean('is_active')->default(true);
+			$table->string('profile_photo')->nullable();
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
             $table->rememberToken();

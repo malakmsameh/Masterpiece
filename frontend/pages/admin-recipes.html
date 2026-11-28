@@ -1,0 +1,487 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sahtein Admin - Recipe Management</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,700&family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <!-- Linked CSS Files -->
+    <link rel="stylesheet" href="../css/shared.css">
+    <link rel="stylesheet" href="../css/admin-recipes.css">
+    <link rel="stylesheet" href="../css/admin-api.css">
+</head>
+<body>
+    <div class="dashboard-layout">
+        <aside class="sidebar">
+            <div class="sidebar-logo">
+                <a href="../index.html">sahtein<span>.</span> <span class="admin-badge">Admin</span></a>
+            </div>
+            <nav class="sidebar-menu">
+                <a href="admin-dashboard.html"><i class="fa-solid fa-chart-line"></i> Dashboard</a>
+                <a href="admin-recipes.html" class="active"><i class="fa-solid fa-utensils"></i> Recipe Management</a>
+                <a href="admin-ingredients.html"><i class="fa-solid fa-carrot"></i> Ingredient Management</a>
+                <a href="admin-users.html"><i class="fa-solid fa-users"></i> User Management</a>
+                <a href="admin-categories.html"><i class="fa-solid fa-folder"></i> Category Management</a>
+                <a href="admin-tags-allergies.html"><i class="fa-solid fa-tags"></i> Tags &amp; Allergies</a>
+                <a href="admin-ai-recipes.html"><i class="fa-solid fa-wand-magic-sparkles"></i> AI Generated Recipes</a>
+                <a href="admin-profile.html"><i class="fa-solid fa-user-gear"></i> Your Profile</a>
+            </nav>
+            <div class="sidebar-footer">
+                <button type="button" class="sidebar-exit" data-action="exit-admin">
+                    <i class="fa-solid fa-right-from-bracket"></i> Exit Admin
+                </button>
+            </div>
+        </aside>
+        <main class="main-content">
+            <div class="admin-header">
+                <div>
+                    <span class="section-label">Admin Workspace</span>
+                    <h1>Recipe Management</h1>
+                    <p class="text-muted">View, edit, and manage all recipes with multi-category tagging.</p>
+                </div>
+                <button type="button" class="btn btn-primary" data-action="open-add-recipe">
+                    <i class="fa-solid fa-plus"></i> Add New Recipe
+                </button>
+            </div>
+            <div class="filter-bar">
+                <input type="text" id="recipeSearch" class="input-field" placeholder="Search recipes by name...">
+                <select id="filterCuisine" class="input-field">
+                    <option value="">All Cuisines</option><option>Jordanian</option><option>Palestinian</option>
+                    <option>Lebanese</option><option>Syrian</option><option>Egyptian</option>
+                </select>
+                <select id="filterMeal" class="input-field">
+                    <option value="">All Meal Types</option><option>Breakfast</option><option>Lunch</option>
+                    <option>Dinner</option><option>Dessert</option>
+                </select>
+                <select id="filterDiet" class="input-field">
+                    <option value="">All Dietary</option><option>High-Protein</option><option>Weight Loss</option>
+                    <option>Muscle Gain</option><option>Vegan</option>
+                </select>
+                <button type="button" class="btn btn-primary" data-action="filter-recipes">Filter</button>
+            </div>
+            <div class="table-container">
+                <div class="table-header">
+                    <h3 style="font-size: 1.1rem;">All Recipes (<span id="recipeCount">0</span>)</h3>
+                    <div class="flex gap-2">
+                        <button type="button" class="btn btn-sm btn-outline" data-action="export-recipes">Export CSV</button>
+                        <button type="button" class="btn btn-sm btn-outline" data-action="bulk-recipes">Bulk Actions</button>
+                    </div>
+                </div>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Recipe Name</th>
+                            <th>Cuisines</th>
+                            <th>Meal Types</th>
+                            <th>Dietary &amp; Goals</th>
+                            <th>Time</th>
+                            <th>Status</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody id="recipeTableBody">
+                        <!-- Rendered by page-specific JS -->
+                    </tbody>
+                </table>
+            </div>
+        </main>
+    </div>
+
+    <!-- Recipe Modal -->
+    <div class="modal-overlay" id="recipeModal">
+        <div class="modal-content">
+            <h3 id="recipeModalTitle">Add New Recipe</h3>
+            <p>Fill in the recipe details and select one or more tags for each category.</p>
+            <div class="input-group">
+                <label for="recipeName">Recipe Name</label>
+                <input type="text" id="recipeName" class="input-field" placeholder="e.g., Chicken Maqluba">
+            </div>
+            <div class="input-group">
+                <label>Cuisines <span class="text-muted text-sm">(choose all that apply)</span></label>
+                <div class="checkbox-group" id="cuisineChecks"></div>
+            </div>
+            <div class="input-group">
+                <label>Meal Types <span class="text-muted text-sm">(choose all that apply)</span></label>
+                <div class="checkbox-group" id="mealChecks"></div>
+            </div>
+            <div class="input-group">
+                <label>Dietary &amp; Goals <span class="text-muted text-sm">(choose all that apply)</span></label>
+                <div class="checkbox-group" id="dietChecks"></div>
+            </div>
+            <div class="input-group">
+                <label for="recipeTime">Prep / Cook Time</label>
+                <input type="text" id="recipeTime" class="input-field" placeholder="e.g., 20 / 35 min">
+            </div>
+            <div class="input-group">
+                <label for="recipeStatus">Status</label>
+                <select id="recipeStatus" class="input-field">
+                    <option value="Published">Published</option>
+                    <option value="Draft">Draft</option>
+                    <option value="Archived">Archived</option>
+                </select>
+            </div>
+            <div class="modal-actions">
+                <button type="button" class="btn btn-outline" data-action="close-recipe-modal">Cancel</button>
+                <button type="button" class="btn btn-primary" data-action="save-recipe">Save Recipe</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Delete Confirmation Modal -->
+    <div class="modal-overlay" id="deleteRecipeModal">
+        <div class="modal-content" style="max-width: 440px;">
+            <h3>Delete this recipe?</h3>
+            <p>Are you sure you want to delete <strong id="deleteRecipeName"></strong>? This action cannot be undone.</p>
+            <div class="modal-actions">
+                <button type="button" class="btn btn-outline" data-action="close-delete-modal">Cancel</button>
+                <button type="button" class="btn btn-danger" data-action="confirm-delete-recipe">Yes, Delete</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Toast -->
+    <div class="toast" id="toast">
+        <i class="fa-solid fa-circle-check"></i>
+        <span id="toastMessage">Done!</span>
+    </div>
+
+    <script>
+    (function () {
+        'use strict';
+
+        /* ==========================================================
+           PAGE-SPECIFIC DEMO LOGIC
+           ========================================================== */
+
+        const ALL_TAGS = {
+            cuisines: ['Jordanian', 'Palestinian', 'Lebanese', 'Syrian', 'Egyptian', 'Iraqi', 'Gulf', 'North African', 'Turkish', 'Mediterranean', 'International'],
+            mealtypes: ['Breakfast', 'Lunch', 'Dinner', 'Appetizer', 'Main Course', 'Dessert', 'Soup', 'Salad', 'Snack', 'Drink'],
+            dietary: ['Vegetarian', 'Vegan', 'Gluten-Free', 'Dairy-Free', 'Nut-Free', 'High-Protein', 'Low-Carb', 'Low-Calorie', 'Keto', 'Paleo', 'Weight Loss', 'Muscle Gain', 'Maintenance', 'Heart-Healthy']
+        };
+
+        const STORAGE_KEY = 'sahtein_recipes_v1';
+
+        const DEFAULT_RECIPES = [
+            { name: 'Chicken Maqluba', cuisines: ['Palestinian'], mealtypes: ['Dinner', 'Main Course'], dietary: ['High-Protein'], time: '20 / 35 min', status: 'Published' },
+            { name: 'Classic Shakshuka', cuisines: ['Middle Eastern'], mealtypes: ['Breakfast'], dietary: ['Vegetarian', 'Low-Calorie'], time: '10 / 15 min', status: 'Published' },
+            { name: 'Hearty Falafel Wrap', cuisines: ['Lebanese'], mealtypes: ['Lunch'], dietary: ['Vegetarian', 'Vegan'], time: '15 / 15 min', status: 'Published' },
+            { name: 'Roasted Cauliflower & Tahini', cuisines: ['Lebanese'], mealtypes: ['Side Dish', 'Appetizer'], dietary: ['Vegan', 'Low-Carb'], time: '10 / 20 min', status: 'Draft' },
+            { name: 'Fresh Tabbouleh', cuisines: ['Syrian', 'Lebanese'], mealtypes: ['Salad', 'Lunch'], dietary: ['Vegetarian', 'Low-Calorie'], time: '15 / 5 min', status: 'Published' },
+            { name: 'Egyptian Koshary', cuisines: ['Egyptian'], mealtypes: ['Dinner', 'Main Course'], dietary: ['Vegan', 'High-Protein'], time: '20 / 30 min', status: 'Draft' },
+            { name: 'Silky Hummus & Pita', cuisines: ['Middle Eastern'], mealtypes: ['Appetizer', 'Snack'], dietary: ['Vegan', 'High-Protein'], time: '10 / 5 min', status: 'Published' },
+            { name: 'Spiced Chicken Pilaf', cuisines: ['Jordanian'], mealtypes: ['Dinner', 'Main Course'], dietary: ['High-Protein', 'Muscle Gain'], time: '15 / 30 min', status: 'Archived' }
+        ];
+
+        let recipes = JSON.parse(localStorage.getItem(STORAGE_KEY)) || JSON.parse(JSON.stringify(DEFAULT_RECIPES));
+        let editingRecipeIndex = null;
+        let activeFilters = { search: '', cuisine: '', meal: '', diet: '' };
+
+        /* ---------- Rendering ---------- */
+
+        function renderRecipes() {
+            const tbody = document.getElementById('recipeTableBody');
+            if (!tbody) return;
+            tbody.innerHTML = '';
+
+            const visible = recipes
+                .map(function (r, i) { return { r: r, i: i }; })
+                .filter(function (entry) { return matchesFilters(entry.r); });
+
+            visible.forEach(function (entry) {
+                const recipe = entry.r;
+                const index  = entry.i;
+                const tr = document.createElement('tr');
+                tr.innerHTML =
+                    '<td><strong>' + escapeHtml(recipe.name) + '</strong></td>' +
+                    '<td>' + renderPills(recipe.cuisines, 'cuisine') + '</td>' +
+                    '<td>' + renderPills(recipe.mealtypes, 'meal') + '</td>' +
+                    '<td>' + renderPills(recipe.dietary, 'diet') + '</td>' +
+                    '<td>' + escapeHtml(recipe.time) + '</td>' +
+                    '<td>' + renderStatus(recipe.status) + '</td>' +
+                    '<td class="action-links">' +
+                        '<button type="button" data-action="edit-recipe" data-index="' + index + '">Edit</button>' +
+                        '<button type="button" data-action="view-recipe" data-index="' + index + '">View</button>' +
+                        '<button type="button" class="delete" data-action="delete-recipe" data-index="' + index + '">Delete</button>' +
+                    '</td>';
+                tbody.appendChild(tr);
+            });
+
+            const countEl = document.getElementById('recipeCount');
+            if (countEl) countEl.textContent = String(visible.length);
+        }
+
+        function matchesFilters(recipe) {
+            const q = activeFilters.search.toLowerCase();
+            if (q && recipe.name.toLowerCase().indexOf(q) === -1) return false;
+            if (activeFilters.cuisine && recipe.cuisines.indexOf(activeFilters.cuisine) === -1) return false;
+            if (activeFilters.meal && recipe.mealtypes.indexOf(activeFilters.meal) === -1) return false;
+            if (activeFilters.diet && recipe.dietary.indexOf(activeFilters.diet) === -1) return false;
+            return true;
+        }
+
+        function renderPills(items, type) {
+            if (!items || items.length === 0) return '<span class="text-muted text-sm">—</span>';
+            const cls = { cuisine: 'tag-cuisine', meal: 'tag-meal', diet: 'tag-diet' }[type];
+            return '<div class="tag-pills">' +
+                items.map(function (i) { return '<span class="tag-pill ' + cls + '">' + escapeHtml(i) + '</span>'; }).join('') +
+                '</div>';
+        }
+
+        function renderStatus(status) {
+            const map = { 'Published': 'status-published', 'Draft': 'status-draft', 'Archived': 'status-archived' };
+            return '<span class="status-badge ' + (map[status] || '') + '">' + escapeHtml(status) + '</span>';
+        }
+
+        function buildCheckboxes(containerId, category, selected) {
+            selected = selected || [];
+            const container = document.getElementById(containerId);
+            if (!container) return;
+            container.innerHTML = '';
+            ALL_TAGS[category].forEach(function (tag) {
+                const label = document.createElement('label');
+                label.className = 'checkbox-chip' + (selected.indexOf(tag) !== -1 ? ' checked' : '');
+                label.innerHTML = '<input type="checkbox" value="' + escapeHtml(tag) + '" ' +
+                    (selected.indexOf(tag) !== -1 ? 'checked' : '') + '> ' + escapeHtml(tag);
+                label.addEventListener('click', function (e) {
+                    e.preventDefault();
+                    const cb = label.querySelector('input');
+                    cb.checked = !cb.checked;
+                    label.classList.toggle('checked', cb.checked);
+                });
+                container.appendChild(label);
+            });
+        }
+
+        /* ---------- Modal open/close ---------- */
+
+        function openRecipeModal(index) {
+            editingRecipeIndex = (index === undefined) ? null : index;
+            const isEdit = editingRecipeIndex !== null;
+            const r = isEdit
+                ? recipes[editingRecipeIndex]
+                : { name: '', cuisines: [], mealtypes: [], dietary: [], time: '', status: 'Published' };
+
+            document.getElementById('recipeModalTitle').textContent = isEdit ? 'Edit Recipe' : 'Add New Recipe';
+            document.getElementById('recipeName').value = r.name;
+            document.getElementById('recipeTime').value = r.time;
+            document.getElementById('recipeStatus').value = r.status;
+            buildCheckboxes('cuisineChecks', 'cuisines', r.cuisines);
+            buildCheckboxes('mealChecks', 'mealtypes', r.mealtypes);
+            buildCheckboxes('dietChecks', 'dietary', r.dietary);
+            document.getElementById('recipeModal').classList.add('active');
+        }
+
+        function closeRecipeModal() {
+            document.getElementById('recipeModal').classList.remove('active');
+            editingRecipeIndex = null;
+        }
+
+        function getChecked(containerId) {
+            return Array.prototype.slice
+                .call(document.querySelectorAll('#' + containerId + ' input:checked'))
+                .map(function (cb) { return cb.value; });
+        }
+
+        /* ---------- Save / delete ---------- */
+
+        function saveRecipe() {
+            const name = document.getElementById('recipeName').value.trim();
+            if (!name) { showLocalToast('Please enter a recipe name.', true); return; }
+
+            const recipe = {
+                name: name,
+                cuisines: getChecked('cuisineChecks'),
+                mealtypes: getChecked('mealChecks'),
+                dietary: getChecked('dietChecks'),
+                time: document.getElementById('recipeTime').value.trim() || '—',
+                status: document.getElementById('recipeStatus').value
+            };
+
+            if (editingRecipeIndex === null) {
+                recipes.push(recipe);
+                showLocalToast('"' + name + '" added.');
+            } else {
+                recipes[editingRecipeIndex] = recipe;
+                showLocalToast('"' + name + '" updated.');
+            }
+
+            saveRecipes();
+            renderRecipes();
+            closeRecipeModal();
+        }
+
+        function openDeleteModal(index) {
+            const r = recipes[index];
+            if (!r) return;
+            document.getElementById('deleteRecipeName').textContent = r.name;
+            const confirmBtn = document.querySelector('[data-action="confirm-delete-recipe"]');
+            if (confirmBtn) confirmBtn.dataset.index = String(index);
+            document.getElementById('deleteRecipeModal').classList.add('active');
+        }
+
+        function closeDeleteModal() {
+            document.getElementById('deleteRecipeModal').classList.remove('active');
+        }
+
+        function deleteRecipe(index) {
+            const r = recipes[index];
+            if (!r) return;
+            const name = r.name;
+            recipes.splice(index, 1);
+            saveRecipes();
+            renderRecipes();
+            showLocalToast('"' + name + '" deleted.');
+            closeDeleteModal();
+        }
+
+        function saveRecipes() {
+            try { localStorage.setItem(STORAGE_KEY, JSON.stringify(recipes)); } catch (e) {}
+        }
+
+        /* ---------- Helpers ---------- */
+
+        function escapeHtml(str) {
+            return String(str).replace(/[&<>"']/g, function (m) {
+                return ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' })[m];
+            });
+        }
+
+        /* Local toast — uses window.showToast if present, else the page's own toast */
+        function showLocalToast(message, isError) {
+            if (window.showToast) { window.showToast(message, isError); return; }
+            const toast = document.getElementById('toast');
+            const msg   = document.getElementById('toastMessage');
+            if (!toast || !msg) return;
+            const icon = toast.querySelector('i');
+            msg.textContent = message;
+            toast.classList.toggle('error', !!isError);
+            if (icon) icon.className = isError ? 'fa-solid fa-circle-exclamation' : 'fa-solid fa-circle-check';
+            toast.classList.add('show');
+            clearTimeout(window.__localToastTimer);
+            window.__localToastTimer = setTimeout(function () { toast.classList.remove('show'); }, 3000);
+        }
+
+        /* ---------- Filter / export / bulk ---------- */
+
+        function applyFilters() {
+            activeFilters.search  = (document.getElementById('recipeSearch').value  || '').trim();
+            activeFilters.cuisine = document.getElementById('filterCuisine').value  || '';
+            activeFilters.meal    = document.getElementById('filterMeal').value     || '';
+            activeFilters.diet    = document.getElementById('filterDiet').value     || '';
+            renderRecipes();
+            showLocalToast('Filters applied.');
+        }
+
+        function exportRecipes() {
+            const rows = [['Name', 'Cuisines', 'Meal Types', 'Dietary & Goals', 'Time', 'Status']];
+            recipes.forEach(function (r) {
+                rows.push([
+                    r.name,
+                    (r.cuisines || []).join(' / '),
+                    (r.mealtypes || []).join(' / '),
+                    (r.dietary || []).join(' / '),
+                    r.time,
+                    r.status
+                ]);
+            });
+            const csv = rows.map(function (row) {
+                return row.map(function (cell) {
+                    return '"' + String(cell).replace(/"/g, '""') + '"';
+                }).join(',');
+            }).join('\n');
+
+            const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
+            const url  = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = 'sahtein-recipes.csv';
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            URL.revokeObjectURL(url);
+            showLocalToast('Recipes exported.');
+        }
+
+        function bulkActions() {
+            showLocalToast('Bulk actions are not available in the demo.');
+        }
+
+        function viewRecipe(index) {
+            const r = recipes[index];
+            if (!r) return;
+            const summary = 'Name: ' + r.name + '\n' +
+                            'Cuisines: ' + ((r.cuisines || []).join(', ') || '—') + '\n' +
+                            'Meal types: ' + ((r.mealtypes || []).join(', ') || '—') + '\n' +
+                            'Dietary: ' + ((r.dietary || []).join(', ') || '—') + '\n' +
+                            'Time: ' + r.time + '\n' +
+                            'Status: ' + r.status;
+            // Open the edit modal prefilled — acts as a "view" in the demo
+            openRecipeModal(index);
+            if (window.showToast) window.showToast('Viewing "' + r.name + '".');
+            else alert(summary);
+        }
+
+        /* ---------- Wiring ---------- */
+
+        document.addEventListener('click', function (e) {
+            const btn = e.target.closest('[data-action]');
+            if (!btn) return;
+
+            const action = btn.dataset.action;
+            const index  = btn.dataset.index !== undefined ? parseInt(btn.dataset.index, 10) : null;
+
+            switch (action) {
+                case 'open-add-recipe':       openRecipeModal(); break;
+                case 'edit-recipe':           openRecipeModal(index); break;
+                case 'view-recipe':           viewRecipe(index); break;
+                case 'close-recipe-modal':    closeRecipeModal(); break;
+                case 'save-recipe':           saveRecipe(); break;
+                case 'delete-recipe':         openDeleteModal(index); break;
+                case 'close-delete-modal':    closeDeleteModal(); break;
+                case 'confirm-delete-recipe': {
+                    const idx = parseInt(btn.dataset.index, 10);
+                    if (!Number.isNaN(idx)) deleteRecipe(idx);
+                    break;
+                }
+                case 'filter-recipes':        applyFilters(); break;
+                case 'export-recipes':        exportRecipes(); break;
+                case 'bulk-recipes':          bulkActions(); break;
+            }
+        });
+
+        // Pressing Enter in the search box applies filters
+        const searchInput = document.getElementById('recipeSearch');
+        if (searchInput) {
+            searchInput.addEventListener('keydown', function (e) {
+                if (e.key === 'Enter') { e.preventDefault(); applyFilters(); }
+            });
+        }
+
+        // Close modals when clicking the overlay
+        const recipeModal = document.getElementById('recipeModal');
+        if (recipeModal) {
+            recipeModal.addEventListener('click', function (e) {
+                if (e.target.id === 'recipeModal') closeRecipeModal();
+            });
+        }
+        const deleteModal = document.getElementById('deleteRecipeModal');
+        if (deleteModal) {
+            deleteModal.addEventListener('click', function (e) {
+                if (e.target.id === 'deleteRecipeModal') closeDeleteModal();
+            });
+        }
+
+        renderRecipes();
+    })();
+    </script>
+
+    <script src="../javascript/shared.js"></script>
+    <script src="../javascript/admin-api.js"></script>
+    <script src="../javascript/auth-guard.js"></script>
+<script src="../javascript/admin-connect.js"></script>
+</body>
+</html>

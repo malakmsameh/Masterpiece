@@ -7,11 +7,13 @@ use Database\Factories\UserFactory;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use Laravel\Sanctum\HasApiTokens;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
 class User extends Authenticatable
 {
     /** @use HasFactory<UserFactory> */
-    use HasFactory, Notifiable;
+    use HasFactory, Notifiable,HasApiTokens;
 
     /**
      * The attributes that are mass assignable.
@@ -24,6 +26,7 @@ class User extends Authenticatable
 		'phone',
 		'date_of_birth',
 		'gender',
+		'status',
 		'profile_photo',
         'password',
     ];
@@ -50,4 +53,29 @@ class User extends Authenticatable
             'password' => 'hashed',
         ];
     }
+
+	public function profile()
+	{
+		return $this->hasOne(UserProfile::class);
+	}
+	public function savedRecipes()
+	{
+		return $this->hasMany(UserSavedRecipe::class);
+	}
+	public function ratings()
+	{
+		return $this->hasMany(RecipeRating::class);
+	}
+
+	public function allergies(): BelongsToMany
+	{
+		return $this->belongsToMany(Allergy::class, 'user_allergies')
+			->withPivot(['severity', 'notes', 'notes_ar'])->withTimestamps();
+	}
+
+	public function dietaryPreferences(): BelongsToMany
+	{
+		return $this->belongsToMany(DietaryPreference::class, 'user_dietary_preferences')->withTimestamps();
+	}
+
 }

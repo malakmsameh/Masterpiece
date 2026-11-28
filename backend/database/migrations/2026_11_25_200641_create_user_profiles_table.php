@@ -13,13 +13,13 @@ return new class extends Migration
     {
         Schema::create('user_profiles', function (Blueprint $table) {
             $table->id();
-
-// user_id	BIGINT FK	References users
+			// user_id	BIGINT FK	References users
+			$table->foreignId('user_id')->unique()->constrained('users')->cascadeOnDelete();
 			$table->double('height_cm');
 			$table->double('current_weight');
 			$table->double('target_weight');
 			$table->enum('activity_level',['light','moderate','active']);
-			$table->enum('fitness_goal',['Lose','maintain','gain','bulk']);
+			$table->enum('fitness_goal',['lose','maintain','gain','bulk']);
 			//Calculated or manually set
 			$table->integer('daily_calorie_target');
 			// In milliliters

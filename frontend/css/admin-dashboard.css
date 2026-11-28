@@ -1,0 +1,81 @@
+@import url('shared.css');
+
+/* =========================================================
+   Admin Dashboard-page-only styles
+   ========================================================= */
+
+/* --- LAYOUT --- */
+.dashboard-layout { display: flex; min-height: 100vh; }
+
+/* --- SIDEBAR --- */
+.sidebar { width: 260px; background: var(--bg-white); border-right: 1px solid var(--border-color); padding: 24px 0; display: flex; flex-direction: column; flex-shrink: 0; position: sticky; top: 0; height: 100vh; }
+.sidebar-logo { padding: 0 24px 24px; border-bottom: 1px solid var(--border-color); margin-bottom: 16px; }
+.sidebar-logo a { font-family: var(--font-serif); font-size: 1.5rem; font-weight: 700; color: var(--accent-green); display: flex; align-items: center; gap: 8px; }
+.sidebar-logo a span { color: var(--accent-orange); }
+.sidebar-logo .admin-badge { font-size: 0.65rem; background: var(--accent-orange-light); color: var(--accent-orange); padding: 2px 8px; border-radius: 50px; font-family: var(--font-sans); margin-left: 8px; text-transform: uppercase; letter-spacing: 1px; }
+.sidebar-menu { display: flex; flex-direction: column; gap: 4px; padding: 0 16px; flex: 1; }
+.sidebar-menu a { display: flex; align-items: center; gap: 12px; padding: 12px 16px; border-radius: var(--radius-sm); font-size: 0.9rem; font-weight: 500; color: var(--text-muted); transition: var(--transition); }
+.sidebar-menu a:hover { background: var(--bg-cream); color: var(--text-main); }
+.sidebar-menu a.active { background: var(--accent-green-light); color: var(--accent-green); font-weight: 700; }
+.sidebar-footer { padding: 16px 24px; border-top: 1px solid var(--border-color); margin-top: auto; }
+.sidebar-exit { display: flex; align-items: center; gap: 8px; font-size: 0.85rem; color: var(--accent-orange); font-weight: 500; transition: var(--transition); cursor: pointer; }
+.sidebar-exit:hover { text-decoration: underline; }
+
+/* --- MAIN CONTENT --- */
+.main-content { flex: 1; padding: 32px 40px; background: var(--bg-cream); overflow-y: auto; }
+
+/* --- ADMIN SPECIFIC --- */
+.admin-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 32px; }
+.admin-header h1 { font-size: 2rem; }
+
+.stat-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 24px; margin-bottom: 32px; }
+.stat-card { background: var(--bg-white); padding: 24px; border-radius: var(--radius-md); border: 1px solid var(--border-color); display: flex; flex-direction: column; gap: 8px; }
+.stat-card .number { font-size: 2rem; font-weight: 700; font-family: var(--font-serif); color: var(--accent-green); }
+.stat-card .label { font-size: 0.8rem; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.5px; }
+
+.table-container { background: var(--bg-white); border-radius: var(--radius-md); border: 1px solid var(--border-color); overflow: hidden; margin-bottom: 32px; }
+.table-header { padding: 20px 24px; border-bottom: 1px solid var(--border-color); display: flex; justify-content: space-between; align-items: center; }
+table { width: 100%; border-collapse: collapse; text-align: left; }
+th, td { padding: 16px 24px; border-bottom: 1px solid var(--border-color); font-size: 0.85rem; }
+th { background: #FAFAFA; font-weight: 500; color: var(--text-muted); text-transform: uppercase; font-size: 0.7rem; letter-spacing: 0.5px; }
+tr:last-child td { border-bottom: none; }
+
+.status-badge { padding: 4px 12px; border-radius: 50px; font-size: 0.75rem; font-weight: 600; display: inline-block; }
+.status-pending { background: #FFF3E0; color: #E65100; }
+.status-active { background: #E8F5E9; color: #2E7D32; }
+.status-suspended { background: #FFEBEE; color: #C62828; }
+
+.review-grid { display: grid; grid-template-columns: 2fr 1fr; gap: 24px; margin-bottom: 32px; }
+.review-card { background: var(--bg-white); padding: 24px; border-radius: var(--radius-md); border: 1px solid var(--border-color); }
+.checklist-item { display: flex; align-items: center; gap: 8px; font-size: 0.85rem; margin-bottom: 8px; color: var(--text-muted); }
+.checklist-item input { accent-color: var(--accent-green); }
+.action-links button { font-size: 0.8rem; color: var(--text-muted); margin-right: 8px; transition: var(--transition); font-family: inherit; cursor: pointer; background: none; border: none; padding: 0; }
+.action-links button:hover { color: var(--accent-green); }
+.action-links button.delete:hover { color: #C62828; }
+
+.dashboard-with-activity { display: grid; grid-template-columns: 1fr 340px; gap: 24px; align-items: start; margin-bottom: 32px; }
+.activity-sidebar { background: var(--bg-white); border: 1px solid var(--border-color); border-radius: var(--radius-md); padding: 24px; position: sticky; top: 24px; }
+.activity-sidebar h3 { font-size: 1.05rem; margin-bottom: 16px; }
+.activity-item { display: flex; gap: 14px; padding: 14px 0; border-bottom: 1px solid var(--border-color); }
+.activity-item:last-child { border-bottom: none; }
+.activity-icon { width: 36px; height: 36px; border-radius: 50%; background: var(--accent-green-light); color: var(--accent-green); display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+.activity-item .activity-body { flex: 1; font-size: 0.88rem; line-height: 1.5; }
+.activity-item .activity-body span { display: block; color: var(--text-muted); font-size: 0.78rem; margin-top: 2px; }
+
+/* --- RESPONSIVE --- */
+@media (max-width: 1024px) {
+    .stat-grid { grid-template-columns: repeat(2, 1fr); }
+    .review-grid { grid-template-columns: 1fr; }
+    .dashboard-with-activity { grid-template-columns: 1fr; }
+    .activity-sidebar { position: static; }
+}
+@media (max-width: 768px) {
+    .dashboard-layout { flex-direction: column; }
+    .sidebar { width: 100%; height: auto; position: static; border-right: none; border-bottom: 1px solid var(--border-color); padding: 16px; }
+    .sidebar-menu { flex-direction: row; flex-wrap: wrap; justify-content: center; }
+    .main-content { padding: 20px; }
+    .stat-grid { grid-template-columns: 1fr; }
+    .admin-header { flex-direction: column; gap: 16px; align-items: flex-start; }
+    .table-container { overflow-x: auto; }
+    table { min-width: 600px; }
+}

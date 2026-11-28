@@ -1,0 +1,499 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sahtein - Discover the Taste of Home</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,700&family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- Fixed CSS paths -->
+    <link rel="stylesheet" href="css/shared.css">
+    <link rel="stylesheet" href="css/index.css">
+</head>
+<body>
+    <!-- Announcement bar -->
+    <div class="announcement">
+        <strong>GOOD FOOD, GOOD FEELING.</strong>
+        A little joy in every bite.
+        <!-- Fixed path to pages/ -->
+        <a href="pages/ai-recipe.html">Cook with what you have →</a>
+    </div>
+
+    <!-- Sticky header -->
+    <header class="site-header">
+        <div class="container header-inner">
+            <!-- Fixed path to root index.html -->
+            <a href="index.html" class="logo">sahtein<span>.</span></a>
+            <nav class="nav-links">
+                <a href="index.html" class="active">Home</a>
+                <!-- Fixed paths to pages/ -->
+                <a href="pages/recipes.html">Recipes</a>
+                <a href="pages/healthy-day.html">Healthy Day</a>
+                <a href="pages/meal-planner.html">Meal Planner</a>
+                <a href="pages/community.html">Community</a>
+                <a href="pages/nutrition.html">Nutrition</a>
+                <a href="pages/ai-recipe.html">AI Recipe</a>
+            </nav>
+            <div class="header-actions">
+                <button type="button" class="icon-btn" title="Sign in to save favorites"
+                        data-requires-login="true" data-action="favorites">
+                    <i class="fa-regular fa-heart"></i>
+                </button>
+                <button type="button" class="icon-btn" title="Sign in to view profile"
+                        data-requires-login="true" data-action="profile">
+                    <i class="fa-regular fa-user"></i>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <!-- Hero -->
+    <section class="container hero">
+        <div class="hero-text">
+            <span class="eyebrow">Made for the way you eat</span>
+            <h1>
+                Discover the
+                <span class="line2">taste of home.</span>
+            </h1>
+            <p class="hero-lede">
+                Explore the flavors of the Middle East, find meals that feel good,
+                and make something wonderful with what's already in your kitchen.
+            </p>
+            <div class="hero-actions">
+                <a href="pages/recipes.html" class="btn btn-primary">
+                    Explore recipes <i class="fa-solid fa-arrow-right"></i>
+                </a>
+                <button type="button" class="btn btn-outline"
+                        data-requires-login="true" data-action="ai-recipe">
+                    <i class="fa-solid fa-wand-magic-sparkles"></i> Create with AI
+                </button>
+            </div>
+
+            <div class="hero-social">
+                <div class="avatars">
+                    <span class="av av-1">SA</span>
+                    <span class="av av-2">MA</span>
+                    <span class="av av-3">LN</span>
+                </div>
+                <div>
+                    <div class="stars">★★★★★</div>
+                    <small>Made for food lovers, by food lovers</small>
+                </div>
+            </div>
+        </div>
+
+        <div class="hero-image-wrap">
+            <div class="hero-image">
+                <img src="https://images.unsplash.com/photo-1544025162-d76694265947?ixlib=rb-4.0.3&auto=format&fit=crop&w=1400&q=80" alt="Middle Eastern food spread">
+            </div>
+
+            <div class="hero-badge">
+                Fresh<br>Ideas
+                <span class="badge-star">✳</span>
+                Every Day
+            </div>
+
+            <div class="hero-overlay-card">
+                <div class="overlay-icon"><i class="fa-solid fa-utensils"></i></div>
+                <div>
+                    <strong>A table worth gathering around</strong>
+                    <span>Fresh ideas. Familiar flavors.</span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Craving strip -->
+    <section class="craving-bar-wrap">
+        <div class="container craving-bar">
+            <span class="craving-label">What are you<br>craving today?</span>
+
+            <div class="craving-items">
+                <a href="pages/recipes.html" class="craving-item">
+                    <span class="icon icon-green"><i class="fa-solid fa-utensils"></i></span>
+                    All recipes
+                    <span class="arrow"><i class="fa-solid fa-arrow-right"></i></span>
+                </a>
+                <span class="craving-divider"></span>
+
+                <a href="pages/recipes.html" class="craving-item">
+                    <span class="icon icon-orange"><i class="fa-solid fa-clock"></i></span>
+                    Quick &amp; easy
+                    <span class="arrow"><i class="fa-solid fa-arrow-right"></i></span>
+                </a>
+                <span class="craving-divider"></span>
+
+                <a href="pages/healthy-day.html" class="craving-item">
+                    <span class="icon icon-green"><i class="fa-solid fa-leaf"></i></span>
+                    Healthy picks
+                    <span class="arrow"><i class="fa-solid fa-arrow-right"></i></span>
+                </a>
+                <span class="craving-divider"></span>
+
+                <button type="button" class="craving-item"
+                        data-requires-login="true" data-action="ai-recipe">
+                    <span class="icon icon-orange"><i class="fa-solid fa-wand-magic-sparkles"></i></span>
+                    Cook with AI
+                    <span class="arrow"><i class="fa-solid fa-arrow-right"></i></span>
+                </button>
+            </div>
+        </div>
+    </section>
+
+    <!-- Recipes to fall for -->
+    <section class="container section-padding">
+        <div class="section-heading">
+            <div>
+                <span class="section-label">From our kitchen to yours</span>
+                <h2>Recipes to fall for<em>.</em></h2>
+                <p>Comforting classics and fresh favorites, made to be shared.</p>
+            </div>
+            <a href="pages/recipes.html" class="explore-link">Explore all recipes <i class="fa-solid fa-arrow-right"></i></a>
+        </div>
+
+        <div class="grid-4">
+            <!-- 4 Recipe Cards (Paths updated) -->
+            <a href="pages/recipe-detail.html" class="recipe-card">
+                <div class="card-img-wrap">
+                    <img src="https://images.unsplash.com/photo-1541518763669-27fef04b14ea?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80" alt="Chicken Maqluba" class="card-img">
+                    <button type="button" class="card-fav" title="Sign in to save"
+                            data-requires-login="true" data-action="toggle-favorite"
+                            onclick="event.preventDefault(); event.stopPropagation();">
+                        <i class="fa-regular fa-heart"></i>
+                    </button>
+                    <div class="card-cta">
+                        <span>Go to recipe</span>
+                        <i class="fa-solid fa-arrow-right"></i>
+                    </div>
+                    <div class="card-badges">
+                        <span class="card-badge"><i class="fa-solid fa-fire"></i> 520 kcal</span>
+                        <span class="card-badge"><i class="fa-solid fa-dumbbell"></i> 35g protein</span>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <span class="card-tag">Palestinian · Dinner</span>
+                    <h3 class="card-title">Chicken Maqluba</h3>
+                    <p class="card-desc">A fragrant, upside-down rice dish layered with tender chicken and vegetables.</p>
+                    <div class="card-meta">
+                        <span><i class="fa-solid fa-star" style="color:#F5A623;"></i> 4.9</span>
+                        <span><i class="fa-regular fa-clock"></i> 65 min</span>
+                        <span>Intermediate</span>
+                    </div>
+                </div>
+            </a>
+
+            <a href="pages/recipe-detail.html" class="recipe-card">
+                <div class="card-img-wrap">
+                    <img src="https://images.unsplash.com/photo-1626200419199-391ae4be7a41?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80" alt="Herby Falafel Plate" class="card-img">
+                    <button type="button" class="card-fav" title="Sign in to save"
+                            data-requires-login="true" data-action="toggle-favorite"
+                            onclick="event.preventDefault(); event.stopPropagation();">
+                        <i class="fa-regular fa-heart"></i>
+                    </button>
+                    <div class="card-cta">
+                        <span>Go to recipe</span>
+                        <i class="fa-solid fa-arrow-right"></i>
+                    </div>
+                    <div class="card-badges">
+                        <span class="card-badge"><i class="fa-solid fa-fire"></i> 380 kcal</span>
+                        <span class="card-badge"><i class="fa-solid fa-dumbbell"></i> 14g protein</span>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <span class="card-tag">Lebanese · Vegetarian</span>
+                    <h3 class="card-title">Herby Falafel Plate</h3>
+                    <p class="card-desc">Crispy chickpea falafel with fresh herbs, crunchy salad, and tahini.</p>
+                    <div class="card-meta">
+                        <span><i class="fa-solid fa-star" style="color:#F5A623;"></i> 4.8</span>
+                        <span><i class="fa-regular fa-clock"></i> 35 min</span>
+                        <span>Easy</span>
+                    </div>
+                </div>
+            </a>
+
+            <a href="pages/recipe-detail.html" class="recipe-card">
+                <div class="card-img-wrap">
+                    <img src="https://images.unsplash.com/photo-1593560708920-61dd98c46a4e?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80" alt="Classic Shakshuka" class="card-img">
+                    <button type="button" class="card-fav" title="Sign in to save"
+                            data-requires-login="true" data-action="toggle-favorite"
+                            onclick="event.preventDefault(); event.stopPropagation();">
+                        <i class="fa-regular fa-heart"></i>
+                    </button>
+                    <div class="card-cta">
+                        <span>Go to recipe</span>
+                        <i class="fa-solid fa-arrow-right"></i>
+                    </div>
+                    <div class="card-badges">
+                        <span class="card-badge"><i class="fa-solid fa-fire"></i> 350 kcal</span>
+                        <span class="card-badge"><i class="fa-solid fa-dumbbell"></i> 16g protein</span>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <span class="card-tag">North African · Breakfast</span>
+                    <h3 class="card-title">Classic Shakshuka</h3>
+                    <p class="card-desc">Soft eggs nestled in a warmly spiced tomato and pepper sauce.</p>
+                    <div class="card-meta">
+                        <span><i class="fa-solid fa-star" style="color:#F5A623;"></i> 4.9</span>
+                        <span><i class="fa-regular fa-clock"></i> 30 min</span>
+                        <span>Easy</span>
+                    </div>
+                </div>
+            </a>
+
+            <a href="pages/recipe-detail.html" class="recipe-card">
+                <div class="card-img-wrap">
+                    <img src="https://images.unsplash.com/photo-1541518763669-27fef04b14ea?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80" alt="Silky Hummus & Pita" class="card-img">
+                    <button type="button" class="card-fav" title="Sign in to save"
+                            data-requires-login="true" data-action="toggle-favorite"
+                            onclick="event.preventDefault(); event.stopPropagation();">
+                        <i class="fa-regular fa-heart"></i>
+                    </button>
+                    <div class="card-cta">
+                        <span>Go to recipe</span>
+                        <i class="fa-solid fa-arrow-right"></i>
+                    </div>
+                    <div class="card-badges">
+                        <span class="card-badge"><i class="fa-solid fa-fire"></i> 280 kcal</span>
+                        <span class="card-badge"><i class="fa-solid fa-dumbbell"></i> 8g protein</span>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <span class="card-tag">Levantine · Snack</span>
+                    <h3 class="card-title">Silky Hummus &amp; Pita</h3>
+                    <p class="card-desc">Creamy, lemony hummus finished with olive oil and warm pita.</p>
+                    <div class="card-meta">
+                        <span><i class="fa-solid fa-star" style="color:#F5A623;"></i> 4.8</span>
+                        <span><i class="fa-regular fa-clock"></i> 20 min</span>
+                        <span>Easy</span>
+                    </div>
+                </div>
+            </a>
+        </div>
+    </section>
+
+    <!-- Today's Advice -->
+    <section class="todays-advice">
+        <div class="container advice-grid">
+            <div class="advice-illustration">
+                <div class="advice-icon"><i class="fa-solid fa-seedling"></i></div>
+                <p class="quote">"A simple plate, built slowly, is often the kindest thing you can do for yourself."</p>
+            </div>
+            <div class="advice-text">
+                <span class="section-label">Today's advice</span>
+                <h2>Eat a little more <em>color.</em></h2>
+                <p>Half your plate in vegetables and fruit — that's it. It sounds simple because it is. Bright produce brings fiber, vitamins, and the kind of nourishment that keeps you feeling steady through the day.</p>
+                <div class="advice-points">
+                    <div class="advice-point">
+                        <span class="check"><i class="fa-solid fa-check"></i></span>
+                        <span>Add one new vegetable to tonight's dinner — any color but green.</span>
+                    </div>
+                    <div class="advice-point">
+                        <span class="check"><i class="fa-solid fa-check"></i></span>
+                        <span>Keep a bowl of washed fruit on the counter where you'll see it.</span>
+                    </div>
+                    <div class="advice-point">
+                        <span class="check"><i class="fa-solid fa-check"></i></span>
+                        <span>Pair it with protein and a whole grain to stay full for longer.</span>
+                    </div>
+                </div>
+                <a href="pages/nutrition.html" class="btn btn-primary">More nutrition advice <i class="fa-solid fa-arrow-right"></i></a>
+            </div>
+        </div>
+    </section>
+
+    <!-- AI promo -->
+    <section class="container ai-promo-wrap">
+        <div class="ai-promo">
+            <div class="ai-promo-image">
+                <img src="https://images.unsplash.com/photo-1512621776951-a57141f2eefd?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80" alt="Cooking companion">
+            </div>
+            <div class="ai-promo-text">
+                <span class="section-label">A little help in the kitchen</span>
+                <h2>Meet your new favorite <em>cooking companion.</em></h2>
+                <p>Tell us what ingredients you have. We'll find the three closest recipes you can make — or help you create a new one that's entirely yours.</p>
+                <div class="ai-promo-steps">
+                    <div class="ai-promo-step"><span>01</span> Add your ingredients</div>
+                    <div class="ai-promo-step"><span>02</span> Discover your matches</div>
+                    <div class="ai-promo-step"><span>03</span> Make it your own</div>
+                </div>
+                <button type="button" class="btn"
+                        data-requires-login="true" data-action="ai-recipe">
+                    Try the recipe assistant <i class="fa-solid fa-arrow-right"></i>
+                </button>
+            </div>
+        </div>
+    </section>
+
+    <!-- Explore by cuisine -->
+    <section class="container section-padding" style="padding-top: 0;">
+        <div class="section-heading">
+            <div>
+                <span class="section-label">A world of flavor</span>
+                <h2>Explore by cuisine<em>.</em></h2>
+            </div>
+            <a href="pages/recipes.html" class="explore-link">Browse all <i class="fa-solid fa-arrow-right"></i></a>
+        </div>
+        <div class="cuisine-grid">
+            <a href="pages/recipes.html" class="cuisine-item"><span class="num">01</span> Jordanian <span class="arrow"><i class="fa-solid fa-arrow-right"></i></span></a>
+            <a href="pages/recipes.html" class="cuisine-item"><span class="num">02</span> Palestinian <span class="arrow"><i class="fa-solid fa-arrow-right"></i></span></a>
+            <a href="pages/recipes.html" class="cuisine-item"><span class="num">03</span> Lebanese <span class="arrow"><i class="fa-solid fa-arrow-right"></i></span></a>
+            <a href="pages/recipes.html" class="cuisine-item"><span class="num">04</span> Syrian <span class="arrow"><i class="fa-solid fa-arrow-right"></i></span></a>
+            <a href="pages/recipes.html" class="cuisine-item"><span class="num">05</span> Egyptian <span class="arrow"><i class="fa-solid fa-arrow-right"></i></span></a>
+            <a href="pages/recipes.html" class="cuisine-item"><span class="num">06</span> Iraqi <span class="arrow"><i class="fa-solid fa-arrow-right"></i></span></a>
+            <a href="pages/recipes.html" class="cuisine-item"><span class="num">07</span> Gulf <span class="arrow"><i class="fa-solid fa-arrow-right"></i></span></a>
+            <a href="pages/recipes.html" class="cuisine-item"><span class="num">08</span> North African <span class="arrow"><i class="fa-solid fa-arrow-right"></i></span></a>
+            <a href="pages/recipes.html" class="cuisine-item"><span class="num">09</span> Turkish <span class="arrow"><i class="fa-solid fa-arrow-right"></i></span></a>
+            <a href="pages/recipes.html" class="cuisine-item"><span class="num">10</span> Mediterranean <span class="arrow"><i class="fa-solid fa-arrow-right"></i></span></a>
+            <a href="pages/recipes.html" class="cuisine-item"><span class="num">11</span> International <span class="arrow"><i class="fa-solid fa-arrow-right"></i></span></a>
+        </div>
+    </section>
+
+    <!-- Healthy looks delicious -->
+    <section class="container section-padding" style="padding-top: 0;">
+        <div class="healthy-banner">
+            <div class="section-heading" style="margin-bottom: 0;">
+                <div>
+                    <span class="section-label" style="color: var(--accent-green);">Feel-good food</span>
+                    <h2>Healthy looks <em>delicious.</em></h2>
+                    <p>Full of flavor, with the numbers that help you feel your best.</p>
+                </div>
+                <a href="pages/healthy-day.html" class="explore-link">Your healthy day <i class="fa-solid fa-arrow-right"></i></a>
+            </div>
+
+            <div class="healthy-recipe-grid">
+                <a href="pages/recipe-detail.html" class="recipe-card">
+                    <div class="card-img-wrap">
+                        <img src="https://images.unsplash.com/photo-1541518763669-27fef04b14ea?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80" alt="Chicken Maqluba" class="card-img">
+                        <button type="button" class="card-fav" title="Sign in to save"
+                                data-requires-login="true" data-action="toggle-favorite"
+                                onclick="event.preventDefault(); event.stopPropagation();">
+                            <i class="fa-regular fa-heart"></i>
+                        </button>
+                        <div class="card-cta">
+                            <span>Go to recipe</span>
+                            <i class="fa-solid fa-arrow-right"></i>
+                        </div>
+                        <div class="card-badges">
+                            <span class="card-badge"><i class="fa-solid fa-fire"></i> 520 kcal</span>
+                            <span class="card-badge"><i class="fa-solid fa-dumbbell"></i> 35g protein</span>
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        <span class="card-tag">Palestinian · Dinner</span>
+                        <h3 class="card-title">Chicken Maqluba</h3>
+                        <p class="card-desc">A fragrant, upside-down rice dish layered with tender chicken and vegetables.</p>
+                        <div class="card-meta">
+                            <span><i class="fa-solid fa-star" style="color:#F5A623;"></i> 4.9</span>
+                            <span><i class="fa-regular fa-clock"></i> 65 min</span>
+                            <span>Intermediate</span>
+                        </div>
+                    </div>
+                </a>
+                <a href="pages/recipe-detail.html" class="recipe-card">
+                    <div class="card-img-wrap">
+                        <img src="https://images.unsplash.com/photo-1541518763669-27fef04b14ea?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80" alt="Chicken Maqluba" class="card-img">
+                        <button type="button" class="card-fav" title="Sign in to save"
+                                data-requires-login="true" data-action="toggle-favorite"
+                                onclick="event.preventDefault(); event.stopPropagation();">
+                            <i class="fa-regular fa-heart"></i>
+                        </button>
+                        <div class="card-cta">
+                            <span>Go to recipe</span>
+                            <i class="fa-solid fa-arrow-right"></i>
+                        </div>
+                        <div class="card-badges">
+                            <span class="card-badge"><i class="fa-solid fa-fire"></i> 520 kcal</span>
+                            <span class="card-badge"><i class="fa-solid fa-dumbbell"></i> 35g protein</span>
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        <span class="card-tag">Palestinian · Dinner</span>
+                        <h3 class="card-title">Chicken Maqluba</h3>
+                        <p class="card-desc">A fragrant, upside-down rice dish layered with tender chicken and vegetables.</p>
+                        <div class="card-meta">
+                            <span><i class="fa-solid fa-star" style="color:#F5A623;"></i> 4.9</span>
+                            <span><i class="fa-regular fa-clock"></i> 65 min</span>
+                            <span>Intermediate</span>
+                        </div>
+                    </div>
+                </a>
+                <a href="pages/recipe-detail.html" class="recipe-card">
+                    <div class="card-img-wrap">
+                        <img src="https://images.unsplash.com/photo-1541518763669-27fef04b14ea?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80" alt="Chicken Maqluba" class="card-img">
+                        <button type="button" class="card-fav" title="Sign in to save"
+                                data-requires-login="true" data-action="toggle-favorite"
+                                onclick="event.preventDefault(); event.stopPropagation();">
+                            <i class="fa-regular fa-heart"></i>
+                        </button>
+                        <div class="card-cta">
+                            <span>Go to recipe</span>
+                            <i class="fa-solid fa-arrow-right"></i>
+                        </div>
+                        <div class="card-badges">
+                            <span class="card-badge"><i class="fa-solid fa-fire"></i> 520 kcal</span>
+                            <span class="card-badge"><i class="fa-solid fa-dumbbell"></i> 35g protein</span>
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        <span class="card-tag">Palestinian · Dinner</span>
+                        <h3 class="card-title">Chicken Maqluba</h3>
+                        <p class="card-desc">A fragrant, upside-down rice dish layered with tender chicken and vegetables.</p>
+                        <div class="card-meta">
+                            <span><i class="fa-solid fa-star" style="color:#F5A623;"></i> 4.9</span>
+                            <span><i class="fa-regular fa-clock"></i> 65 min</span>
+                            <span>Intermediate</span>
+                        </div>
+                    </div>
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="site-footer">
+        <div class="container">
+            <div class="footer-grid">
+                <div>
+                    <a href="index.html" class="logo" style="margin-bottom: 16px;">sahtein<span>.</span></a>
+                    <p class="text-muted text-sm">Good food brings us together. Discover, cook, and share with the world.</p>
+                </div>
+                <div>
+                    <h4>Explore</h4>
+                    <div class="footer-links">
+                        <a href="pages/recipes.html">All recipes</a>
+                        <a href="pages/healthy-day.html">Healthy Day</a>
+                        <a href="pages/nutrition.html">Nutrition advice</a>
+                        <a href="pages/ai-recipe.html">AI recipe assistant</a>
+                    </div>
+                </div>
+                <div>
+                    <h4>Your Space</h4>
+                    <div class="footer-links">
+                        <button type="button" data-requires-login="true" data-action="profile">Profile</button>
+                        <button type="button" data-requires-login="true" data-action="favorites">Saved recipes</button>
+                        <button type="button" data-requires-login="true" data-action="meal-planner">Meal planner</button>
+                        <a href="pages/community.html">Community</a>
+                    </div>
+                </div>
+                <div>
+                    <h4 style="font-family: var(--font-serif); font-size: 1.2rem; text-transform: none; letter-spacing: 0;">Made with care, served with joy. <i class="fa-solid fa-star" style="color: var(--accent-orange);"></i></h4>
+                    <div class="footer-links" style="flex-direction: row; gap: 16px;">
+                        <span><i class="fa-brands fa-instagram"></i> Instagram</span> · <span><i class="fa-brands fa-facebook"></i> Facebook</span> · <span><i class="fa-brands fa-pinterest"></i> Pinterest</span>
+                    </div>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <span>© 2026 Sahtein. A recipe platform made for curious cooks.</span>
+                <a href="#">View our privacy policy <i class="fa-solid fa-arrow-right"></i></a>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Fixed JS Paths -->
+    <script src="javascript/shared.js"></script>
+    <script src="javascript/auth-guard.js"></script>
+</body>
+</html>

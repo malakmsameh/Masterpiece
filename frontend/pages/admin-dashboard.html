@@ -1,0 +1,423 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sahtein Admin - Dashboard</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,700&family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <!-- Linked CSS Files -->
+    <link rel="stylesheet" href="../css/shared.css">
+    <link rel="stylesheet" href="../css/admin-dashboard.css">
+    <link rel="stylesheet" href="../css/admin-api.css">
+</head>
+<body>
+    <div class="dashboard-layout">
+        <aside class="sidebar">
+            <div class="sidebar-logo">
+                <a href="../index.html">sahtein<span>.</span> <span class="admin-badge">Admin</span></a>
+            </div>
+            <nav class="sidebar-menu">
+                <a href="admin-dashboard.html" class="active"><i class="fa-solid fa-chart-line"></i> Dashboard</a>
+                <a href="admin-recipes.html"><i class="fa-solid fa-utensils"></i> Recipe Management</a>
+                <a href="admin-ingredients.html"><i class="fa-solid fa-carrot"></i> Ingredient Management</a>
+                <a href="admin-users.html"><i class="fa-solid fa-users"></i> User Management</a>
+                <a href="admin-categories.html"><i class="fa-solid fa-folder"></i> Category Management</a>
+                <a href="admin-tags-allergies.html"><i class="fa-solid fa-tags"></i> Tags &amp; Allergies</a>
+                <a href="admin-ai-recipes.html"><i class="fa-solid fa-wand-magic-sparkles"></i> AI Generated Recipes</a>
+                <a href="admin-profile.html"><i class="fa-solid fa-user-gear"></i> Your Profile</a>
+            </nav>
+            <div class="sidebar-footer">
+                <button type="button" class="sidebar-exit" data-action="exit-admin">
+                    <i class="fa-solid fa-right-from-bracket"></i> Exit Admin
+                </button>
+            </div>
+        </aside>
+        <main class="main-content">
+            <div class="admin-header">
+                <div>
+                    <span class="section-label">Admin Workspace</span>
+                    <h1>Care for the Sahtein table.</h1>
+                    <p class="text-muted">Review recipes, keep conversations welcoming, and support the people behind them.</p>
+                </div>
+                <button type="button" class="btn btn-outline" data-action="export-activity">Export activity report</button>
+            </div>
+            <div class="stat-grid">
+                <div class="stat-card"><span class="number" data-stat="recipes_count">0</span><span class="label">Total Recipes</span></div>
+                <div class="stat-card"><span class="number" data-stat="draft_recipes_count">0</span><span class="label">Draft Recipes</span></div>
+                <div class="stat-card"><span class="number" data-stat="users_count">0</span><span class="label">Registered Members</span></div>
+                <div class="stat-card"><span class="number" data-stat="published_recipes_count">0</span><span class="label">Published Recipes</span></div>
+            </div>
+            <div class="table-container">
+                <div class="table-header">
+                    <h3 style="font-size: 1.1rem;">Recently updated recipes</h3>
+                </div>
+                <table id="recipesReviewTable">
+                    <thead>
+                        <tr><th>Recipe</th><th>Category</th><th>Status</th><th>Updated</th></tr>
+                    </thead>
+                    <tbody>
+                        <tr data-recipe="Roasted Cauliflower & Tahini">
+                            <td><strong>Roasted Cauliflower &amp; Tahini</strong><br><span class="text-muted text-sm">Oct 12 · Vegetarian · Contains sesame</span></td>
+                            <td>Leen Saleh</td>
+                            <td><span class="status-badge status-pending">Pending review</span></td>
+                            <td class="action-links">
+                                <button type="button" data-action="view-recipe">View recipe</button> ·
+                                <button type="button" data-action="approve-recipe">Approve</button> ·
+                                <button type="button" class="delete" data-action="reject-recipe">Reject</button>
+                            </td>
+                        </tr>
+                        <tr data-recipe="Lemon Lentil Soup">
+                            <td><strong>Lemon Lentil Soup</strong><br><span class="text-muted text-sm">Oct 12 · Plant-based · 290 kcal</span></td>
+                            <td>Maya Haddad</td>
+                            <td><span class="status-badge status-pending">Pending review</span></td>
+                            <td class="action-links">
+                                <button type="button" data-action="view-recipe">View recipe</button> ·
+                                <button type="button" data-action="approve-recipe">Approve</button> ·
+                                <button type="button" class="delete" data-action="reject-recipe">Reject</button>
+                            </td>
+                        </tr>
+                        <tr data-recipe="Herb Grilled Fish">
+                            <td><strong>Herb Grilled Fish</strong><br><span class="text-muted text-sm">Oct 11 · High protein · Contains fish</span></td>
+                            <td>Rami Khalil</td>
+                            <td><span class="status-badge status-pending">Pending review</span></td>
+                            <td class="action-links">
+                                <button type="button" data-action="view-recipe">View recipe</button> ·
+                                <button type="button" data-action="approve-recipe">Approve</button> ·
+                                <button type="button" class="delete" data-action="reject-recipe">Reject</button>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <div class="dashboard-with-activity">
+                <div class="review-grid" style="grid-template-columns: 1fr; margin-bottom: 0;">
+                    <div class="review-card">
+                        <span class="section-label">Selected for review</span>
+                        <h3>Roasted Cauliflower &amp; Tahini</h3>
+                        <p class="text-muted text-sm mb-4">Leen Saleh · Submitted October 12 · 2 servings · 30 minutes</p>
+                        <div class="mb-4">
+                            <label class="checklist-item"><input type="checkbox" checked> Ingredients and instructions are complete</label>
+                            <label class="checklist-item"><input type="checkbox" checked> Sesame allergen declared</label>
+                            <label class="checklist-item"><input type="checkbox"> Confirm estimated nutrition and image credit</label>
+                        </div>
+                        <div class="mb-4">
+                            <label style="font-size: 0.85rem; font-weight: 500; margin-bottom: 4px; display: block;">Review note / Rejection reason</label>
+                            <textarea class="input-field" id="reviewNote" rows="3" placeholder="Please include the source of your nutrition estimate."></textarea>
+                        </div>
+                        <div class="flex gap-2">
+                            <button type="button" class="btn btn-primary" data-action="approve-publish">Approve &amp; publish</button>
+                            <button type="button" class="btn btn-outline" data-action="reject-with-reason">Reject with reason</button>
+                        </div>
+                    </div>
+                    <div class="review-card" style="background: var(--accent-green-light); border-color: transparent;">
+                        <span class="section-label">Review checklist</span>
+                        <h3 style="font-size: 1.2rem; margin-bottom: 12px;">Quality, clarity, and care.</h3>
+                        <p class="text-sm mb-4">Check ingredient quantities, safe preparation instructions, serving sizes and declared allergens. Review nutrition estimates and make sure photos belong to the contributor.</p>
+                        <p class="text-sm mb-4">Never publish unsupported health claims. Ask for clarification when a recipe needs more information.</p>
+                        <button type="button" class="btn btn-sm btn-outline" data-action="open-guidelines">
+                            Open moderation guidelines <i class="fa-solid fa-arrow-right"></i>
+                        </button>
+                    </div>
+                </div>
+
+                <aside class="activity-sidebar">
+                    <h3>Recent admin activity</h3>
+                    <div class="activity-item">
+                        <div class="activity-icon"><i class="fa-solid fa-check"></i></div>
+                        <div class="activity-body">
+                            Approved <strong>Fresh Tabbouleh</strong>
+                            <span>Today · 09:12</span>
+                        </div>
+                    </div>
+                    <div class="activity-item">
+                        <div class="activity-icon"><i class="fa-solid fa-xmark"></i></div>
+                        <div class="activity-body">
+                            Rejected <strong>Quick Lentil Soup</strong> (missing allergen info)
+                            <span>Yesterday · 16:40</span>
+                        </div>
+                    </div>
+                    <div class="activity-item">
+                        <div class="activity-icon"><i class="fa-solid fa-flag"></i></div>
+                        <div class="activity-body">
+                            Handled a report on <strong>"Weeknight meals"</strong>
+                            <span>Yesterday · 11:05</span>
+                        </div>
+                    </div>
+                    <div class="activity-item">
+                        <div class="activity-icon"><i class="fa-solid fa-folder-plus"></i></div>
+                        <div class="activity-body">
+                            Added new cuisine tag <strong>Yemeni</strong>
+                            <span>2 days ago</span>
+                        </div>
+                    </div>
+                </aside>
+            </div>
+            <div class="table-container">
+                <div class="table-header">
+                    <h3 style="font-size: 1.1rem;">Keep the conversation welcoming.</h3>
+                </div>
+                <table id="moderationTable">
+                    <thead>
+                        <tr><th>Reported Content</th><th>Reason / Reports</th><th>Status</th><th>Moderation Actions</th></tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><strong>Unsolicited supplement promotion</strong><br><span class="text-muted text-sm">Rami Khalil · Oct 12</span></td>
+                            <td>Spam · 3 reports</td>
+                            <td><span class="status-badge status-pending">Open</span></td>
+                            <td class="action-links">
+                                <button type="button" data-action="view-post">View post</button> ·
+                                <button type="button" class="delete" data-action="remove-post">Remove</button> ·
+                                <button type="button" data-action="warn-user">Warn user</button>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td><strong>Reply in "Weeknight meals"</strong><br><span class="text-muted text-sm">Sami Darwish · Oct 12</span></td>
+                            <td>Harassment · 1 report</td>
+                            <td><span class="status-badge status-pending">Open</span></td>
+                            <td class="action-links">
+                                <button type="button" data-action="view-thread">View thread</button> ·
+                                <button type="button" class="delete" data-action="remove-post">Remove</button> ·
+                                <button type="button" data-action="dismiss-report">Dismiss</button>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </main>
+    </div>
+
+    <script src="../javascript/shared.js"></script>
+    <script src="../javascript/admin-api.js"></script>
+    <script src="../javascript/auth-guard.js"></script>
+    <script>
+    (function () {
+        'use strict';
+
+        const $ = function (id) { return document.getElementById(id); };
+
+        function toast(msg, isError) {
+            if (window.showToast) window.showToast(msg, isError);
+            else alert(msg);
+        }
+
+        /* ---------- Recompute the two live counters ---------- */
+        function refreshCounters() {
+            const pendingRows = document.querySelectorAll('#recipesReviewTable tbody tr');
+            let pendingCount = 0;
+            pendingRows.forEach(function (row) {
+                const badge = row.querySelector('.status-badge');
+                if (badge && /pending/i.test(badge.textContent)) pendingCount++;
+            });
+            const pendingEl = document.querySelector('[data-count="pending-recipes"]');
+            if (pendingEl) pendingEl.textContent = String(pendingCount);
+
+            const openReports = document.querySelectorAll('#moderationTable tbody tr').length;
+            const openEl = document.querySelector('[data-count="open-reports"]');
+            if (openEl) openEl.textContent = String(openReports);
+        }
+
+        /* ---------- Update the status badge in a review row ---------- */
+        function setRowStatus(row, label, className) {
+            const cell = row.children[2];
+            if (!cell) return;
+            cell.innerHTML = '<span class="status-badge ' + className + '">' + label + '</span>';
+        }
+
+        /* ---------- Remove "review actions" from a decided row ---------- */
+        function freezeRow(row) {
+            const actions = row.querySelector('.action-links');
+            if (!actions) return;
+            actions.innerHTML = '<span class="text-muted text-sm">Reviewed</span>';
+        }
+
+        /* ---------- Approve / Reject from table rows ---------- */
+        function approveRecipe(row) {
+            if (!row) return;
+            const name = row.getAttribute('data-recipe') || 'Recipe';
+            setRowStatus(row, 'Published', 'status-active');
+            freezeRow(row);
+            toast('Approved "' + name + '".');
+            refreshCounters();
+        }
+
+        function rejectRecipe(row) {
+            if (!row) return;
+            const name = row.getAttribute('data-recipe') || 'Recipe';
+            setRowStatus(row, 'Rejected', 'status-suspended');
+            freezeRow(row);
+            toast('Rejected "' + name + '".', true);
+            refreshCounters();
+        }
+
+        function viewRecipe(row) {
+            if (!row) return;
+            const name = row.getAttribute('data-recipe') || 'Recipe';
+            const summary = Array.prototype.map.call(row.querySelectorAll('td'), function (td) {
+                return (td.innerText || '').replace(/\s+/g, ' ').trim();
+            }).join('\n');
+            // Use a simple alert so no extra modal markup is required
+            alert(name + '\n\n' + summary);
+        }
+
+        /* ---------- Review card: approve & publish / reject with reason ---------- */
+        function reviewCardRecipeName() {
+            const h3 = document.querySelector('.review-card h3');
+            return h3 ? h3.textContent.trim() : '';
+        }
+
+        function findRowByRecipeName(name) {
+            let found = null;
+            document.querySelectorAll('#recipesReviewTable tbody tr').forEach(function (row) {
+                if (row.getAttribute('data-recipe') === name) found = row;
+            });
+            return found;
+        }
+
+        function approveAndPublish() {
+            const name = reviewCardRecipeName();
+            const row  = findRowByRecipeName(name);
+            const note = $('reviewNote') ? $('reviewNote').value.trim() : '';
+            if (row) {
+                setRowStatus(row, 'Published', 'status-active');
+                freezeRow(row);
+            }
+            if ($('reviewNote')) $('reviewNote').value = '';
+            toast('Published "' + name + '".' + (note ? ' Note saved.' : ''));
+            refreshCounters();
+        }
+
+        function rejectWithReason() {
+            const name = reviewCardRecipeName();
+            const row  = findRowByRecipeName(name);
+            const note = $('reviewNote') ? $('reviewNote').value.trim() : '';
+            if (!note) {
+                toast('Please add a rejection reason first.', true);
+                if ($('reviewNote')) $('reviewNote').focus();
+                return;
+            }
+            if (row) {
+                setRowStatus(row, 'Rejected', 'status-suspended');
+                freezeRow(row);
+            }
+            if ($('reviewNote')) $('reviewNote').value = '';
+            toast('Rejected "' + name + '" with a reason.', true);
+            refreshCounters();
+        }
+
+        /* ---------- Pending-only filter ---------- */
+        function togglePendingFilter(btn) {
+            const pendingOnly = btn.getAttribute('data-pending') === 'true';
+            const nextState   = !pendingOnly;
+            btn.setAttribute('data-pending', nextState ? 'true' : 'false');
+
+            document.querySelectorAll('#recipesReviewTable tbody tr').forEach(function (row) {
+                const badge = row.querySelector('.status-badge');
+                const isPending = badge && /pending/i.test(badge.textContent);
+                row.style.display = (nextState && !isPending) ? 'none' : '';
+            });
+            toast(nextState ? 'Showing only pending recipes.' : 'Showing all recipes.');
+        }
+
+        /* ---------- Moderation actions ---------- */
+        function removeRow(row) {
+            if (row && row.parentNode) row.parentNode.removeChild(row);
+            refreshCounters();
+        }
+
+        function warnUser(row) {
+            if (!row) return;
+            toast('Warning sent to the contributor.');
+        }
+
+        function dismissReport(row) {
+            if (!row) return;
+            const cell = row.children[2];
+            if (cell) cell.innerHTML = '<span class="status-badge status-active">Dismissed</span>';
+            toast('Report dismissed.');
+            refreshCounters();
+        }
+
+        function showGuidelines() {
+            alert(
+                'Moderation guidelines\n' +
+                '• Verify ingredient quantities and safe preparation instructions.\n' +
+                '• Confirm allergens and nutrition estimates.\n' +
+                '• Reject unsupported health claims.\n' +
+                '• Ask for clarification when information is missing.'
+            );
+        }
+
+        /* ---------- CSV export ---------- */
+        function exportActivity() {
+            const lines = [];
+            const note  = $('reviewNote') ? $('reviewNote').value.trim() : '';
+
+            document.querySelectorAll('table').forEach(function (table) {
+                table.querySelectorAll('tr').forEach(function (row) {
+                    const cells = Array.prototype.map.call(
+                        row.querySelectorAll('th, td'),
+                        function (cell) {
+                            const text = (cell.innerText || '').replace(/\s+/g, ' ').trim();
+                            return '"' + text.replace(/"/g, '""') + '"';
+                        }
+                    );
+                    if (cells.length) lines.push(cells.join(','));
+                });
+                lines.push('');
+            });
+
+            if (note) {
+                lines.push('"Review note","' + note.replace(/"/g, '""') + '"');
+            }
+            lines.push('"Exported at","' + new Date().toISOString() + '"');
+
+            const csv = lines.join('\n');
+            const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
+            const url  = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = 'sahtein-activity-report.csv';
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            URL.revokeObjectURL(url);
+            toast('Activity report downloaded.');
+        }
+
+        /* ---------- Global click handler ---------- */
+        document.addEventListener('click', function (e) {
+            const btn = e.target.closest('[data-action]');
+            if (!btn) return;
+
+            const action = btn.dataset.action;
+            const row    = btn.closest('tr');
+
+            switch (action) {
+                case 'export-activity':       e.preventDefault(); exportActivity(); break;
+                case 'approve-recipe':        e.preventDefault(); approveRecipe(row); break;
+                case 'reject-recipe':         e.preventDefault(); rejectRecipe(row); break;
+                case 'view-recipe':           e.preventDefault(); viewRecipe(row); break;
+                case 'approve-publish':       e.preventDefault(); approveAndPublish(); break;
+                case 'reject-with-reason':    e.preventDefault(); rejectWithReason(); break;
+                case 'filter-pending':        e.preventDefault(); togglePendingFilter(btn); break;
+                case 'open-guidelines':       e.preventDefault(); showGuidelines(); break;
+                case 'view-post':             e.preventDefault(); viewRecipe(row); break;
+                case 'view-thread':           e.preventDefault(); viewRecipe(row); break;
+                case 'remove-post':           e.preventDefault(); removeRow(row); toast('Post removed.', true); break;
+                case 'warn-user':             e.preventDefault(); warnUser(row); break;
+                case 'dismiss-report':        e.preventDefault(); dismissReport(row); break;
+            }
+        });
+
+        /* ---------- Initialize ---------- */
+        refreshCounters();
+    })();
+    </script>
+<script src="../javascript/admin-connect.js"></script>
+</body>
+</html>

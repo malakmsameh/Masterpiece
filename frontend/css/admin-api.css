@@ -1,0 +1,24 @@
+/* Shared presentation for live admin API tables and paginator controls. */
+.api-connected-table tbody tr:nth-child(odd) { background-color: #eee9df; }
+.api-connected-table tbody tr:nth-child(even) { background-color: #fffdf9; }
+.api-connected-table tbody tr:hover { background-color: #e5ddcf; }
+.main-content table tbody tr:nth-child(odd) { background-color: #eee9df; }
+.main-content table tbody tr:nth-child(even) { background-color: #fffdf9; }
+.main-content table tbody tr:hover { background-color: #e5ddcf; }
+.api-pagination { display:flex; align-items:center; justify-content:flex-end; gap:12px; padding:14px 4px; color:#625d54; }
+.api-pagination button:disabled { opacity:.5; cursor:not-allowed; }
+.category-card { background:#fffdf9; border:1px solid #e8e1d7; border-radius:12px; padding:16px; }
+.category-card h3 { margin:0 0 8px; }
+.category-card p { color:#706a61; }
+.api-recipe-fields { max-height:68vh; overflow:auto; margin:18px 0; padding-right:8px; }
+.api-form-grid { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:12px; }
+.api-form-field { display:flex; flex-direction:column; gap:6px; font-size:.9rem; }
+.api-form-field textarea { min-height:80px; resize:vertical; }
+.api-checkbox-groups { display:grid; gap:10px; margin-top:12px; }
+.api-checkbox-groups fieldset { display:flex; flex-wrap:wrap; gap:10px; border:1px solid #e4ddd3; border-radius:8px; }
+.api-checkbox-groups legend { padding:0 6px; }
+.api-checkbox-groups label { display:flex; align-items:center; gap:5px; }
+.api-ingredients-editor { grid-column:1/-1; display:grid; gap:8px; }
+.api-ingredient-row { display:grid; grid-template-columns:minmax(180px,2fr) minmax(90px,1fr) minmax(90px,1fr) auto; gap:8px; margin-bottom:8px; }
+@media(max-width:640px){.api-form-grid{grid-template-columns:1fr}.api-pagination{flex-wrap:wrap}}
+@media(max-width:700px){.api-ingredient-row{grid-template-columns:1fr 1fr}.api-ingredient-row select{grid-column:1/-1}}

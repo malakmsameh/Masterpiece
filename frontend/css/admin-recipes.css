@@ -1,0 +1,101 @@
+@import url('shared.css');
+
+/* =========================================================
+   Admin Recipes-page-only styles
+   ========================================================= */
+
+/* --- LAYOUT --- */
+.dashboard-layout { display: flex; min-height: 100vh; }
+
+/* --- SIDEBAR --- */
+.sidebar { width: 260px; background: var(--bg-white); border-right: 1px solid var(--border-color); padding: 24px 0; display: flex; flex-direction: column; flex-shrink: 0; position: sticky; top: 0; height: 100vh; }
+.sidebar-logo { padding: 0 24px 24px; border-bottom: 1px solid var(--border-color); margin-bottom: 16px; }
+.sidebar-logo a { font-family: var(--font-serif); font-size: 1.5rem; font-weight: 700; color: var(--accent-green); display: flex; align-items: center; gap: 8px; }
+.sidebar-logo a span { color: var(--accent-orange); }
+.sidebar-logo .admin-badge { font-size: 0.65rem; background: var(--accent-orange-light); color: var(--accent-orange); padding: 2px 8px; border-radius: 50px; font-family: var(--font-sans); margin-left: 8px; text-transform: uppercase; letter-spacing: 1px; }
+.sidebar-menu { display: flex; flex-direction: column; gap: 4px; padding: 0 16px; flex: 1; }
+.sidebar-menu a { display: flex; align-items: center; gap: 12px; padding: 12px 16px; border-radius: var(--radius-sm); font-size: 0.9rem; font-weight: 500; color: var(--text-muted); transition: var(--transition); white-space: nowrap; }
+.sidebar-menu a:hover { background: var(--bg-cream); color: var(--text-main); }
+.sidebar-menu a.active { background: var(--accent-green-light); color: var(--accent-green); font-weight: 700; }
+.sidebar-footer { padding: 16px 24px; border-top: 1px solid var(--border-color); margin-top: auto; }
+.sidebar-exit { display: flex; align-items: center; gap: 8px; font-size: 0.85rem; color: var(--accent-orange); font-weight: 500; transition: var(--transition); cursor: pointer; }
+.sidebar-exit:hover { text-decoration: underline; }
+
+/* --- MAIN CONTENT --- */
+.main-content { flex: 1; padding: 32px 40px; background: var(--bg-cream); overflow-y: auto; }
+
+/* --- ADMIN SPECIFIC --- */
+.admin-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 32px; }
+.admin-header h1 { font-size: 2rem; }
+
+.filter-bar { display: flex; gap: 16px; margin-bottom: 24px; background: var(--bg-white); padding: 20px; border-radius: var(--radius-md); border: 1px solid var(--border-color); }
+.filter-bar .input-field { flex: 1; }
+.filter-bar select { width: 200px; }
+
+.table-container { background: var(--bg-white); border-radius: var(--radius-md); border: 1px solid var(--border-color); overflow: hidden; }
+.table-header { padding: 20px 24px; border-bottom: 1px solid var(--border-color); display: flex; justify-content: space-between; align-items: center; }
+table { width: 100%; border-collapse: collapse; text-align: left; }
+th, td { padding: 16px 24px; border-bottom: 1px solid var(--border-color); font-size: 0.85rem; vertical-align: top; }
+th { background: #FAFAFA; font-weight: 500; color: var(--text-muted); text-transform: uppercase; font-size: 0.7rem; letter-spacing: 0.5px; }
+tr:last-child td { border-bottom: none; }
+tr:hover { background: #FAFAFA; }
+
+.status-badge { padding: 4px 12px; border-radius: 50px; font-size: 0.75rem; font-weight: 600; display: inline-block; }
+.status-published { background: #E8F5E9; color: #2E7D32; }
+.status-draft { background: #FFF3E0; color: #E65100; }
+.status-archived { background: #FFEBEE; color: #C62828; }
+
+.action-links button { font-size: 0.8rem; color: var(--text-muted); margin-right: 8px; transition: var(--transition); cursor: pointer; font-family: inherit; background: none; border: none; padding: 0; }
+.action-links button:hover { color: var(--accent-green); }
+.action-links button.delete:hover { color: #C62828; }
+
+.tag-pills { display: flex; flex-wrap: wrap; gap: 4px; }
+.tag-pill { font-size: 0.7rem; padding: 2px 8px; border-radius: 50px; font-weight: 500; display: inline-block; }
+.tag-cuisine { background: #E8F0EA; color: #2A4B3C; }
+.tag-meal { background: #FDF0EC; color: #D96C4A; }
+.tag-diet { background: #EDE9FE; color: #6D28D9; }
+
+/* --- MODALS --- */
+.modal-overlay {
+    position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+    background: rgba(0,0,0,0.5); display: none; justify-content: center; align-items: center;
+    z-index: 1000; padding: 20px;
+}
+.modal-overlay.active { display: flex; }
+.modal-content {
+    background: var(--bg-white); padding: 32px; border-radius: var(--radius-lg);
+    width: 100%; max-width: 640px; box-shadow: var(--shadow-md);
+    max-height: 90vh; overflow-y: auto;
+}
+.modal-content h3 { margin-bottom: 8px; }
+.modal-content > p { color: var(--text-muted); font-size: 0.9rem; margin-bottom: 20px; }
+.modal-content .input-group { margin-bottom: 20px; }
+.modal-content .input-group label { display: block; font-size: 0.85rem; font-weight: 500; margin-bottom: 6px; }
+.modal-actions { display: flex; gap: 12px; justify-content: flex-end; margin-top: 24px; }
+
+.checkbox-group { display: flex; flex-wrap: wrap; gap: 8px; }
+.checkbox-chip {
+    display: inline-flex; align-items: center; gap: 6px;
+    padding: 6px 14px; border-radius: 50px;
+    border: 1px solid var(--border-color); background: #fff;
+    font-size: 0.85rem; cursor: pointer; transition: var(--transition);
+    user-select: none;
+}
+.checkbox-chip:hover { border-color: var(--accent-green); }
+.checkbox-chip input { display: none; }
+.checkbox-chip.checked { background: var(--accent-green); color: #fff; border-color: var(--accent-green); }
+
+/* --- RESPONSIVE --- */
+@media (max-width: 1024px) {
+    .filter-bar { flex-wrap: wrap; }
+    .filter-bar select { width: 100%; }
+}
+@media (max-width: 768px) {
+    .dashboard-layout { flex-direction: column; }
+    .sidebar { width: 100%; height: auto; position: static; border-right: none; border-bottom: 1px solid var(--border-color); padding: 16px; }
+    .sidebar-menu { flex-direction: row; flex-wrap: wrap; justify-content: center; }
+    .main-content { padding: 20px; }
+    .admin-header { flex-direction: column; gap: 16px; align-items: flex-start; }
+    .table-container { overflow-x: auto; }
+    table { min-width: 900px; }
+}

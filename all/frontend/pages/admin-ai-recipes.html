@@ -1,0 +1,278 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sahtein Admin - AI Generated Recipes</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,700&family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <!-- Linked CSS Files -->
+    <link rel="stylesheet" href="../css/shared.css">
+    <link rel="stylesheet" href="../css/admin-ai-recipes.css">
+</head>
+<body>
+    <div class="dashboard-layout">
+        <aside class="sidebar">
+            <div class="sidebar-logo">
+                <a href="../index.html">sahtein<span>.</span> <span class="admin-badge">Admin</span></a>
+            </div>
+            <nav class="sidebar-menu">
+                <a href="admin-dashboard.html"><i class="fa-solid fa-chart-line"></i> Dashboard</a>
+                <a href="admin-recipes.html"><i class="fa-solid fa-utensils"></i> Recipe Management</a>
+                <a href="admin-ingredients.html"><i class="fa-solid fa-carrot"></i> Ingredient Management</a>
+                <a href="admin-users.html"><i class="fa-solid fa-users"></i> User Management</a>
+                <a href="admin-categories.html"><i class="fa-solid fa-folder"></i> Category Management</a>
+                <a href="admin-ai-recipes.html" class="active"><i class="fa-solid fa-wand-magic-sparkles"></i> AI Generated Recipes</a>
+                <a href="admin-profile.html"><i class="fa-solid fa-user-gear"></i> Your Profile</a>
+            </nav>
+            <div class="sidebar-footer">
+                <button type="button" class="sidebar-exit" data-action="exit-admin" style="display: flex; align-items: center; gap: 8px; font-size: 0.85rem; color: var(--accent-orange); font-weight: 500; transition: var(--transition);">
+                    <i class="fa-solid fa-right-from-bracket"></i> Exit Admin
+                </button>
+            </div>
+        </aside>
+        <main class="main-content">
+            <div class="admin-header">
+                <div>
+                    <span class="section-label">Admin Workspace</span>
+                    <h1>AI Generated Recipes</h1>
+                    <p class="text-muted">Review AI-generated recipes before they are published to the platform.</p>
+                </div>
+                <button type="button" class="btn btn-outline" data-action="export-ai-report">Export Report</button>
+            </div>
+            <div class="table-container">
+                <div class="table-header">
+                    <h3 style="font-size: 1.1rem;">Recent AI Generations (<span id="aiRecipeCount">3</span>)</h3>
+                    <div class="flex gap-2">
+                        <button type="button" class="btn btn-sm btn-outline" data-action="filter-ai-status" data-filter="all">Filter by Status</button>
+                        <button type="button" class="btn btn-sm btn-outline" data-action="bulk-ai-actions">Bulk Actions</button>
+                    </div>
+                </div>
+                <table id="aiRecipeTable">
+                    <thead>
+                        <tr><th>Generated Recipe</th><th>User</th><th>Generation Date</th><th>Status</th><th>Actions</th></tr>
+                    </thead>
+                    <tbody>
+                        <tr data-ai-recipe="One-pan Tomato Chicken Rice" data-ai-status="pending" data-ai-reason="">
+                            <td><strong>One-pan Tomato Chicken Rice</strong><br><span class="text-muted text-sm">460 kcal · 2 servings</span></td>
+                            <td>Leen Saleh</td>
+                            <td>Oct 12, 2026</td>
+                            <td><span class="status-badge status-pending">Pending Review</span></td>
+                            <td class="action-links">
+                                <button type="button" data-action="review-ai">Review</button>
+                                <button type="button" data-action="publish-ai">Publish</button>
+                                <button type="button" class="delete" data-action="reject-ai">Reject</button>
+                            </td>
+                        </tr>
+                        <tr data-ai-recipe="Spicy Chickpea Stew" data-ai-status="published" data-ai-reason="">
+                            <td><strong>Spicy Chickpea Stew</strong><br><span class="text-muted text-sm">320 kcal · 4 servings</span></td>
+                            <td>Omar Nasser</td>
+                            <td>Oct 11, 2026</td>
+                            <td><span class="status-badge status-published">Published</span></td>
+                            <td class="action-links">
+                                <button type="button" data-action="view-ai">View</button>
+                                <button type="button" data-action="unpublish-ai">Unpublish</button>
+                                <button type="button" class="delete" data-action="delete-ai">Delete</button>
+                            </td>
+                        </tr>
+                        <tr data-ai-recipe="Quick Lentil Soup" data-ai-status="rejected" data-ai-reason="Missing allergen information (sesame).">
+                            <td><strong>Quick Lentil Soup</strong><br><span class="text-muted text-sm">280 kcal · 3 servings</span></td>
+                            <td>Maya Haddad</td>
+                            <td>Oct 10, 2026</td>
+                            <td><span class="status-badge status-rejected">Rejected</span></td>
+                            <td class="action-links">
+                                <button type="button" data-action="view-ai-reason">View Reason</button>
+                                <button type="button" class="delete" data-action="delete-ai">Delete</button>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </main>
+    </div>
+
+    <script src="../javascript/shared.js"></script>
+    <script src="../javascript/auth-guard.js"></script>
+    <script>
+    (function () {
+        'use strict';
+
+        const $ = function (id) { return document.getElementById(id); };
+
+        function toast(msg, isError) {
+            if (window.showToast) window.showToast(msg, isError);
+            else alert(msg);
+        }
+
+        function setStatus(row, status) {
+            row.setAttribute('data-ai-status', status);
+            const cell = row.children[3];
+            if (!cell) return;
+            const map = {
+                pending:   { cls: 'status-pending',   label: 'Pending Review' },
+                published: { cls: 'status-published', label: 'Published' },
+                rejected:  { cls: 'status-rejected',  label: 'Rejected' }
+            };
+            const info = map[status];
+            if (!info) return;
+            cell.innerHTML = '<span class="status-badge ' + info.cls + '">' + info.label + '</span>';
+        }
+
+        function setActions(row, status) {
+            const cell = row.querySelector('.action-links');
+            if (!cell) return;
+
+            const name = row.getAttribute('data-ai-recipe') || '';
+
+            if (status === 'pending') {
+                cell.innerHTML =
+                    '<button type="button" data-action="review-ai">Review</button>' +
+                    '<button type="button" data-action="publish-ai">Publish</button>' +
+                    '<button type="button" class="delete" data-action="reject-ai">Reject</button>';
+            } else if (status === 'published') {
+                cell.innerHTML =
+                    '<button type="button" data-action="view-ai">View</button>' +
+                    '<button type="button" data-action="unpublish-ai">Unpublish</button>' +
+                    '<button type="button" class="delete" data-action="delete-ai">Delete</button>';
+            } else if (status === 'rejected') {
+                cell.innerHTML =
+                    '<button type="button" data-action="view-ai-reason">View Reason</button>' +
+                    '<button type="button" class="delete" data-action="delete-ai">Delete</button>';
+            }
+        }
+
+        function refreshCount() {
+            const n = document.querySelectorAll('#aiRecipeTable tbody tr').length;
+            if ($('aiRecipeCount')) $('aiRecipeCount').textContent = String(n);
+        }
+
+        /* ---------- Row actions ---------- */
+        function publishAi(row) {
+            if (!row) return;
+            const name = row.getAttribute('data-ai-recipe') || 'Recipe';
+            setStatus(row, 'published');
+            setActions(row, 'published');
+            toast('Published "' + name + '".');
+        }
+
+        function unpublishAi(row) {
+            if (!row) return;
+            const name = row.getAttribute('data-ai-recipe') || 'Recipe';
+            setStatus(row, 'pending');
+            setActions(row, 'pending');
+            toast('Unpublished "' + name + '" — back to pending review.');
+        }
+
+        function rejectAi(row) {
+            if (!row) return;
+            const name = row.getAttribute('data-ai-recipe') || 'Recipe';
+            const reason = window.prompt('Reason for rejecting "' + name + '":', '');
+            if (reason === null) return; // user cancelled
+            row.setAttribute('data-ai-reason', reason || 'No reason provided.');
+            setStatus(row, 'rejected');
+            setActions(row, 'rejected');
+            toast('Rejected "' + name + '".', true);
+        }
+
+        function deleteAi(row) {
+            if (!row) return;
+            const name = row.getAttribute('data-ai-recipe') || 'Recipe';
+            if (!window.confirm('Delete "' + name + '"? This cannot be undone.')) return;
+            row.parentNode.removeChild(row);
+            refreshCount();
+            toast('Deleted "' + name + '".', true);
+        }
+
+        function viewAi(row) {
+            if (!row) return;
+            const name = row.getAttribute('data-ai-recipe') || 'Recipe';
+            const summary = Array.prototype.map.call(row.querySelectorAll('td'), function (td) {
+                return (td.innerText || '').replace(/\s+/g, ' ').trim();
+            }).join('\n');
+            alert(name + '\n\n' + summary);
+        }
+
+        function viewAiReason(row) {
+            if (!row) return;
+            const name = row.getAttribute('data-ai-recipe') || 'Recipe';
+            const reason = row.getAttribute('data-ai-reason') || 'No reason provided.';
+            alert('Rejection reason for "' + name + '"\n\n' + reason);
+        }
+
+        /* ---------- Filter by status ---------- */
+        const FILTER_CYCLE = ['all', 'pending', 'published', 'rejected'];
+
+        function cycleFilter(btn) {
+            const current = btn.getAttribute('data-filter') || 'all';
+            const next = FILTER_CYCLE[(FILTER_CYCLE.indexOf(current) + 1) % FILTER_CYCLE.length];
+            btn.setAttribute('data-filter', next);
+
+            document.querySelectorAll('#aiRecipeTable tbody tr').forEach(function (row) {
+                const status = row.getAttribute('data-ai-status') || 'pending';
+                row.style.display = (next === 'all' || status === next) ? '' : 'none';
+            });
+
+            const label = next === 'all' ? 'Filter by Status' :
+                          'Showing: ' + next.charAt(0).toUpperCase() + next.slice(1);
+            btn.textContent = label;
+        }
+
+        /* ---------- Export report ---------- */
+        function exportAiReport() {
+            const lines = [];
+            document.querySelectorAll('#aiRecipeTable tr').forEach(function (row) {
+                const cells = Array.prototype.map.call(row.querySelectorAll('th, td'), function (cell) {
+                    const text = (cell.innerText || '').replace(/\s+/g, ' ').trim();
+                    return '"' + text.replace(/"/g, '""') + '"';
+                });
+                if (cells.length) lines.push(cells.join(','));
+            });
+            lines.push('"Exported at","' + new Date().toISOString() + '"');
+
+            const csv = lines.join('\n');
+            const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
+            const url  = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = 'sahtein-ai-recipes.csv';
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            URL.revokeObjectURL(url);
+            toast('AI recipes report downloaded.');
+        }
+
+        function bulkAiActions() {
+            toast('Bulk actions are not available in the demo.');
+        }
+
+        /* ---------- Global handler ---------- */
+        document.addEventListener('click', function (e) {
+            const btn = e.target.closest('[data-action]');
+            if (!btn) return;
+
+            const action = btn.dataset.action;
+            const row    = btn.closest('tr');
+
+            switch (action) {
+                case 'publish-ai':       e.preventDefault(); publishAi(row); break;
+                case 'unpublish-ai':     e.preventDefault(); unpublishAi(row); break;
+                case 'reject-ai':        e.preventDefault(); rejectAi(row); break;
+                case 'delete-ai':        e.preventDefault(); deleteAi(row); break;
+                case 'review-ai':        e.preventDefault(); viewAi(row); break;
+                case 'view-ai':          e.preventDefault(); viewAi(row); break;
+                case 'view-ai-reason':   e.preventDefault(); viewAiReason(row); break;
+                case 'filter-ai-status': e.preventDefault(); cycleFilter(btn); break;
+                case 'bulk-ai-actions':  e.preventDefault(); bulkAiActions(); break;
+                case 'export-ai-report': e.preventDefault(); exportAiReport(); break;
+            }
+        });
+
+        refreshCount();
+    })();
+    </script>
+</body>
+</html>

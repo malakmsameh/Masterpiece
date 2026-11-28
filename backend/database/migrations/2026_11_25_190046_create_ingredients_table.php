@@ -14,12 +14,12 @@ return new class extends Migration
         Schema::create('ingredients', function (Blueprint $table) {
             $table->id();
 			$table->string('name');
-			// $table->string('name_ar');
-			$table->double('calories_per_100g');
-			$table->double('protein_per_100g');
-			$table->double('carbohydrates_per_100g');
-			$table->double('fat_per_100g');
-			$table->double('fiber_per_100g');
+			$table->string('name_ar');
+			$table->decimal('calories_per_100g',8,2);
+			$table->decimal('protein_per_100g',8,2);
+			$table->decimal('carbohydrates_per_100g',8,2);
+			$table->decimal('fat_per_100g',8,2);
+			$table->decimal('fiber_per_100g',8,2);
 			$table->string('default_unit');
             $table->timestamps();
         });

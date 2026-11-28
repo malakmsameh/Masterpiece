@@ -15,11 +15,21 @@ return new class extends Migration
             $table->id();
 			// recipe_id	BIGINT FK
 			// ingredient_id	BIGINT FK
-			$table->double('quantity');
+			// $table->double('quantity');
+			// $table->string('unit');
+			// $table->text("notes");
+			// $table->text("notes_ar");
+
+			$table->foreignId('recipe_id')->constrained('recipes')->cascadeOnDelete();
+			$table->foreignId('ingredient_id')->constrained('ingredients')->restrictOnDelete();
+			$table->decimal('quantity', 10, 2);
 			$table->string('unit');
-			$table->text("notes");
-            $table->timestamps();
-        });
+			$table->text('notes')->nullable();
+			$table->text('notes_ar')->nullable();
+			// prevents adding the same ingrediangt more than once 
+			$table->unique(['recipe_id', 'ingredient_id']);
+			$table->timestamps();
+			});
     }
 
     /**

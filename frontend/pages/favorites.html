@@ -1,0 +1,296 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sahtein - Your Favorites</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,700&family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <!-- Linked CSS Files -->
+    <link rel="stylesheet" href="../css/shared.css">
+    <link rel="stylesheet" href="../css/favorites.css">
+</head>
+<body>
+    <div class="announcement">
+        <strong>GOOD FOOD, GOOD FEELING.</strong>
+        A little joy in every bite.
+        <a href="ai-recipe.html">Cook with what you have →</a>
+    </div>
+
+    <header class="site-header">
+        <div class="container header-inner">
+            <a href="../index.html" class="logo">sahtein<span>.</span></a>
+            <nav class="nav-links">
+                <a href="../index.html">Home</a>
+                <a href="recipes.html">Recipes</a>
+                <a href="healthy-day.html">Healthy Day</a>
+                <a href="meal-planner.html">Meal Planner</a>
+                <a href="community.html">Community</a>
+                <a href="nutrition.html">Nutrition</a>
+                <a href="ai-recipe.html">AI Recipe</a>
+            </nav>
+            <div class="header-actions">
+                <button type="button" class="icon-btn" title="Saved recipes"
+                        data-requires-login="true" data-action="favorites">
+                    <i class="fa-regular fa-heart"></i>
+                </button>
+                <button type="button" class="icon-btn" title="Your profile"
+                        data-requires-login="true" data-action="profile">
+                    <i class="fa-regular fa-user"></i>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <section class="container page-header">
+        <span class="section-label">The ones you love</span>
+        <h1>Your favorites.</h1>
+        <p class="text-muted"><span id="favoritesCount">3</span> saved recipes</p>
+    </section>
+
+    <section class="container">
+        <div class="filter-tabs" id="favoritesFilterTabs">
+            <button type="button" class="filter-tab active" data-filter="all">All</button>
+            <button type="button" class="filter-tab" data-filter="middle-eastern">Middle Eastern</button>
+            <button type="button" class="filter-tab" data-filter="healthy">Healthy</button>
+            <button type="button" class="filter-tab" data-filter="ai">AI Recipes</button>
+        </div>
+    </section>
+
+    <section class="container">
+        <div class="recipe-grid" id="favoritesGrid">
+
+            <!-- Card 1 -->
+            <a href="recipe-detail.html" class="recipe-card"
+               data-tags="middle-eastern healthy">
+                <div class="card-img-wrap">
+                    <img src="https://images.unsplash.com/photo-1593560708920-61dd98c46a4e?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80" alt="Classic Shakshuka" class="card-img">
+                    <button type="button" class="card-fav" title="Remove from favorites"
+                            data-requires-login="true" data-action="toggle-favorite">
+                        <i class="fa-solid fa-heart"></i>
+                    </button>
+                    <div class="card-cta">
+                        <span>Go to recipe</span>
+                        <i class="fa-solid fa-arrow-right"></i>
+                    </div>
+                    <div class="card-badges">
+                        <span class="card-badge"><i class="fa-solid fa-fire"></i> 350 kcal</span>
+                        <span class="card-badge"><i class="fa-solid fa-dumbbell"></i> 16g protein</span>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <span class="card-tag">North African · Breakfast</span>
+                    <h3 class="card-title">Classic Shakshuka</h3>
+                    <p class="card-desc">Soft eggs nestled in a warmly spiced tomato and pepper sauce.</p>
+                    <div class="card-meta">
+                        <span><i class="fa-solid fa-star" style="color:#F5A623;"></i> 4.8</span>
+                        <span><i class="fa-regular fa-clock"></i> 30 min</span>
+                        <span>Easy</span>
+                    </div>
+                </div>
+            </a>
+
+            <!-- Card 2 -->
+            <a href="recipe-detail.html" class="recipe-card"
+               data-tags="middle-eastern healthy">
+                <div class="card-img-wrap">
+                    <img src="https://images.unsplash.com/photo-1544025162-d76694265947?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80" alt="Chicken Shawarma Bowl" class="card-img">
+                    <button type="button" class="card-fav" title="Remove from favorites"
+                            data-requires-login="true" data-action="toggle-favorite">
+                        <i class="fa-solid fa-heart"></i>
+                    </button>
+                    <div class="card-cta">
+                        <span>Go to recipe</span>
+                        <i class="fa-solid fa-arrow-right"></i>
+                    </div>
+                    <div class="card-badges">
+                        <span class="card-badge"><i class="fa-solid fa-fire"></i> 450 kcal</span>
+                        <span class="card-badge"><i class="fa-solid fa-dumbbell"></i> 42g protein</span>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <span class="card-tag">High Protein · Middle Eastern</span>
+                    <h3 class="card-title">Chicken Shawarma Bowl</h3>
+                    <p class="card-desc">Tender, spiced chicken, fluffy rice and a generous helping of fresh vegetables.</p>
+                    <div class="card-meta">
+                        <span><i class="fa-solid fa-star" style="color:#F5A623;"></i> 4.9</span>
+                        <span><i class="fa-regular fa-clock"></i> 40 min</span>
+                        <span>Easy</span>
+                    </div>
+                </div>
+            </a>
+
+            <!-- Card 3 -->
+            <a href="recipe-detail.html" class="recipe-card"
+               data-tags="middle-eastern healthy">
+                <div class="card-img-wrap">
+                    <img src="https://images.unsplash.com/photo-1626200419199-391ae4be7a41?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80" alt="Fresh Tabbouleh" class="card-img">
+                    <button type="button" class="card-fav" title="Remove from favorites"
+                            data-requires-login="true" data-action="toggle-favorite">
+                        <i class="fa-solid fa-heart"></i>
+                    </button>
+                    <div class="card-cta">
+                        <span>Go to recipe</span>
+                        <i class="fa-solid fa-arrow-right"></i>
+                    </div>
+                    <div class="card-badges">
+                        <span class="card-badge"><i class="fa-solid fa-fire"></i> 250 kcal</span>
+                        <span class="card-badge"><i class="fa-solid fa-dumbbell"></i> 6g protein</span>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <span class="card-tag">Light &amp; Fresh · Vegetarian</span>
+                    <h3 class="card-title">Fresh Tabbouleh</h3>
+                    <p class="card-desc">A refreshing parsley, tomato and bulgur salad, bright with lemon.</p>
+                    <div class="card-meta">
+                        <span><i class="fa-solid fa-star" style="color:#F5A623;"></i> 4.8</span>
+                        <span><i class="fa-regular fa-clock"></i> 20 min</span>
+                        <span>Easy</span>
+                    </div>
+                </div>
+            </a>
+
+        </div>
+
+        <!-- Empty state -->
+        <div id="favoritesEmpty" style="display: none; text-align: center; padding: 60px 24px; background: var(--bg-white); border: 1px dashed var(--border-color); border-radius: 12px;">
+            <i class="fa-regular fa-heart" style="font-size: 2.4rem; color: var(--accent-orange); margin-bottom: 14px;"></i>
+            <h3 style="margin-bottom: 8px;">No favorites yet.</h3>
+            <p class="text-muted" style="margin-bottom: 20px;">Tap the heart on any recipe to save it here.</p>
+            <a href="recipes.html" class="btn btn-primary">Browse recipes <i class="fa-solid fa-arrow-right"></i></a>
+        </div>
+    </section>
+
+    <section class="container mb-6">
+        <div class="cta-banner">
+            <div>
+                <h3>Give your favorites a place in your week.</h3>
+                <p class="text-muted">Start with a recipe you already love. Add it to your meal plan, and make dinner one less thing to think about.</p>
+            </div>
+            <button type="button" class="btn btn-primary"
+                    data-requires-login="true" data-action="meal-planner">
+                Open meal planner <i class="fa-solid fa-arrow-right"></i>
+            </button>
+        </div>
+    </section>
+
+    <footer class="site-footer">
+        <div class="container">
+            <div class="footer-grid">
+                <div>
+                    <a href="../index.html" class="logo" style="margin-bottom: 16px;">sahtein<span>.</span></a>
+                    <p class="text-muted text-sm">Good food brings us together. Discover, cook, and share with the world.</p>
+                </div>
+                <div>
+                    <h4>Explore</h4>
+                    <div class="footer-links">
+                        <a href="recipes.html">All recipes</a>
+                        <a href="healthy-day.html">Healthy Day</a>
+                        <a href="nutrition.html">Nutrition advice</a>
+                        <a href="ai-recipe.html">AI recipe assistant</a>
+                    </div>
+                </div>
+                <div>
+                    <h4>Your Space</h4>
+                    <div class="footer-links">
+                        <button type="button" data-requires-login="true" data-action="profile">Profile</button>
+                        <button type="button" data-requires-login="true" data-action="favorites">Saved recipes</button>
+                        <button type="button" data-requires-login="true" data-action="meal-planner">Meal planner</button>
+                        <a href="community.html">Community</a>
+                    </div>
+                </div>
+                <div>
+                    <h4 style="font-family: var(--font-serif); font-size: 1.2rem; text-transform: none; letter-spacing: 0;">Made with care, served with joy. <i class="fa-solid fa-star" style="color: var(--accent-orange);"></i></h4>
+                    <div class="footer-links" style="flex-direction: row; gap: 16px;">
+                        <span><i class="fa-brands fa-instagram"></i> Instagram</span> · <span><i class="fa-brands fa-facebook"></i> Facebook</span> · <span><i class="fa-brands fa-pinterest"></i> Pinterest</span>
+                    </div>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <span>© 2026 Sahtein. A recipe platform made for curious cooks.</span>
+                <a href="#">View our privacy policy <i class="fa-solid fa-arrow-right"></i></a>
+            </div>
+        </div>
+    </footer>
+
+    <script src="../javascript/shared.js"></script>
+    <script src="../javascript/auth-guard.js"></script>
+    <script>
+    (function () {
+        'use strict';
+
+        const $ = function (id) { return document.getElementById(id); };
+
+        function toast(msg, isError) {
+            if (window.showToast) window.showToast(msg, isError);
+            else alert(msg);
+        }
+
+        function updateCount() {
+            const cards = document.querySelectorAll('#favoritesGrid .recipe-card');
+            const empty = $('favoritesEmpty');
+            if ($('favoritesCount')) $('favoritesCount').textContent = String(cards.length);
+            if (empty) empty.style.display = cards.length === 0 ? '' : 'none';
+        }
+
+        /* ---------- Toggle favorite → remove card ---------- */
+        function toggleFavorite(card, btn) {
+            if (!card) return;
+
+            // If already removed, ignore
+            if (card.dataset.removed === 'true') return;
+
+            // Fade out then remove
+            card.style.transition = 'opacity 0.25s ease, transform 0.25s ease';
+            card.style.opacity = '0';
+            card.style.transform = 'scale(0.96)';
+
+            setTimeout(function () {
+                card.parentNode.removeChild(card);
+                updateCount();
+                toast('Removed from favorites.');
+            }, 260);
+        }
+
+        /* ---------- Filter tabs ---------- */
+        function setActiveTab(tab) {
+            document.querySelectorAll('#favoritesFilterTabs .filter-tab').forEach(function (t) {
+                t.classList.toggle('active', t === tab);
+            });
+        }
+
+        function applyFilter(filter) {
+            document.querySelectorAll('#favoritesGrid .recipe-card').forEach(function (card) {
+                const tags = (card.getAttribute('data-tags') || '').toLowerCase();
+                const show = filter === 'all' || tags.indexOf(filter) !== -1;
+                card.style.display = show ? '' : 'none';
+            });
+        }
+
+        document.querySelectorAll('#favoritesFilterTabs .filter-tab').forEach(function (tab) {
+            tab.addEventListener('click', function () {
+                setActiveTab(tab);
+                applyFilter(tab.getAttribute('data-filter') || 'all');
+            });
+        });
+
+        /* ---------- Global click handler ---------- */
+        document.addEventListener('click', function (e) {
+            const favBtn = e.target.closest('[data-action="toggle-favorite"]');
+            if (favBtn) {
+                // Stop the parent <a> from navigating
+                e.preventDefault();
+                e.stopPropagation();
+                const card = favBtn.closest('.recipe-card');
+                toggleFavorite(card, favBtn);
+            }
+        });
+
+        updateCount();
+    })();
+    </script>
+</body>
+</html>
